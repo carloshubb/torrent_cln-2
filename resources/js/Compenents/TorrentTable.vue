@@ -28,27 +28,29 @@
               class="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer"
               @click="viewTorrent(torrent)">
               <td class="px-4 py-3">
-                <div class="flex items-center">
-                  <a :href="`/sub/${torrent.sub_category_id}/0/`">
-                    <div class="w-6 h-6 bg-orange-600 rounded mr-3 flex items-center justify-center">
-                      <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                        </path>
-                      </svg>
-                    </div>
-                  </a>
-                  <a :href="`/torrent/${torrent.id}/${torrent.slug}/`">
-                    <span class="text-gray-300 hover:text-orange-400 transition-colors">
+                <div class="flex items-center justify-between w-full">
+                  <!-- Left side: icon + name -->
+                  <div class="flex items-center">
+                    <a :href="`/sub/${torrent.sub_category_id}/0/`">
+                      <div class="w-6 h-6 bg-orange-600 rounded mr-3 flex items-center justify-center">
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                          </path>
+                        </svg>
+                      </div>
+                    </a>
+                    <a :href="`/torrent/${torrent.id}/${torrent.slug}/`"
+                      class="text-gray-300 hover:text-orange-400 transition-colors">
                       {{ torrent.name }}
-                    </span>
-                    <span v-if="torrent.comments_count" class="commit">
-                      <span
-                        class="relative inline-flex items-center -top-1 -right-3 bg-white text-orange-600 rounded text-xs font-semibold px-1.5 py-0.5">
-                        {{ torrent.comments_count }}
-                      </span>
-                    </span>
-                  </a>
+                    </a>
+                  </div>
+
+                  <!-- Right side: badge -->
+                  <span v-if="torrent.comments_count"
+                    class="bg-white text-orange-600 rounded text-xs font-semibold px-1.5 py-0.5">
+                    {{ torrent.comments_count }}
+                  </span>
                 </div>
               </td>
               <td class="text-center px-4 py-3">
@@ -79,8 +81,9 @@
         </table>
 
         <!-- Pagination component -->
-        <TorrentPagination v-if="page_type.toLowerCase() !== 'dashboard' && page_type.toLowerCase() !== 'trending' && page_type.toLowerCase() !== 'top'" :currentPage="currentPage"
-          :lastPage="lastPage" @page-changed="onPageChange" />
+        <TorrentPagination
+          v-if="page_type.toLowerCase() !== 'dashboard' && page_type.toLowerCase() !== 'trending' && page_type.toLowerCase() !== 'top'"
+          :currentPage="currentPage" :lastPage="lastPage" @page-changed="onPageChange" />
       </div>
     </div>
   </div>
@@ -117,7 +120,7 @@ export default {
     const torrents = ref(props.torrents.data)
     const page_type = ref(props.page)
     console.log(props.page);
-    
+
     const formatApprovedAt = (dateString) => {
       const date = dayjs(dateString)
       const now = dayjs()
