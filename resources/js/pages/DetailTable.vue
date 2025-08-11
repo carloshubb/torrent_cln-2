@@ -46,3 +46,63 @@ detail_data.push({data:torrentInfo, info:movieInfo})
   </AppLayout>
    
 </template>
+<style scoped>
+.btn {
+  display: block;
+  width: 250px;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.btn .icon {
+  margin-right: 8px;
+}
+
+.torrent {
+  background-color: #a63b20;
+}
+
+/* Dropdown styles */
+.dropdown {
+  background: #8b1818;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.dropdown a {
+  color: white;
+  text-decoration: none;
+  padding: 5px;
+  font-weight: bold;
+  padding-top: 6px;
+ 
+  }
+
+.dropdown a:hover {
+  background: #313030;
+}
+
+/* Slide transition */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+.slide-enter-from,
+.slide-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+.slide-enter-to,
+.slide-leave-from {
+  max-height: 200px; /* adjust for more links */
+  opacity: 1;
+}
+</style>
