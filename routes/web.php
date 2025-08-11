@@ -1,0 +1,85 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+Route::get('/', function () {
+     return Inertia::render('Dashboard', [
+        'page' => 'dashboard',   
+        'params' =>''     
+    ]);
+});
+Route::get('/sub/{param1}/{param2}', function ($param1, $param2) {
+    // You can use $param1 and $param2 here
+    return Inertia::render('Dashboard', [
+        'page' => 'sub',
+        'params' =>$param1."@".$param2,            
+    ]);
+});
+
+Route::get('/cat/{param1}/{param2}', function ($param1, $param2) {
+    // You can use $param1 and $param2 here
+    return Inertia::render('Dashboard', [
+        'page' => 'cat',
+        'params' =>$param1."@".$param2,            
+    ]);
+});
+
+Route::get('/trending', function () {
+    return Inertia::render('Dashboard', [
+        'page' => 'trending',
+        'params' =>null,            
+    ]);
+});
+
+
+Route::get('/top-100', function () {
+    return Inertia::render('Dashboard', [
+        'page' => 'top',
+        'params' =>null,            
+    ]);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+Route::get('/home', function () {
+    return Inertia::render('Home', [
+        'message' => 'Hello from Laravel!'
+    ]);
+});
+Route::get('/category', function () {
+    return Inertia::render('Category');
+});
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+});
+Route::get('/detailpage', function () {
+    return Inertia::render('Detailpage');
+});
+Route::get('/test', function () {
+    return Inertia::render('Test');
+});
+Route::get('/detailtable', function () {
+    return Inertia::render('DetailTable');
+});
+Route::get('/rules', function () {
+    return Inertia::render('Rules');
+});
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+});
+Route::get('/about', function () {
+    return Inertia::render('About');
+});
+Route::get('/upload', function () {
+    return Inertia::render('Upload');
+});

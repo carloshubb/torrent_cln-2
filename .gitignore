@@ -1,0 +1,46 @@
+# Laravel
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+.env
+.env.*.local
+.phpunit.result.cache
+.php_cs.cache
+.php-cs-fixer.cache
+
+# Laravel Telescope
+/telescope
+
+# Laravel Ignition
+/ignition
+
+# Laravel Mix / Vite
+/public/hot
+/public/build
+/.vite
+vite.config.local.js
+
+# Logs
+/storage/logs/*.log
+*.log
+
+# Cache
+bootstrap/cache/*.php
+bootstrap/cache/*.json
+
+# Compiled files
+/storage/framework/cache/data
+/storage/framework/sessions
+/storage/framework/testing
+/storage/framework/views
+
+# IDEs and editors
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
