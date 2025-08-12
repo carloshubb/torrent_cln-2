@@ -9,10 +9,10 @@
         <div v-for="(category, index) in browseCategories" :key="index"
           class="flex items-center text-gray-300 hover:text-orange-400 cursor-pointer transition-colors py-1"
           @click="browseCategory(category)">
-          <div class="w-4 h-4 bg-orange-600 rounded-sm mr-3 flex items-center justify-center">
-            <div class="w-2 h-2 bg-white rounded-sm"></div>
+          <div class="w-4 h-4  rounded-sm mr-3 flex items-center justify-center">
+            <div> {{ category.icon}}</div>
           </div>
-          {{ category.title }}
+          {{ category.title}}
         </div>
       </div>
     </div>
@@ -56,18 +56,18 @@ export default {
     //   'XXX'
     // ]
     const browseCategories = [
-      {title:'Trending Torrents',slug:'trending'},
-      {title:'Movie library',slug:'movie-library'},
-      {title:'Top 100 Torrents',slug:'top-100'},
-      {title:'Anime',slug:'Anime'},
-      {title:'Applications',slug:'Apps'},
-      {title:'Documentaries',slug:'Documentaries'},
-      {title:'Games',slug:'Games'},
-      {title:'Movies',slug:'Movies'},
-      {title:'Music',slug:'Music'},
-      {title:'Other',slug:'Other'},
-      {title:'Television',slug:'TV'},
-      {title:'XXX',slug:'XXX'},
+      {title:'Trending Torrents',icon:'📈',slug:'trending'},
+      {title:'Movie library',icon:'📚',slug:'MovieLibrary'},
+      {title:'Top 100 Torrents',icon:'⭐',slug:'top-100'},
+      {title:'Anime',icon:'🎌',slug:'Anime'},
+      {title:'Applications',icon:'💾',slug:'Apps'},
+      {title:'Documentaries',icon:'📋',slug:'Documentaries'},
+      {title:'Games',icon:'🎮',slug:'Games'},
+      {title:'Movies',icon:'🎬',slug:'Movies'},
+      {title:'Music',icon:'🎵',slug:'Music'},
+      {title:'Other',icon:'📁',slug:'Other'},
+      {title:'Television',icon:'📺',slug:'TV'},
+      {title:'XXX',icon:'🔞',slug:'XXX'},
       
     ]
     const externalLinks = [
@@ -91,7 +91,7 @@ export default {
       if(category.slug == 'trending' || category.slug == 'top-100'){
          window.location.href = `/${category.slug}`;       
       } 
-      else if(category.slug == 'movie-library'){
+      else if(category.slug == 'movielibrary'){
          window.location.href = `/${category.slug}/1/`;       
       }
       else{
