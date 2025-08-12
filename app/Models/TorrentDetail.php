@@ -42,7 +42,13 @@ class TorrentDetail extends Model
         'category',
         'description',
         'file_count',
-        'download_count',
+        'type',
+        'lastchecked',
+        'infohash',
+        'files',
+        'comments',
+        'dateuploaded',
+        'trackerlist',
     ];
 
     protected $dates = [

@@ -44,7 +44,8 @@ Route::get('/torrent/{param1}/{param2}', function ($param1, $param2) {
     // You can use $param1 and $param2 here
     return Inertia::render('DetailTable', [
         'page' => 'detail',
-        'params' =>$param1."@".$param2,            
+        'torrent_id' =>$param1,            
+        'torrent_slug' =>$param2,            
     ]);
 });
 

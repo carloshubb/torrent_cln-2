@@ -30,8 +30,14 @@ return new class extends Migration
             $table->integer('total_files')->nullable();
             $table->longText('nfo_content')->nullable();
             $table->boolean('has_sample')->default(false);
-            $table->string('uploader_status', 100)->nullable();
-
+            $table->string('uploader_status', 100)->nullable();           
+            $table->string('type', 100)->nullable();                     
+            $table->string('lastchecked', 100)->nullable();                    
+            $table->string('dateuploaded', 100)->nullable();                    
+            $table->string('infohash')->nullable();           
+            $table->longText('files')->nullable();
+            $table->longText('comments')->nullable();
+            $table->longText('trackerlist')->nullable();
             $table->timestamp('detail_scraped_at')->nullable();
 
             $table->json('screenshots')->nullable();

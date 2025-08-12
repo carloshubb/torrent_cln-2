@@ -1,12 +1,12 @@
 <template>
   <AppLayout>
-    <div class="max-w-7xl mx-auto px-4 py-4">
+    <div class="max-w-7xl mx-auto px-4 py-4" v-if="torrent">
       <div class="flex gap-6">
         <!-- Main Content -->
         <div class="flex-1">
           <!-- Title -->
           <div class="bg-gray-700 px-4 py-2 mb-4 rounded">
-            <h1 class="text-lg font-semibold">{{ torrentInfo.title }}</h1>
+            <h1 class="text-lg font-semibold">{{ torrent.name }}</h1>
           </div>
 
           <!-- Torrent Info -->
@@ -15,56 +15,56 @@
               <div class="space-y-2">
                 <div class="flex justify-between">
                   <span class="text-gray-400">Category:</span>
-                  <span>{{ torrentInfo.category }}</span>
+                  <span>{{ torrent.detail.category }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Type:</span>
-                  <span>{{ torrentInfo.type }}</span>
+                  <span>{{ torrent.detail.type }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Language:</span>
-                  <span>{{ torrentInfo.language }}</span>
+                  <span>{{ torrent.detail.language }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Total Size:</span>
-                  <span>{{ torrentInfo.size }}</span>
+                  <span>{{ torrent.detail.size_formatted }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Uploaded By:</span>
-                  <span class="text-green-400">{{ torrentInfo.uploader }}</span>
+                  <span class="text-green-400">{{ torrent.detail.uploader }}</span>
                 </div>
               </div>
               <div class="space-y-2">
                 <div class="flex justify-between">
                   <span class="text-gray-400">Downloads:</span>
-                  <span>{{ torrentInfo.downloads }}</span>
+                  <span>{{ torrent.completed_downloads }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Last checked:</span>
-                  <span>{{ torrentInfo.lastChecked }}</span>
+                  <span>{{ torrent.detail.lastchecked }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Date uploaded:</span>
-                  <span>{{ torrentInfo.dateUploaded }}</span>
+                  <span>{{ torrent.detail.dateuploaded }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Seeders:</span>
-                  <span class="text-green-400">{{ torrentInfo.seeders }}</span>
+                  <span class="text-green-400">{{ torrent.seeders }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Leechers:</span>
-                  <span class="text-red-400">{{ torrentInfo.leechers }}</span>
+                  <span class="text-red-400">{{ torrent.leechers }}</span>
                 </div>
               </div>
             </div>
 
             <!-- Download Buttons -->
             <div class="p-4 space-y-2">
-              <button @click="downloadMagnet"
+              <a :href="`${torrent.detail.magnet_link}`"
                 class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded flex items-center justify-center space-x-2 font-semibold">
                 <span>🧲</span>
                 <span>MAGNET DOWNLOAD</span>
-              </button>
+              </a>
               <button @click="downloadTorrent"
                 class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded flex items-center justify-center space-x-2 font-semibold">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,10 +75,10 @@
               </button>
               <transition name="slide">
                 <div v-if="showDropdown" class="dropdown">
-                  <a href="#">ITORRENTS MIRROR</a>
-                  <a href="#">TRRAGE MIRROR</a>
-                  <a href="#">BTCACHE MIRROR</a>
-                  <a href="#">NONE WORKING? USERMAGNET</a>
+                  <a :href="`http://itorrents.org/torrent/${torrent.detail.infohash}.torrent`">ITORRENTS MIRROR</a>
+                  <a :href="`http://torrage.info/torrent.php?h=${torrent.detail.infohash}`">TRRAGE MIRROR</a>
+                  <a :href="`http://btcache.me/torrent/${torrent.detail.infohash}`">BTCACHE MIRROR</a>
+                  <a :href="`${torrent.detail.magnet_link}`">NONE WORKING? USERMAGNET</a>
                 </div>
 
               </transition>
@@ -95,7 +95,7 @@
           </div>
 
           <!-- Movie Info Card -->
-          <div class="bg-orange-600 p-4 rounded flex space-x-4 mb-4">
+          <div class="bg-orange-600 p-4 rounded flex space-x-4 mb-4 hidden">
             <img :src="movieInfo.poster" :alt="movieInfo.title" class="w-24 h-36 object-cover rounded" />
             <div class="flex-1">
               <h2 class="text-xl font-bold mb-2">{{ movieInfo.title }}</h2>
@@ -116,7 +116,7 @@
 
           <!-- Hash -->
           <div class="text-center text-xs text-gray-400 mb-4">
-            <span class="font-semibold">INFO HASH:</span> {{ torrentInfo.hash }}
+            <span class="font-semibold">INFO HASH:</span> {{torrent.detail.infohash }}
           </div>
 
           <!-- Tabs -->
@@ -133,23 +133,23 @@
             </div>
             <div class="p-4">
               <div v-if="activeTab === 'DESCRIPTION'">
-                <img src="https://via.placeholder.com/600x300/374151/ffffff?text=Movie+Scene" alt="Movie scene"
-                  class="w-full rounded" />
+                <!-- Movie Description with HTML rendering -->
+                <div v-if="torrent?.detail?.description" v-html="torrent.detail.description"
+                  class="mt-4 text-gray-300 leading-relaxed"></div>
               </div>
               <div v-else-if="activeTab === 'FILES'">
-                <div class="text-sm">
-                  <p>Files information will be displayed here...</p>
-                </div>
+                <div v-if="torrent?.detail?.files" v-html="torrent.detail.files"
+                  class="mt-4 text-gray-300 leading-relaxed"></div>
               </div>
+            
               <div v-else-if="activeTab === 'COMMENTS 1'">
-                <div class="text-sm">
-                  <p>Comments section...</p>
-                </div>
+                <div v-if="torrent?.detail?.comments" v-html="torrent.detail.comments"
+                  class="mt-4 text-gray-300 leading-relaxed"></div>
               </div>
+            
               <div v-else-if="activeTab === 'TRACKER LIST'">
-                <div class="text-sm">
-                  <p>Tracker list will be shown here...</p>
-                </div>
+               <div v-if="torrent?.detail?.trackerlist" v-html="torrent.detail.trackerlist"
+                  class="mt-4 text-gray-300 leading-relaxed"></div>
               </div>
             </div>
           </div>
@@ -162,74 +162,22 @@
 
 </template>
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import AppLayout from './../layouts/AppLayout.vue'
-    
-
+import torrentService from '@/api/torrentService.js'
+import { usePage } from '@inertiajs/vue3';
 export default {
   components: {
-        AppLayout
-      },
+    AppLayout
+  },
   name: 'TorrentSitePage',
   setup() {
     const searchQuery = ref('')
     const activeTab = ref('DESCRIPTION')
     const showDropdown = ref(false)
-
-    const torrentInfo = reactive({
-      title: 'Jurassic World Rebirth 2025 1080p WEBRip DOPS Lx265 NeoNoir',
-      category: 'Movies',
-      type: 'HEVC/x265',
-      language: 'English',
-      size: '2.0 GB',
-      uploader: 'NeoNoir',
-      downloads: '82751',
-      lastChecked: '49 minutes ago',
-      dateUploaded: '4 days ago',
-      seeders: '5452',
-      leechers: '2620',
-      hash: '911CCD0C4C8A23284A920B61528888D293AC055B'
-    })
-    
-
-    const movieInfo = reactive({
-      title: 'JURASSIC WORLD REBIRTH',
-      genres: ['SCIENCE FICTION', 'ADVENTURE', 'ACTION'],
-      description: "Five years after the events of Jurassic World Dominion, covert operations expert Zora Bennett is contracted to lead a skilled team on a top-secret mission to secure genetic material from the world's three most massive dinosaurs. When Zora's operation intersects with a civilian family whose boating expedition was capsized, they all find themselves stranded on an island where they come face-to-face with a sinister, shocking discovery that's been hidden from the world for decades.",
-      rating: 3,
-      poster: 'https://via.placeholder.com/120x180/374151/ffffff?text=Movie+Poster'
-    })
-
     const tabs = ['DESCRIPTION', 'FILES', 'COMMENTS 1', 'TRACKER LIST']
-
-    const browseCategories = [
-      { name: 'Trending Torrents', icon: '📈' },
-      { name: 'Movie library', icon: '📚' },
-      { name: 'Top 100 Torrents', icon: '⭐' },
-      { name: 'Anime', icon: '📺' },
-      { name: 'Applications', icon: '💾' },
-      { name: 'Documentaries', icon: '🎬' },
-      { name: 'Games', icon: '🎮' },
-      { name: 'Movies', icon: '🎬' },
-      { name: 'Music', icon: '🎵' },
-      { name: 'Other', icon: '📄' },
-      { name: 'Television', icon: '📺' },
-      { name: 'XXX', icon: '🔞' }
-    ]
-
-    const externalLinks = [
-      '1337x Status',
-      '1337x Chat',
-      'Torrentz9',
-      'uFlix',
-      'Ngilia',
-      'PRQ',
-      'Limetorrents',
-      'TorrentFunk',
-      'ThePornDude',
-      'Torlock'
-    ]
-
+    const page = usePage(); // reactive
+    const torrent = ref(null) // Will hold the API response
     // Methods
     const handleSearch = () => {
       console.log('Searching for:', searchQuery.value)
@@ -250,14 +198,33 @@ export default {
       // Implement streaming functionality
     }
 
+    // Fetch data from API
+    const fetchTorrentDetails = async (id, slug) => {
+      try {
+        const response = await torrentService.get(`/torrent/${id}/${slug}`);
+        torrent.value = response.data // Assign to ref
+      } catch (error) {
+        console.error('Error fetching torrent details:', error);
+      }
+    };
+
+    // Fetch data when mounted
+    onMounted(() => {
+      console.log('Page type:', page.props.torrent_id);
+      const torrentId = page.props.torrent_id; // 
+      const torrentSlug = page.props.torrent_slug; // 
+      fetchTorrentDetails(torrentId, torrentSlug);
+
+
+    });
+
     return {
       searchQuery,
       activeTab,
       torrentInfo,
       movieInfo,
       tabs,
-      browseCategories,
-      externalLinks,
+      torrent,
       handleSearch,
       downloadMagnet,
       downloadTorrent,
@@ -291,11 +258,11 @@ const movieInfo = reactive({
   poster: 'https://via.placeholder.com/120x180/374151/ffffff?text=Movie+Poster'
 })
 
-const tabs = ['DESCRIPTION', 'FILES', 'COMMENTS 1', 'TRACKER LIST']
+const tabs = ['DESCRIPTION', 'FILES', 'COMMENTS', 'TRACKER LIST']
 
 
 const detail_data = [];
-detail_data.push({ data: torrentInfo, info: movieInfo })
+//detail_data.push({ data: torrentInfo, info: movieInfo })
 
 </script>
 <style scoped>

@@ -13,6 +13,7 @@ use App\Models\TorrentMediaInfo;
 use App\Models\Category;
 use DateTime;
 use Carbon\Carbon;
+
 class FectchExternalDataDaily extends Command
 {
     /**
@@ -123,9 +124,9 @@ class FectchExternalDataDaily extends Command
                     continue;
                 }
                 // Map the scraper data to the proper format using the model method
-                
+
                 $mappedData = Torrent::mapFromScraper($torrentData);
-                
+
                 // Use name and category as unique identifier to avoid duplicates
                 $torrent = Torrent::updateOrCreate(
                     [
@@ -134,7 +135,7 @@ class FectchExternalDataDaily extends Command
                     ],
                     $mappedData
                 );
-               
+
                 $torrentId = $torrent->id;
                 $this->info("Saved=> torrent id is {$torrent->id}");
                 $this->info("        category is {$torrent->category_id} \n        torrent name is {$torrent->name}");
@@ -172,7 +173,7 @@ class FectchExternalDataDaily extends Command
         } else {
             $torrent['sub_category_id'] = $category->id;
         }
-        
+
         $torrent['torrent_link'] = $columns->filter('td.coll-1.name a')->eq(1)->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(1)->attr('href') : null;
         $torrent['comments_count'] = $columns->filter('span.comments')->count() > 0 ? trim($columns->filter('span.comments')->text()) : null;
         $torrent['name'] = $columns->filter('td.coll-1.name a')->eq(1)->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(1)->text() : null;
@@ -186,7 +187,7 @@ class FectchExternalDataDaily extends Command
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
         else $torrent['uploader'] = $uploader;
         $torrent['category_id'] = $category->id;
-        $torrent['category_name'] = $category->name;        
+        $torrent['category_name'] = $category->name;
         return $torrent;
     }
 
@@ -205,7 +206,7 @@ class FectchExternalDataDaily extends Command
         // Description
 
         $description = $this->extractDescription($crawler);
-        dd($description);
+
         // File count (from table in files tab)
         $fileCount = null;
         try {
@@ -226,7 +227,7 @@ class FectchExternalDataDaily extends Command
 
         // Infohash
         $infohash = $crawler->filter('.infohash-box span')->text('text');
-        dd($magnetLink, $description, $fileCount, $downloadCount, $infohash);
+
         return [
             'magnet_link' => $magnetLink,
             'description' => $description,
@@ -236,44 +237,113 @@ class FectchExternalDataDaily extends Command
     }
     private function parseDetailPage($html)
     {
+
         $crawler = new Crawler($html);
         $data = [];
+        $rows_list = $crawler->filter('ul.list');
 
-        try {
-            // Basic torrent information
-            $data['full_description'] = $this->extractDescription($crawler);
-            $data['cover_image'] = $this->extractCoverImage($crawler);
-            $data['screenshots'] = $this->extractScreenshots($crawler);
+        $rows_list->each(function (Crawler $row, $i) use (&$data) {
+            try {
+                $torrent_detail = [];
+                $columns = $row->filter('li');
+                $columns->each(function (Crawler $item, $ii) use (&$data) {
+                    if ($item->filter('strong')->count() > 0) {
+                        $fieldName = strtolower(
+                            preg_replace('/\s+/', '', $item->filter('strong')->text())
+                        );
+                    } else {
+                        $fieldName = '';
+                    }
 
-            // Movie/Media specific information
-            $data['imdb_rating'] = $this->extractImdbRating($crawler);
-            $data['genre'] = $this->extractGenre($crawler);
-            $data['language'] = $this->extractLanguage($crawler);
-            $data['runtime'] = $this->extractRuntime($crawler);
-            $data['director'] = $this->extractDirector($crawler);
-            $data['cast'] = $this->extractCast($crawler);
-            $data['release_date'] = $this->extractReleaseDate($crawler);
+                    $this->info($fieldName);
+                    $fieldValue = $item->filter('span')->text();
+                    $data[$fieldName] = $fieldValue;
+                });
+                //
+                if (!empty($torrent['name'])) {
+                }
+            } catch (\Exception $e) {
+                Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
+            }
+        });
 
-            // Technical information
-            $data['quality'] = $this->extractQuality($crawler);
-            $data['format'] = $this->extractFormat($crawler);
-            $data['source'] = $this->extractSource($crawler);
-            $data['encoder'] = $this->extractEncoder($crawler);
-            $data['audio_language'] = $this->extractAudioLanguage($crawler);
-            $data['subtitle_language'] = $this->extractSubtitleLanguage($crawler);
+        $rows_magnet = $crawler->filter('a[href^="magnet:"]');
+        $data['magnet_link'] = $rows_magnet->count() > 0 ? $rows_magnet->attr('href') : null;
+        $infohash = $crawler->filter('div.infohash-box p span')->text();
+        $data['infohash'] = $infohash ? $infohash : null;
+        $baseUrl = "";
+        $description = $crawler->filter('div#description')->each(function ($node) use ($baseUrl) {
+            $node->filter('img')->each(function ($img) use ($baseUrl) {
+                $dataOriginal = $img->attr('data-original');
 
-            // File information
-            $data['total_files'] = $this->extractFileCount($crawler);
-            $data['nfo_content'] = $this->extractNfoContent($crawler);
-            $data['has_sample'] = $this->checkHasSample($crawler);
-            $data['media_info'] = $this->extractMediaInfo($crawler);
+                if ($dataOriginal) {
+                    // Remove escaped quotes like \&quot;
+                    $cleaned = str_replace('\&quot;', '', $dataOriginal);
 
-            // Uploader information
-            $data['uploader_status'] = $this->extractUploaderStatus($crawler);
-        } catch (\Exception $e) {
-            Log::warning("Error parsing detail page: " . $e->getMessage());
+                    // Replace escaped slashes \/ with /
+                    $cleaned = str_replace('\/', '/', $cleaned);
+
+                    // Decode any HTML entities if needed
+                    $cleaned = html_entity_decode($cleaned);
+
+                    $src = $cleaned;
+                } else {
+                    $src = $img->attr('src');
+                }
+
+                // Make URL absolute if relative
+                if (strpos($src, 'http') !== 0) {
+                    $src = rtrim($baseUrl, '/') . '/' . ltrim($src, '/');
+                }
+
+                $img->getNode(0)->setAttribute('src', $src);
+            });
+
+            return $node->html();
+        });
+        if ($description) {
+            $description = str_replace("\n", '', $description[0]);
+        } else {
+            $description = null;
         }
+       
+        $data['description'] = $description ? $description : null;
+        $files = $crawler->filter('div#files')->html();
+        $data['files'] = $files ? $files : null;
+        $comments = $crawler->filter('div#comments')->html();
+        $data['comments'] = $comments ? $comments : null;
+        $trackerlist = $crawler->filter('div#tracker-list')->html();
+        $data['trackerlist'] = $trackerlist ? $trackerlist : null;
 
+
+        $data['full_description'] = $this->extractDescription($crawler);
+        $data['cover_image'] = $this->extractCoverImage($crawler);
+        $data['screenshots'] = $this->extractScreenshots($crawler);
+
+        // Movie/Media specific information
+        $data['imdb_rating'] = $this->extractImdbRating($crawler);
+        $data['genre'] = $this->extractGenre($crawler);
+        $data['runtime'] = $this->extractRuntime($crawler);
+        $data['director'] = $this->extractDirector($crawler);
+        $data['cast'] = $this->extractCast($crawler);
+        $data['release_date'] = $this->extractReleaseDate($crawler);
+
+        // Technical information
+        $data['quality'] = $this->extractQuality($crawler);
+        $data['format'] = $this->extractFormat($crawler);
+        $data['source'] = $this->extractSource($crawler);
+        $data['encoder'] = $this->extractEncoder($crawler);
+        $data['audio_language'] = $this->extractAudioLanguage($crawler);
+        $data['subtitle_language'] = $this->extractSubtitleLanguage($crawler);
+        // File information
+        $data['total_files'] = $this->extractFileCount($crawler);
+        $data['nfo_content'] = $this->extractNfoContent($crawler);
+        $data['has_sample'] = $this->checkHasSample($crawler);
+        $data['media_info'] = $this->extractMediaInfo($crawler);
+
+        // Uploader information
+        $data['uploader_status'] = $this->extractUploaderStatus($crawler);
+        return $data;
         return array_filter($data, function ($value) {
             return $value !== null && $value !== '';
         });
@@ -593,6 +663,18 @@ class FectchExternalDataDaily extends Command
             $updateData = array_intersect_key($detailData, array_flip([
                 'full_description',
                 'language',
+                'category',
+                'type',
+                'lastchecked',
+                'infohash',
+                'magnet_link',
+                'dateuploaded',
+                'description',
+                'files',
+                'comments',
+                'seeders',
+                'leechers',
+                'trackerlist',
                 'release_date',
                 'genre',
                 'quality',
