@@ -4,13 +4,13 @@
     <Header />
 
     <!-- Main Content Area -->
-    <div class="flex flex-row w-full">
+    <div class="flex flex-row w-full   bg-gradient-to-r from-gray-300 to-gray-700">
       <!-- LeftSpace -->
       <LeftSpace />
       <!-- Content -->
       
         
-         <main class="w-233 bg-gray-300">
+         <main class="w-233">
         <slot />
          </main>
         

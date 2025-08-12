@@ -1,6 +1,6 @@
 <template>
   <AppLayout>
-        <div class="pt-5 w-full bg-gray-300 text-white">
+        <div class="pt-5 w-full bg-gradient-to-r from-gray-250 to-gray-500 text-white">
             <div class="container" >
             <!-- Filter Controls -->
             <div class="bg-gray-800 p-4 rounded-lg mb-6 flex items-center gap-4 flex-wrap">
@@ -198,7 +198,10 @@
                 :key="movie.id" 
                 class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
                 >
-                <div class="aspect-[2/3] bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center relative">
+                <div 
+                    class="aspect-[2/3] bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center relative cursor-pointer"
+                    @click="openModal(movie)"
+                >
                     <!-- Movie Poster Placeholder -->
                     <div 
                     class="w-full h-full bg-cover bg-center" 
@@ -228,6 +231,65 @@
             </div>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div 
+            v-if="showModal" 
+            class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+            @click="closeModal"
+        >
+            <div 
+                class="bg-gradient-to-br from-orange-500 to-red-600 rounded-lg max-w-md w-full mx-4 relative overflow-hidden"
+                @click.stop
+            >
+                <!-- Close Button -->
+                <button 
+                    @click="closeModal"
+                    class="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+
+                <!-- Modal Content -->
+                <div class="p-6 text-white">
+                    <!-- Title -->
+                    <h2 class="text-2xl font-bold mb-2 text-white">{{ selectedMovie?.title }}</h2>
+                    
+                    <!-- Music and Drama labels -->
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-sm bg-black bg-opacity-20 px-2 py-1 rounded">MUSIC</span>
+                        <span class="text-sm bg-black bg-opacity-20 px-2 py-1 rounded">{{ selectedMovie?.genre?.toUpperCase() }}</span>
+                    </div>
+                    
+                    <!-- Description -->
+                    <p class="text-sm mb-6 leading-relaxed text-white opacity-90">
+                        {{ selectedMovie?.description }}
+                    </p>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3">
+                        <button 
+                            @click="downloadMovie"
+                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-sm font-medium transition-colors flex items-center gap-2"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Download
+                        </button>
+                        
+                        <button 
+                            @click="viewReleases"
+                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
+                        >
+                            View Releases
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
   </AppLayout>
 </template>
 
@@ -250,6 +312,10 @@ const selectedLanguage = ref('All')
 const selectedSortBy = ref('Movie Score')
 const selectedSortOrder = ref('Descending')
 
+// Modal state
+const showModal = ref(false)
+const selectedMovie = ref(null)
+
 // Options
 const genres = ref(['All', 'Action', 'Crime', 'Drama', 'Comedy', 'Thriller', 'Horror', 'Romance', 'Sci-Fi', 'Adventure'])
 const years = ref(['All','2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015'])
@@ -259,18 +325,138 @@ const sortOrders = ref(['Descending', 'Ascending'])
 
 // Movies data
 const movies = ref([
-  { id: 1, title: 'The Dark Knight', genre: 'Action', year: 2008, language: 'English', score: 9.0, rating: 5, poster: 'https://via.placeholder.com/200x300/4a5568/ffffff?text=Movie+1' },
-  { id: 2, title: 'Pulp Fiction', genre: 'Crime', year: 1994, language: 'English', score: 8.9, rating: 5, poster: 'https://via.placeholder.com/200x300/ed8936/ffffff?text=Movie+2' },
-  { id: 3, title: 'The Godfather', genre: 'Crime', year: 1972, language: 'English', score: 9.2, rating: 5, poster: 'https://via.placeholder.com/200x300/805ad5/ffffff?text=Movie+3' },
-  { id: 4, title: 'Inception', genre: 'Sci-Fi', year: 2010, language: 'English', score: 8.8, rating: 4, poster: 'https://via.placeholder.com/200x300/38b2ac/ffffff?text=Movie+4' },
-  { id: 5, title: 'Parasite', genre: 'Thriller', year: 2019, language: 'Korean', score: 8.6, rating: 4, poster: 'https://via.placeholder.com/200x300/f56565/ffffff?text=Movie+5' },
-  { id: 6, title: 'Spirited Away', genre: 'Adventure', year: 2001, language: 'Japanese', score: 9.3, rating: 5, poster: 'https://via.placeholder.com/200x300/4299e1/ffffff?text=Movie+6' },
-  { id: 7, title: 'Casablanca', genre: 'Romance', year: 1942, language: 'English', score: 8.5, rating: 4, poster: 'https://via.placeholder.com/200x300/48bb78/ffffff?text=Movie+7' },
-  { id: 8, title: 'The Shining', genre: 'Horror', year: 1980, language: 'English', score: 8.4, rating: 4, poster: 'https://via.placeholder.com/200x300/667eea/ffffff?text=Movie+8' },
-  { id: 9, title: 'La La Land', genre: 'Romance', year: 2016, language: 'English', score: 8.0, rating: 4, poster: 'https://via.placeholder.com/200x300/fc8181/ffffff?text=Movie+9' },
-  { id: 10, title: 'Mad Max: Fury Road', genre: 'Action', year: 2015, language: 'English', score: 8.1, rating: 4, poster: 'https://via.placeholder.com/200x300/fbb6ce/ffffff?text=Movie+10' },
-  { id: 11, title: 'Amélie', genre: 'Romance', year: 2001, language: 'French', score: 8.3, rating: 4, poster: 'https://via.placeholder.com/200x300/68d391/ffffff?text=Movie+11' },
-  { id: 12, title: 'Seven', genre: 'Thriller', year: 1995, language: 'English', score: 8.6, rating: 4, poster: 'https://via.placeholder.com/200x300/a78bfa/ffffff?text=Movie+12' }
+  { 
+    id: 1, 
+    title: 'The Dark Knight', 
+    genre: 'Action', 
+    year: 2008, 
+    language: 'English', 
+    score: 9.0, 
+    rating: 5, 
+    poster: 'https://via.placeholder.com/200x300/4a5568/ffffff?text=Movie+1',
+    description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.'
+  },
+  { 
+    id: 2, 
+    title: 'Pulp Fiction', 
+    genre: 'Crime', 
+    year: 1994, 
+    language: 'English', 
+    score: 8.9, 
+    rating: 5, 
+    poster: 'https://via.placeholder.com/200x300/ed8936/ffffff?text=Movie+2',
+    description: 'The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.'
+  },
+  { 
+    id: 3, 
+    title: 'The Godfather', 
+    genre: 'Crime', 
+    year: 1972, 
+    language: 'English', 
+    score: 9.2, 
+    rating: 5, 
+    poster: 'https://via.placeholder.com/200x300/805ad5/ffffff?text=Movie+3',
+    description: 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.'
+  },
+  { 
+    id: 4, 
+    title: 'Inception', 
+    genre: 'Sci-Fi', 
+    year: 2010, 
+    language: 'English', 
+    score: 8.8, 
+    rating: 4, 
+    poster: 'https://via.placeholder.com/200x300/38b2ac/ffffff?text=Movie+4',
+    description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.'
+  },
+  { 
+    id: 5, 
+    title: 'Parasite', 
+    genre: 'Thriller', 
+    year: 2019, 
+    language: 'Korean', 
+    score: 8.6, 
+    rating: 4, 
+    poster: 'https://via.placeholder.com/200x300/f56565/ffffff?text=Movie+5',
+    description: 'A poor family schemes to become employed by a wealthy family and infiltrate their household by posing as unrelated, highly qualified individuals.'
+  },
+  { 
+    id: 6, 
+    title: 'Spirited Away', 
+    genre: 'Adventure', 
+    year: 2001, 
+    language: 'Japanese', 
+    score: 9.3, 
+    rating: 5, 
+    poster: 'https://via.placeholder.com/200x300/4299e1/ffffff?text=Movie+6',
+    description: 'During her family\'s move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.'
+  },
+  { 
+    id: 7, 
+    title: 'Casablanca', 
+    genre: 'Romance', 
+    year: 1942, 
+    language: 'English', 
+    score: 8.5, 
+    rating: 4, 
+    poster: 'https://via.placeholder.com/200x300/48bb78/ffffff?text=Movie+7',
+    description: 'A cynical expatriate American cafe owner struggles to decide whether or not to help his former lover and her fugitive husband escape the Nazis in French Morocco.'
+  },
+  { 
+    id: 8, 
+    title: 'The Shining', 
+    genre: 'Horror', 
+    year: 1980, 
+    language: 'English', 
+    score: 8.4, 
+    rating: 4, 
+    poster: 'https://via.placeholder.com/200x300/667eea/ffffff?text=Movie+8',
+    description: 'A family heads to an isolated hotel for the winter where a sinister presence influences the father into violence, while his psychic son sees horrific forebodings from both past and future.'
+  },
+  { 
+    id: 9, 
+    title: 'La La Land', 
+    genre: 'Romance', 
+    year: 2016, 
+    language: 'English', 
+    score: 8.0, 
+    rating: 4, 
+    poster: 'https://via.placeholder.com/200x300/fc8181/ffffff?text=Movie+9',
+    description: 'A jazz musician and an aspiring actress meet and fall in love in Los Angeles while pursuing their dreams in a city known for destroying hopes and breaking hearts.'
+  },
+  { 
+    id: 10, 
+    title: 'Mad Max: Fury Road', 
+    genre: 'Action', 
+    year: 2015, 
+    language: 'English', 
+    score: 8.1, 
+    rating: 4, 
+    poster: 'https://via.placeholder.com/200x300/fbb6ce/ffffff?text=Movie+10',
+    description: 'In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners, a psychotic worshiper, and a drifter named Max.'
+  },
+  { 
+    id: 11, 
+    title: 'Amélie', 
+    genre: 'Romance', 
+    year: 2001, 
+    language: 'French', 
+    score: 8.3, 
+    rating: 4, 
+    poster: 'https://via.placeholder.com/200x300/68d391/ffffff?text=Movie+11',
+    description: 'A shy waitress decides to help others find happiness while grappling with her own isolation and quirky view of romance in contemporary Paris.'
+  },
+  { 
+    id: 12, 
+    title: 'Seven', 
+    genre: 'Thriller', 
+    year: 1995, 
+    language: 'English', 
+    score: 8.6, 
+    rating: 4, 
+    poster: 'https://via.placeholder.com/200x300/a78bfa/ffffff?text=Movie+12',
+    description: 'Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.'
+  }
 ])
 
 // Computed properties
@@ -369,6 +555,31 @@ const sortMovies = () => {
   })
 }
 
+// Modal methods
+const openModal = (movie) => {
+  selectedMovie.value = movie
+  showModal.value = true
+  document.body.style.overflow = 'hidden' // Prevent background scrolling
+}
+
+const closeModal = () => {
+  showModal.value = false
+  selectedMovie.value = null
+  document.body.style.overflow = 'auto' // Restore scrolling
+}
+
+const downloadMovie = () => {
+  // Add your download logic here
+  console.log('Downloading:', selectedMovie.value.title)
+  alert(`Downloading ${selectedMovie.value.title}...`)
+}
+
+const viewReleases = () => {
+  // Add your view releases logic here
+  console.log('View releases for:', selectedMovie.value.title)
+  alert(`Viewing releases for ${selectedMovie.value.title}...`)
+}
+
 // Lifecycle hooks
 onMounted(() => {
   // Close dropdowns when clicking outside
@@ -377,6 +588,13 @@ onMounted(() => {
       Object.keys(dropdowns.value).forEach(key => {
         dropdowns.value[key] = false
       })
+    }
+  })
+  
+  // Close modal with Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && showModal.value) {
+      closeModal()
     }
   })
 })

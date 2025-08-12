@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-83 bg-gray-300 border-r border-gray-700">
+  <aside class="w-83 bg-gradient-to-r from-gray-580 to-gray-850">
    
 
    

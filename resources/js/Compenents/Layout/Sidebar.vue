@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6 ml-8 w-70 mt-5">
+  <div class="space-y-6 ml-8 w-70 mt-5 ">
     <!-- Browse Torrents -->
     <div class="bg-gray-800 rounded-lg overflow-hidden shadow-xl">
       <div class="bg-gradient-to-r from-orange-500 to-gray-500 px-4 py-3">

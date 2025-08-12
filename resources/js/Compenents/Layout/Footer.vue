@@ -3,7 +3,7 @@
         
     <div class="text-center text-white  pb-4">
       <div class="bg-gray-700 rounded-full w-12 h-12 mx-auto mb-2 flex items-center justify-center ">
-        <span class="text-orange-500 font-bold text-sm flaticon-bitcoin red">₿</span>
+        <span class="text-orange-500 font-bold text-sm flaticon-bitcoin red"><i class="fab fa-bitcoin text-4xl text-orange-500"></i></span>
       </div>
       <p>Bitcoin Donate</p>
       <p class="text-xs text-gray-300 mt-2 hover:text-orange-700">3PBEr4P2nNmEyzNRr9p2PuGuEWKJcKx1A9</p>
