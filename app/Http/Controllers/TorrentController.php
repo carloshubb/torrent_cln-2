@@ -17,35 +17,35 @@ class TorrentController extends Controller
         $type = $request->query('type'); // 'mostpopular'        
         // Fetch torrents based on type
         if ($type === 'mostpopular') {
-            $torrents = PopularTorrent::where('category_title','Most Popular Torrents this week')
+            $torrents = PopularTorrent::where('category_title', 'Most Popular Torrents this week')
                 ->paginate(10);
         } // Fetch most movie torrents based on type
         else if ($type === 'popularmovie') {
-            $torrents = PopularTorrent::where('category_title','Popular Movie Torrents')
+            $torrents = PopularTorrent::where('category_title', 'Popular Movie Torrents')
                 ->paginate(10);
         } // Fetch most foreign movie torrents based on type
         else if ($type === 'popularforeignmovie') {
-            $torrents = PopularTorrent::where('category_title','Popular Foreign Movie Torrents')
+            $torrents = PopularTorrent::where('category_title', 'Popular Foreign Movie Torrents')
                 ->paginate(10);
         } // Fetch most TV torrents based on type
         else if ($type === 'populartv') {
-            $torrents = PopularTorrent::where('category_title','Popular TV Torrents')
+            $torrents = PopularTorrent::where('category_title', 'Popular TV Torrents')
                 ->paginate(10);
         } // Fetch most Game torrents based on type
         else if ($type === 'populargame') {
-            $torrents = PopularTorrent::where('category_title','Popular Game Torrents')
+            $torrents = PopularTorrent::where('category_title', 'Popular Game Torrents')
                 ->paginate(10);
         } // Fetch most Music torrents based on type
         else if ($type === 'popularmusic') {
-            $torrents = PopularTorrent::where('category_title','Popular Music Torrents')
+            $torrents = PopularTorrent::where('category_title', 'Popular Music Torrents')
                 ->paginate(10);
         } // Fetch most Application torrents based on type
         else if ($type === 'popularapplication') {
-            $torrents = PopularTorrent::where('category_title','Popular Application Torrents')
+            $torrents = PopularTorrent::where('category_title', 'Popular Application Torrents')
                 ->paginate(10);
         } // Fetch most Application torrents based on type
         else if ($type === 'popularother') {
-            $torrents = PopularTorrent::where('category_title','Popular Other Torrents')
+            $torrents = PopularTorrent::where('category_title', 'Popular Other Torrents')
                 ->paginate(10);
         } // Fetch most Sub Category torrents based on type
         else if ($type === 'subcategory') {
@@ -64,18 +64,30 @@ class TorrentController extends Controller
                 $query->where('slug', $category);
             })->orderByDesc('approved_at')
                 ->paginate(10, ['*'], 'page', $currentPage);
-        }// Fetch most Category torrents based on type
+        } // Fetch most Category torrents based on type
         else if ($type === 'trending') {
-            $torrents = PopularTorrent::where('category_title','Trending Torrents last 24 hours')
+            $torrents = PopularTorrent::where('category_title', 'Trending Torrents last 24 hours')
                 ->paginate(10000);
-        }// Fetch most Category torrents based on type
+        } // Fetch most Category torrents based on type
         else if ($type === 'top') {
-            $torrents = PopularTorrent::where('category_title','top 100 Torrents')
+            $torrents = PopularTorrent::where('category_title', 'top 100 Torrents')
                 ->paginate(10000);
         } else {
             //$torrents = Torrent::all();
         }
 
         return response()->json($torrents);
+    }
+
+
+    public function getDetailData($id, $slug)
+    {
+        
+        $torrent = Torrent::with('detail') // eager load related data
+            ->where('id', $id)
+            ->where('slug', $slug)
+            ->firstOrFail();
+        //dd($torrent);
+        return response()->json($torrent);
     }
 }
