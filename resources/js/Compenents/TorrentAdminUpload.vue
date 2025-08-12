@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-5  bg-gray-300 ">
+  <div class="pt-5   bg-gradient-to-r from-gray-350 to-gray-500 ">
     
     <div class="max-w-4xl mx-auto">
       <!-- Account Upgrade Section -->
