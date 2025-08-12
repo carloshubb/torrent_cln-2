@@ -18,3 +18,5 @@ Schedule::command('app:fetch-trending-page')->dailyAt('03:00');
 
 // Schedule the command to fetch Trendding Home data daily  
 Schedule::command('app:top100-torrents-page')->dailyAt('03:00');
+// Schedule the command to fetch Movie Libary data daily  
+Schedule::command('fetch:movie-library')->hourly();

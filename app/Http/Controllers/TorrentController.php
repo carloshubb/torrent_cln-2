@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Torrent;
 use App\Models\PopularTorrent;
+use App\Models\HomeImageList;
 
 class TorrentController extends Controller
 {
@@ -72,6 +73,9 @@ class TorrentController extends Controller
         else if ($type === 'top') {
             $torrents = PopularTorrent::where('category_title', 'top 100 Torrents')
                 ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'homeimage') {
+            $torrents = HomeImageList::all();
         } else {
             //$torrents = Torrent::all();
         }

@@ -149,9 +149,10 @@ class FetchTrendingPage extends Command
         $torrent['leeches'] = $columns->filter('td.coll-3.leeches')->count() > 0 ? $columns->filter('td.coll-3.leeches')->text() : null;
         $date = $columns->filter('td.coll-date')->count() > 0 ? $columns->filter('td.coll-date')->text() : null;
         $torrent['date_uploaded'] = $this->convertTimeString($date);
-        $torrent['size'] = $columns->filter('td.coll-4.size.mob-uploader')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4.size.mob-uploader')->text())[0]) : null;
-        $uploader = $columns->filter('td.coll-5.uploader a')->count() > 0 ? $columns->filter('td.coll-5.uploader a')->text() : null;
-        $uploader_link = $columns->filter('td.coll-5.uploader a')->count() > 0 ? $columns->filter('td.coll-5.uploader a')->attr('href') : null;
+        $torrent['size'] = $columns->filter('td.coll-4')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4')->text())[0]) : null;
+        $uploader = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->text() : null;
+        $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
+        $this->info($uploader);
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
         else $torrent['uploader'] = $uploader;
         $torrentLink = Torrent::where('name',$torrent['name'])->first();

@@ -12,6 +12,7 @@ const props = defineProps({
 });
 // some data in parent
 const dashboard_data = reactive([])
+const dashboard_images = reactive([])
 // Fetch function to get torrent data and update dashboard_data
 async function fetchMostPopularTorrents() {
   try {
@@ -206,10 +207,23 @@ async function fetchTop100Torrents() {
     console.error('Failed to fetch torrents:', error)
   }
 }
+
+// Fetch Home Page Image
+async function fetchHomePageImage() {
+  try {
+    const response = await torrentService.get(`/torrents/type?type=homeimage`);
+    console.log(response.data);
+    dashboard_images.value = response.data; // update reactive value
+  } catch (error) {
+    console.error('Failed to fetch torrents:', error);
+  }
+}
 // Run fetch on component mount
 onMounted(() => {
   console.log('Page:', props.page);
+  fetchHomePageImage()
   if (props.page === 'dashboard') {
+    
     dashboard_data.splice(0)
     fetchMostPopularTorrents()
     fetchPopularMovieTorrents()
@@ -219,6 +233,7 @@ onMounted(() => {
     fetchPopularApplicationTorrents()
     fetchPopularGameTorrents()
     fetchPopularOtherTorrents()
+    
   }
   else if (props.page === 'sub') {
     dashboard_data.splice(0)
@@ -247,7 +262,7 @@ onMounted(() => {
 </script>
 <template>
   <AppLayout>
-    <TorrentHead />
+    <TorrentHead :dashboard_images = "dashboard_images"/>
     <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page"
       :head_title="row.title" />
 
