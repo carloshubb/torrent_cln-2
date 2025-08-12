@@ -51,17 +51,42 @@
       </div>
 
       <!-- Captcha -->
-      <div>
-        <label class="block font-semibold mb-1">Captcha:</label>
-        <div class="flex items-center space-x-2">
-          <img src="" alt="captcha" class="h-10" />
-          <input
-            v-model="captcha"
-            type="text"
-            class="flex-1 border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
+      <div class="max-w-sm mx-auto p-4 border rounded-lg shadow space-y-4 bg-white">
+    <h2 class="text-lg font-semibold text-gray-700">Captcha Verification</h2>
+
+    <!-- Captcha Display -->
+    <div class="flex items-center gap-4">
+      <div 
+        class="px-4 py-2 text-xl font-bold tracking-widest select-none"
+        :style="{ backgroundColor: '#f3f4f6', letterSpacing: '4px', transform: `rotate(${rotation}deg)` }"
+      >
+        {{ captcha }}
       </div>
+      <button 
+        @click="generateCaptcha" 
+        class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Refresh
+      </button>
+    </div>
+
+    <!-- User Input -->
+    <input 
+      type="text" 
+      v-model="userInput"
+      placeholder="Enter captcha here"
+      class="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:border-blue-400"
+    />
+
+    <!-- Verify Button -->
+    <button 
+      @click="verifyCaptcha" 
+      class="w-full py-2 bg-green-500 text-white font-medium rounded hover:bg-green-600"
+    >
+      Verify
+    </button>
+
+  </div>
 
       <!-- Submit -->
       <div>
@@ -76,12 +101,46 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { ref } from 'vue'
+export default {
+  data() {
+    return {
+      captcha: "",
+      userInput: "",
+      message: "",
+      messageClass: "",
+      rotation: 0
+    };
+  },
+  mounted() {
+    this.generateCaptcha();
+  },
+  methods: {
+    generateCaptcha() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      this.captcha = Array.from({ length: 6 }, () => 
+        chars[Math.floor(Math.random() * chars.length)]
+      ).join("");
+      this.rotation = Math.floor(Math.random() * 10) - 5; // small rotation
+      this.userInput = "";
+      this.message = "";
+    },
+    verifyCaptcha() {
+      if (this.userInput.trim().toUpperCase() === this.captcha) {
+        this.message = "✅ Correct!";
+        this.messageClass = "text-green-600 font-semibold";
+      } else {
+        this.message = "❌ Incorrect, try again.";
+        this.messageClass = "text-red-600 font-semibold";
+      }
+    }
+  }
+};
 
-const regarding = ref('General info')
-const name = ref('')
-const email = ref('')
-const message = ref('')
-const captcha = ref('')
+// const regarding = ref('General info')
+// const name = ref('')
+// const email = ref('')
+// const message = ref('')
+// const captcha = ref('')
 </script>

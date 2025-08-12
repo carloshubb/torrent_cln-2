@@ -101,3 +101,6 @@ Route::get('/upload', function () {
 Route::get('/movielibrary', function () {
     return Inertia::render('MovieLibrary');
 });
+Route::get('/login', function () {
+    return Inertia::render('Login');
+});
