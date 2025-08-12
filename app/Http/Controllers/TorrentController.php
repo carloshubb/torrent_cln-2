@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Torrent;
 use App\Models\PopularTorrent;
 use App\Models\HomeImageList;
+use App\Models\MovieLibrary;
 
 class TorrentController extends Controller
 {
@@ -18,11 +19,13 @@ class TorrentController extends Controller
         $type = $request->query('type'); // 'mostpopular'        
         // Fetch torrents based on type
         if ($type === 'mostpopular') {
-            $torrents = PopularTorrent::where('category_title', 'Most Popular Torrents this week')
+            $torrents = PopularTorrent::with('subCategory')
+                ->where('category_title', 'Most Popular Torrents this week')
                 ->paginate(10);
         } // Fetch most movie torrents based on type
         else if ($type === 'popularmovie') {
-            $torrents = PopularTorrent::where('category_title', 'Popular Movie Torrents')
+            $torrents = PopularTorrent::with('subCategory')
+                ->where('category_title', 'Popular Movie Torrents')
                 ->paginate(10);
         } // Fetch most foreign movie torrents based on type
         else if ($type === 'popularforeignmovie') {
@@ -73,15 +76,15 @@ class TorrentController extends Controller
         else if ($type === 'top') {
             $torrents = PopularTorrent::where('category_title', 'top 100 Torrents')
                 ->paginate(10000);
-        }// Fetch most Category torrents based on type
+        } // Fetch most Category torrents based on type
         else if ($type === 'homeimage') {
             $torrents = HomeImageList::all();
-        }// Fetch Search Torrent Data
+        } // Fetch Search Torrent Data
         else if ($type === 'search') {
             $search = $request->query('search');
             $page = $request->query('page');
-            $torrents = Torrent::where('name','LIKE', `%{$search}%`)
-                ->orwhere('uploader','LIKE', `%{$search}%`)
+            $torrents = Torrent::where('name', 'LIKE', `%{$search}%`)
+                ->orwhere('uploader', 'LIKE', `%{$search}%`)
                 ->orderByDesc('approved_at')
                 ->paginate(10, ['*'], 'page', $page);
         } else {
@@ -94,12 +97,19 @@ class TorrentController extends Controller
 
     public function getDetailData($id, $slug)
     {
-        
+
         $torrent = Torrent::with('detail') // eager load related data
             ->where('id', $id)
             ->where('slug', $slug)
             ->firstOrFail();
         //dd($torrent);
         return response()->json($torrent);
+    }
+
+    public function getMovieLibraryData(){
+        $movies= MovieLibrary::with('subCategory')
+                ->where('category_title', 'Most Popular Torrents this week')
+                ->paginate(10);
+        return response()->json($movies);        
     }
 }

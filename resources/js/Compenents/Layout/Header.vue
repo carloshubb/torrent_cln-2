@@ -140,7 +140,7 @@ export default {
       window.location.href = item.slug;
     }
     onMounted(() => {
-      console.log('TorrentSite component mounted')
+     
       // Initialize component, fetch data, etc.
     })
 

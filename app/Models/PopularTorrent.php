@@ -21,4 +21,9 @@ class PopularTorrent extends Model
         'approved_at',
         'uploader',
     ];
+
+    public function subCategory()
+    {
+        return $this->belongsTo(SubCategory::class);
+    }
 }

@@ -296,6 +296,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import AppLayout from './../layouts/AppLayout.vue'
+import torrentService from '@/api/torrentService.js'
+
+
 
 // Reactive data
 const dropdowns = ref({
@@ -580,6 +583,22 @@ const viewReleases = () => {
   alert(`Viewing releases for ${selectedMovie.value.title}...`)
 }
 
+// Fetch function to get torrent data and update dashboard_data
+async function fetchMovieLibrary() {
+  try {
+    const response = await torrentService.get('/library/movies');
+    // For demo, assuming all torrents in one group with title "All Torrents"
+    //dashboard_data.splice(0) // clear previous data
+    dashboard_data.push({
+      title: 'MOVIE LIBRARY',
+      data: response.data,
+      page: 'library'
+    })
+  } catch (error) {
+    console.error('Failed to fetch torrents:', error)
+  }
+}
+
 // Lifecycle hooks
 onMounted(() => {
   // Close dropdowns when clicking outside
@@ -597,6 +616,9 @@ onMounted(() => {
       closeModal()
     }
   })
+
+  //Fetch Movie Library Data
+  fetchMovieLibrary();
 })
 </script>
 

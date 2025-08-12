@@ -33,13 +33,7 @@
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
                     <a :href="`/sub/${torrent.sub_category_id}/0/`">
-                      <div class="w-6 h-6 bg-orange-600 rounded mr-3 flex items-center justify-center">
-                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                          </path>
-                        </svg>
-                      </div>
+                      <i class="flaticon-dvd"></i>
                     </a>
                     <a :href="`/torrent/${torrent.id}/${torrent.slug}/`"
                       class="text-gray-300 hover:text-orange-400 transition-colors">
@@ -119,7 +113,7 @@ export default {
     const lastPage = ref(props.torrents.last_page || 1) // default to 7 if not passed
     const torrents = ref(props.torrents.data)
     const page_type = ref(props.page)
-    console.log(props.page);
+ 
 
     const formatApprovedAt = (dateString) => {
       const date = dayjs(dateString)
@@ -138,17 +132,12 @@ export default {
 
     const onPageChange = (page) => {
       if (page >= 1 && page <= lastPage.value) {
-        currentPage.value = page
-        // Simulate loading new torrents for the selected page
-        // Replace with real API call to fetch torrents for the page
-        console.log(`Load torrents for page: ${page}`)
-        // For demo, just keep old torrents or you could do:
-        // torrents.value = fetchTorrentsForPage(page)
+        currentPage.value = page       
       }
     }
 
     onMounted(() => {
-      console.log('TorrentSite mounted, currentPage:', currentPage.value)
+      
     })
 
     return {
