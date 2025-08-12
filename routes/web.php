@@ -25,6 +25,14 @@ Route::get('/cat/{param1}/{param2}', function ($param1, $param2) {
     ]);
 });
 
+Route::get('/search/{param1}/{param2}', function ($param1, $param2) {
+    // You can use $param1 and $param2 here
+    return Inertia::render('Dashboard', [
+        'page' => 'search',
+        'params' =>$param1."@".$param2,            
+    ]);
+});
+
 Route::get('/trending', function () {
     return Inertia::render('Dashboard', [
         'page' => 'trending',

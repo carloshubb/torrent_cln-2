@@ -56,4 +56,8 @@ class Category extends Model
     {
         return $this->torrents()->where('status', 'approved')->count();
     }
+    public function subCategories()
+    {
+        return $this->hasMany(SubCategory::class);
+    }
 }

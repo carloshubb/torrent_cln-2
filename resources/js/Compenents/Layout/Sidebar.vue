@@ -40,21 +40,6 @@ import { ref, reactive, onMounted } from 'vue'
 export default {
   name: 'TorrentSite',
   setup() {
-
-    // const browseCategories = [
-    //   'Trending Torrents',
-    //   'Movie library', 
-    //   'Top 100 Torrents',
-    //   'Anime',
-    //   'Applications',
-    //   'Documentaries',
-    //   'Games',
-    //   'Movies',
-    //   'Music',
-    //   'Other',
-    //   'Television',
-    //   'XXX'
-    // ]
     const browseCategories = [
       {title:'Trending Torrents',icon:'📈',slug:'trending'},
       {title:'Movie library',icon:'📚',slug:'MovieLibrary'},

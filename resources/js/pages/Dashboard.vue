@@ -218,6 +218,20 @@ async function fetchHomePageImage() {
     console.error('Failed to fetch torrents:', error);
   }
 }
+
+// Fetch Search Torrent Data
+async function fetchSearchTorrentData(search,page) {
+  try {
+    const response = await torrentService.get(`/torrents/type?type=search&search=${search}&page=${page}`);
+     dashboard_data.push({
+      title: '',
+      data: response.data,
+      page: 'search'
+    })
+  } catch (error) {
+    console.error('Failed to fetch torrents:', error);
+  }
+}
 // Run fetch on component mount
 onMounted(() => {
   console.log('Page:', props.page);
@@ -255,6 +269,12 @@ onMounted(() => {
   else if (props.page === 'top') {
     dashboard_data.splice(0)
     fetchTop100Torrents()
+  }
+  else if (props.page === 'search') {
+    dashboard_data.splice(0)
+    const search = props.params.split("@")[0] ? props.params.split("@")[0] : null;
+    const page = props.params.split("@")[1] ? props.params.split("@")[1] : null;
+    fetchSearchTorrentData(search,page)
   }
 
 

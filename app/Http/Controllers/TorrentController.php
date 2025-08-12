@@ -76,6 +76,14 @@ class TorrentController extends Controller
         }// Fetch most Category torrents based on type
         else if ($type === 'homeimage') {
             $torrents = HomeImageList::all();
+        }// Fetch Search Torrent Data
+        else if ($type === 'search') {
+            $search = $request->query('search');
+            $page = $request->query('page');
+            $torrents = Torrent::where('name','LIKE', `%{$search}%`)
+                ->orwhere('uploader','LIKE', `%{$search}%`)
+                ->orderByDesc('approved_at')
+                ->paginate(10, ['*'], 'page', $page);
         } else {
             //$torrents = Torrent::all();
         }
