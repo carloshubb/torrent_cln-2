@@ -1,67 +1,135 @@
 <template>
-  <div class="pt-5  bg-gray-300 min-h-screen">
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-orange-400 to-red-500 text-white">
-      <div class="container mx-auto px-4 py-3">
-        <h1 class="text-2xl font-bold">Recent Uploads</h1>
+  <div class="pt-5  bg-gray-300 ">
+    
+    <div class="max-w-4xl mx-auto">
+      <!-- Account Upgrade Section -->
+      <div class="bg-white rounded-lg shadow-sm border mb-6">
+        <div class="bg-gradient-to-r from-gray-700 to-orange-500 text-white p-4 rounded-t-lg">
+          <h2 class="text-xl font-semibold">Account Upgrade</h2>
+        </div>
+        <div class="p-6">
+          <p class="text-gray-700 leading-relaxed">
+            Once you upload 100+ torrents with good quality description you can request your account upgraded to verified Uploader.
+          </p>
+        </div>
       </div>
-      <nav class="bg-black bg-opacity-20">
-        <div class="container mx-auto px-4">
-          <ul class="flex space-x-6 py-2 text-sm">
-            <li><a href="#" class="hover:text-orange-200 transition-colors">Home</a></li>
-            <li><a href="#" class="hover:text-orange-200 transition-colors">Categories</a></li>
-            <li><a href="#" class="hover:text-orange-200 transition-colors">Archives</a></li>
-            <li><a href="#" class="hover:text-orange-200 transition-colors">About</a></li>
-          </ul>
-        </div>
-      </nav>
-    </header>
 
-    <!-- Recent Uploads Section -->
-    <div class="bg-gradient-to-r from-orange-300 to-red-400 text-white py-4">
-      <div class="container mx-auto px-4">
-        <h2 class="text-lg font-semibold mb-3">Recent Uploads</h2>
-        <div class="space-y-1 text-sm">
-          <div v-for="post in recentPosts" :key="post.id">
-            <span class="text-orange-100">•</span> 
-            <a href="#" class="hover:text-orange-100 transition-colors ml-1">{{ post.title }}</a>
-          </div>
+      <!-- Upload Torrent Section -->
+      <div class="bg-white rounded-lg shadow-sm border">
+        <div class="bg-gradient-to-r from-gray-700 to-orange-500 text-white p-4 rounded-t-lg">
+          <h2 class="text-xl font-semibold">Want to upload a torrent? No problem! Please use the announce URLs:</h2>
         </div>
+        <div class="p-6 space-y-3">
+          <!-- Announce URLs List -->
+          <div 
+            v-for="url in announceUrls" 
+            :key="url.id"
+            class="group"
+          >
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <a 
+                :href="url.link" 
+                class="text-orange-600 hover:text-orange-700 font-medium underline break-all flex-1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ url.link }}
+              </a>
+              <button 
+                @click="copyToClipboard(url.link)"
+                class="ml-4 px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-sm rounded transition-colors"
+                :class="{ 'bg-green-500 hover:bg-green-600': copiedUrl === url.id }"
+              >
+                {{ copiedUrl === url.id ? 'Copied!' : 'Copy' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Additional Information -->
+          <div class="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg class="w-5 h-5 text-blue-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-blue-800">Important Information</h3>
+                <p class="mt-1 text-sm text-blue-700">
+                  Please use one of the announce URLs above when creating your torrent file. Make sure to include a detailed description for better quality.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upload Guidelines -->
+          <div class="mt-6 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg class="w-5 h-5 text-yellow-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-yellow-800">Upload Guidelines</h3>
+                <ul class="mt-1 text-sm text-yellow-700 list-disc list-inside space-y-1">
+                  <li>Ensure your torrent has a good quality description</li>
+                  <li>Include relevant tags and categories</li>
+                  <li>Use appropriate file naming conventions</li>
+                  <li>Upload 100+ quality torrents to become a verified uploader</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        
       </div>
     </div>
 
+    <!-- Success Toast -->
+    <div 
+      v-if="showToast"
+      class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300"
+      :class="{ 'translate-y-0 opacity-100': showToast, 'translate-y-2 opacity-0': !showToast }"
+    >
+      <div class="flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+        </svg>
+        URL copied to clipboard!
+      </div>
+    </div>
+  </div>
     <!-- Main Content -->
     <div class="container  mx-auto px-4 py-8">
       <div class="bg-white rounded-lg shadow-lg p-6">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-orange-400 pb-2">
           Create New Blog Post
         </h2>
-        
-        <form @submit.prevent="submitPost" class="space-y-6">
+
+        <form @submit.prevent="submitPost" class="space-y-6 text-black" >
           <!-- Title -->
           <div>
             <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">Title</label>
-            <input 
-              type="text" 
-              id="title" 
-              v-model="form.title"
+            <input type="text" id="title" v-model="form.title"
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-              placeholder="Enter post title"
-              required
-            >
+              placeholder="Enter post title" required>
+          </div>
+          <div>
+            <label for="title" class="block text-sm font-semibold text-black mb-2">Torrent File</label>
+            <input type="text" id="title" v-model="form.title"
+              class="w-100 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+              placeholder="Enter torrent file" required>
+            <button type="submit" class="bg-gray-600 text-white font-bold px-4 py-2 rounded hover:bg-orange-500">
+              broswe
+            </button>
           </div>
 
           <!-- Content Text -->
           <div>
             <label for="content" class="block text-sm font-semibold text-gray-700 mb-2">Content Text</label>
-            <textarea 
-              id="content" 
-              v-model="form.content"
-              rows="6"
+            <textarea id="content" v-model="form.content" rows="6"
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors resize-vertical"
-              placeholder="Enter your blog post content here..."
-              required
-            ></textarea>
+              placeholder="Enter your blog post content here..." required></textarea>
           </div>
 
           <!-- Language and Category Row -->
@@ -69,12 +137,9 @@
             <!-- Language -->
             <div>
               <label for="language" class="block text-sm font-semibold text-gray-700 mb-2">Language</label>
-              <select 
-                id="language" 
-                v-model="form.language"
+              <select id="language" v-model="form.language"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                required
-              >
+                required>
                 <option value="">Choose language</option>
                 <option value="english">English</option>
                 <option value="spanish">Spanish</option>
@@ -90,12 +155,9 @@
               <div class="grid grid-cols-2 gap-3">
                 <div>
                   <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-                  <select 
-                    id="category" 
-                    v-model="form.category"
+                  <select id="category" v-model="form.category"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                    required
-                  >
+                    required>
                     <option value="">Choose One</option>
                     <option value="technology">Technology</option>
                     <option value="lifestyle">Lifestyle</option>
@@ -106,12 +168,9 @@
                 </div>
                 <div>
                   <label for="type" class="block text-sm font-semibold text-gray-700 mb-2">Type</label>
-                  <select 
-                    id="type" 
-                    v-model="form.type"
+                  <select id="type" v-model="form.type"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                    required
-                  >
+                    required>
                     <option value="">Choose category</option>
                     <option value="article">Article</option>
                     <option value="tutorial">Tutorial</option>
@@ -126,13 +185,9 @@
           <!-- Tags -->
           <div>
             <label for="tags" class="block text-sm font-semibold text-gray-700 mb-2">Tags</label>
-            <input 
-              type="text" 
-              id="tags" 
-              v-model="form.tags"
+            <input type="text" id="tags" v-model="form.tags"
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-              placeholder="Enter tags separated by commas"
-            >
+              placeholder="Enter tags separated by commas">
             <p class="text-xs text-gray-500 mt-1">Use commas to separate multiple tags (e.g., web design, css, html)</p>
           </div>
 
@@ -141,48 +196,33 @@
             <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">Format Description</label>
             <div class="border border-gray-300 rounded-md p-3 bg-gray-50">
               <div class="flex flex-wrap gap-2 text-xs mb-3">
-                <button 
-                  type="button" 
-                  v-for="tool in formatTools" 
-                  :key="tool"
-                  @click="applyFormat(tool)"
-                  class="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded transition-colors"
-                >
+                <button type="button" v-for="tool in formatTools" :key="tool" @click="applyFormat(tool)"
+                  class="px-2 py-1 bg-gray-500 hover:bg-gray-400 rounded transition-colors">
                   {{ tool }}
                 </button>
               </div>
-              <textarea 
-                ref="descriptionTextarea"
-                v-model="form.description"
-                rows="4"
-                class="w-full px-3 py-2 border-0 bg-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical"
-                placeholder="Enter formatted description here..."
-              ></textarea>
+              <textarea ref="descriptionTextarea" v-model="form.description" rows="4"
+                class="w-full px-3 py-2 border-2 bg-white  rounded focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical"
+                placeholder="Enter formatted description here..."></textarea>
             </div>
           </div>
 
           <!-- File Upload -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Image</label>
-            <div 
+            <div
               class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-orange-400 transition-colors"
-              @dragover.prevent
-              @drop.prevent="handleDrop"
-            >
-              <div class="inline-flex items-center px-4 py-2 rounded-lg text-white cursor-pointer hover:opacity-90 transition-opacity bg-gradient-to-r from-blue-500 to-purple-600">
+              @dragover.prevent @drop.prevent="handleDrop">
+              <div
+                class="inline-flex items-center px-4 py-2 rounded-lg text-black cursor-pointer hover:opacity-90 transition-opacity bg-gradient-to-r from-blue-500 to-purple-600">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                  </path>
                 </svg>
                 Choose File
-                <input 
-                  type="file" 
-                  ref="fileInput"
-                  class="hidden" 
-                  @change="handleFileUpload" 
-                  accept="image/*"
-                >
+                <input type="file" ref="fileInput" class="hidden" @change="handleFileUpload" accept="image/*">
               </div>
-              <p class="text-gray-500 text-sm mt-2">
+              <p class="text-black text-sm mt-2">
                 {{ selectedFileName || 'Upload an image for your blog post' }}
               </p>
             </div>
@@ -190,11 +230,8 @@
 
           <!-- Submit Button -->
           <div class="flex justify-end pt-6 border-t border-gray-200">
-            <button 
-              type="submit"
-              :disabled="isSubmitting"
-              class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-8 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-orange-300"
-            >
+            <button type="submit" :disabled="isSubmitting"
+              class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-8 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-orange-300">
               {{ isSubmitting ? 'UPLOADING...' : 'UPLOAD' }}
             </button>
           </div>
@@ -233,7 +270,7 @@ export default {
   methods: {
     async submitPost() {
       this.isSubmitting = true;
-      
+
       try {
         // Validate required fields
         if (!this.form.title || !this.form.content || !this.form.language || !this.form.category || !this.form.type) {
@@ -251,15 +288,15 @@ export default {
 
         // Here you would typically make an API call
         // Example: await this.$http.post('/api/posts', formData);
-        
+
         console.log('Submitting post:', this.form);
-        
+
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         alert('Blog post submitted successfully!');
         this.resetForm();
-        
+
       } catch (error) {
         console.error('Error submitting post:', error);
         alert('Error submitting post. Please try again.');
@@ -296,9 +333,9 @@ export default {
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const selectedText = this.form.description.substring(start, end);
-      
+
       let formattedText = '';
-      
+
       switch (tool) {
         case 'Bold':
           formattedText = `**${selectedText}**`;
@@ -324,12 +361,12 @@ export default {
         default:
           formattedText = selectedText;
       }
-      
-      this.form.description = 
-        this.form.description.substring(0, start) + 
-        formattedText + 
+
+      this.form.description =
+        this.form.description.substring(0, start) +
+        formattedText +
         this.form.description.substring(end);
-      
+
       // Focus back to textarea
       this.$nextTick(() => {
         textarea.focus();

@@ -89,3 +89,6 @@ Route::get('/about', function () {
 Route::get('/upload', function () {
     return Inertia::render('Upload');
 });
+Route::get('/movielibrary', function () {
+    return Inertia::render('MovieLibrary');
+});
