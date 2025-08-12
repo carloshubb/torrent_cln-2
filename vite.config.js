@@ -14,10 +14,11 @@ export default defineConfig({
         
     ],
     server: {
-        host: '127.0.0.1', // Or '0.0.0.0' for external access
-        //open: true,
-        // port: 5173,
-        // strictPort: true,
-        // https: false,
+        https: true,
+        host: '0.0.0.0',
+        hmr: {
+            host: 'myapp.loca.lt',
+            protocol: 'wss',
+        },
     },
 });
