@@ -88,6 +88,36 @@ export default {
 
     const openLink = (link) => {
       console.log('Opening link:', link)
+      if(link == '1331x Status'){
+         window.location.href = `https://1337x-status.org/`;       
+      } 
+      else if(link == '1331x Chat'){
+         window.location.href = `https://1337x.to/login`;       
+      }
+      else if(link == 'Torrent9'){
+         window.location.href = `https://torrentz9.org/`;       
+      }
+      else if(link == 'uTrix'){
+         window.location.href = `https://uflix.to/`;       
+      }
+      else if(link == 'Njalla'){
+         window.location.href = `https://njal.la/`;       
+      }
+      else if(link == 'PRQ'){
+         window.location.href = `https://prq.se/`;       
+      }
+      else if(link == 'Limetorrents'){
+         window.location.href = `https://www.limetorrents.lol/`;       
+      }
+      else if(link == 'TorrentFunk'){
+         window.location.href = `https://www.torrentfunk.com/`;       
+      }
+      else if(link == 'ThePornDude'){
+         window.location.href = `https://theporndude.com/`;       
+      }
+      else if(link == 'Torlock'){
+         window.location.href = `https://www.torlock.com/`;       
+      }
       // Implement external link logic
       // Open in new tab or navigate
     }
