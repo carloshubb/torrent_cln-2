@@ -75,9 +75,9 @@
               </button>
               <transition name="slide">
                 <div v-if="showDropdown" class="dropdown">
-                  <a :href="`http://itorrents.org/torrent/${torrent.detail.infohash}.torrent`">ITORRENTS MIRROR</a>
-                  <a :href="`http://torrage.info/torrent.php?h=${torrent.detail.infohash}`">TRRAGE MIRROR</a>
-                  <a :href="`http://btcache.me/torrent/${torrent.detail.infohash}`">BTCACHE MIRROR</a>
+                  <a :href="`http://itorrents.org/torrent/${torrent.detail.infohash}.torrent`" target="_blank">ITORRENTS MIRROR</a>
+                  <a :href="`http://torrage.info/torrent.php?h=${torrent.detail.infohash}`" target="_blank">TRRAGE MIRROR</a>
+                  <a :href="`http://btcache.me/torrent/${torrent.detail.infohash}`" target="_blank">BTCACHE MIRROR</a>
                   <a :href="`${torrent.detail.magnet_link}`">NONE WORKING? USERMAGNET</a>
                 </div>
 

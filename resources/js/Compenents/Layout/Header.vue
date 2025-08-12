@@ -118,8 +118,7 @@ export default {
     const handleSearch = () => {
       if (searchQuery.value.trim()) {
         console.log('Searching for:', searchQuery.value)
-        // Implement search logic here
-        // You can emit an event or call an API
+        window.location.href = "/search/"+searchQuery.value+"/1/";
       }
     }
 
