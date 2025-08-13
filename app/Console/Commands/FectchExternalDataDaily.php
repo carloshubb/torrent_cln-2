@@ -24,7 +24,7 @@ class FectchExternalDataDaily extends Command
     protected $signature = 'app:fetch-external-data-daily';
 
     /**
-     * The console command description.
+     * The console command description..
      *
      * @var string
      */
