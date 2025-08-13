@@ -72,19 +72,19 @@ class FectchExternalDataDaily extends Command
                         Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
                     }
                 });
-                $this->info("Scraped page {$page}");
+             
                 $this->saveTorrent($torrents);
                 $page++;
                 sleep(0.5);
             }
         }
 
-        $this->info("Scraping Bonds List complete.");
+       
         // to get price and yield of the bonds, we need to scrape the bond page
 
 
 
-        $this->info("All bonds updated with price and yield.");
+        ;
     }
     private function convertTimeString($timeStr)
     {
@@ -137,8 +137,6 @@ class FectchExternalDataDaily extends Command
                 );
 
                 $torrentId = $torrent->id;
-                $this->info("Saved=> torrent id is {$torrent->id}");
-                $this->info("        category is {$torrent->category_id} \n        torrent name is {$torrent->name}");
                 //parse detail data and save
                 $detail_url = $this->buildDetailUrl($torrentData['torrent_link']);
                 $httpClient = HttpClient::create();
@@ -169,72 +167,30 @@ class FectchExternalDataDaily extends Command
         $suburl = $columns->filter('td.coll-1.name a')->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(0)->attr('href') : null;
         if ($suburl) {
             $tmp_list = explode("/", $suburl)[2];
-            $torrent['sub_category_id'] = $tmp_list ?  $tmp_list : $category->id;
+            $torrent['subcategory_id'] = $tmp_list ?  $tmp_list : $category->id;
         } else {
-            $torrent['sub_category_id'] = $category->id;
+            $torrent['subcategory_id'] = $category->id;
         }
 
         $torrent['torrent_link'] = $columns->filter('td.coll-1.name a')->eq(1)->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(1)->attr('href') : null;
         $torrent['comments_count'] = $columns->filter('span.comments')->count() > 0 ? trim($columns->filter('span.comments')->text()) : null;
         $torrent['name'] = $columns->filter('td.coll-1.name a')->eq(1)->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(1)->text() : null;
-        $torrent['seeds'] = $columns->filter('td.coll-2.seeds')->count() > 0 ? $columns->filter('td.coll-2.seeds')->text() : null;
-        $torrent['leeches'] = $columns->filter('td.coll-3.leeches')->count() > 0 ? $columns->filter('td.coll-3.leeches')->text() : null;
+        $torrent['seeds'] = $columns->filter('td.coll-2')->count() > 0 ? $columns->filter('td.coll-2')->text() : null;
+        $torrent['leeches'] = $columns->filter('td.coll-3')->count() > 0 ? $columns->filter('td.coll-3')->text() : null;
         $date = $columns->filter('td.coll-date')->count() > 0 ? $columns->filter('td.coll-date')->text() : null;
         $torrent['date_uploaded'] = $this->convertTimeString($date);
-        $torrent['size'] = $columns->filter('td.coll-4.size.mob-uploader')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4.size.mob-uploader')->text())[0]) : null;
-        $uploader = $columns->filter('td.coll-5.uploader a')->count() > 0 ? $columns->filter('td.coll-5.uploader a')->text() : null;
-        $uploader_link = $columns->filter('td.coll-5.uploader a')->count() > 0 ? $columns->filter('td.coll-5.uploader a')->attr('href') : null;
+        $torrent['size'] = $columns->filter('td.coll-4')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4')->text())[0]) : null;
+        $uploader = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->text() : null;
+        $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
         else $torrent['uploader'] = $uploader;
         $torrent['category_id'] = $category->id;
         $torrent['category_name'] = $category->name;
+        $this->info($torrent['uploader']);
         return $torrent;
     }
 
-    public function scrapeDetail($url)
-    {
-        $url = "https://1337x.to/torrent/6459430/Schrodinger-Suite-2025-3-Cracked-CZsofts/";
-
-        $httpClient = HttpClient::create();
-        $response = $httpClient->request('GET', $url);
-        $html = $response->getContent();
-        $crawler = new Crawler($html);
-
-        // Magnet link
-        $magnetLink = $crawler->filter('a[href^="magnet:"]')->attr('href');
-
-        // Description
-
-        $description = $this->extractDescription($crawler);
-
-        // File count (from table in files tab)
-        $fileCount = null;
-        try {
-            $fileCountText = $crawler->filter('.files-tab')->text();
-            preg_match('/Files\s*\((\d+)\)/i', $fileCountText, $matches);
-            $fileCount = $matches[1] ?? null;
-        } catch (\Exception $e) {
-        }
-
-        // Download count (if present)
-        $downloadCount = null;
-        try {
-            $stats = $crawler->filter('.torrent-detail-page .box-info .list')->text();
-            preg_match('/Downloads:\s*(\d+)/i', $stats, $matches);
-            $downloadCount = $matches[1] ?? null;
-        } catch (\Exception $e) {
-        }
-
-        // Infohash
-        $infohash = $crawler->filter('.infohash-box span')->text('text');
-
-        return [
-            'magnet_link' => $magnetLink,
-            'description' => $description,
-            'file_count' => $fileCount,
-            'download_count' => $downloadCount,
-        ];
-    }
+    
     private function parseDetailPage($html)
     {
 
@@ -254,8 +210,7 @@ class FectchExternalDataDaily extends Command
                     } else {
                         $fieldName = '';
                     }
-
-                    $this->info($fieldName);
+                  
                     $fieldValue = $item->filter('span')->text();
                     $data[$fieldName] = $fieldValue;
                 });
@@ -712,7 +667,7 @@ class FectchExternalDataDaily extends Command
             );
 
             // Optionally also update Torrent table with relevant details
-            $torrent->update($updateData);
+            //$torrent->update($updateData);
 
             // Save screenshots separately if they exist
             if (!empty($detailData['screenshots'])) {

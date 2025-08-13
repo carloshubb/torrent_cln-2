@@ -64,11 +64,12 @@
     <div class="gap-2 bg-gray-300 p-2 rounded">
       <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Anime</h2>
       <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fas fa-mask"></i> Anime</button>
-        <button class="btn-icon"><i class="fas fa-train"></i> Dual Audio</button>
-        <button class="btn-icon"><i class="fas fa-film"></i> Dubbed</button>
-        <button class="btn-icon"><i class="fas fa-video"></i> Raw</button>
-        <button class="btn-icon"><i class="fas fa-closed-captioning"></i> Subbed</button>
+        <button class="btn-icon"><i class="fab fa-android"></i> Android</button>
+        <button class="btn-icon"><i class="fab fa-apple"></i> iOS</button>
+        <button class="btn-icon"><i class="fab fa-linux"></i> Linux</button>
+        <button class="btn-icon"><i class="fas fa-laptop"></i> Mac</button>
+        <button class="btn-icon"><i class="fas fa-ellipsis-h"></i> Other</button>
+        <button class="btn-icon"><i class="fas fa-desktop"></i> PC Software</button>
       </div>
     </div>
   </div>
@@ -198,16 +199,25 @@
     <!-- Popular Torrents Section -->
     <div class="bg-gray-800 rounded-lg overflow-hidden shadow-xl mt-6">
       <div class="bg-gradient-to-r from-orange-400 to-red-500 px-4 py-3 flex items-center">
-<<<<<<< HEAD
         <!-- <svg class="w-5 h-5 mr-2 text-white" fill="black" viewBox="0 0 20 20">
           <path
             d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
           </path>
         </svg> -->
-         <i class="fi fi-sr-clapperboard-play"></i>
-=======
->>>>>>> 10d316a4956132d94f56d52e7f34edccba02a04e
-        <h2 class="text-white font-bold">⭐⭐⭐⭐⭐{{ head_title }}</h2>
+        <i class="fi fi-sr-clapperboard-play"></i>
+        <!-- <h2 class="text-white font-bold ">⭐⭐⭐⭐⭐    {{ head_title }}</h2> -->
+         <h2 class="text-white font-bold" v-if="page_type == 'trending'">📈 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'top'">⭐ {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Anime'">🎌 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Apps'">💾 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Documentaries'">📋 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Games'">🎮 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Movies'">🎬 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Music'">🎵 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Other'">📁 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'TV'">📺 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'XXX'">🔞{{ head_title }}</h2>
+
       </div>
 
       <div class="overflow-x-auto">
@@ -230,8 +240,8 @@
                 <div class="flex items-center justify-between w-full">
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
-                    <a :href="`/sub/${torrent.sub_category_id}/0/`">
-                      <i class="flaticon-dvd"></i>
+                    <a :href="`/sub/${torrent.subcategory_id}/0/`">
+                      <button class="btn-icon-tr" v-if="torrent.subcategory"><i :class="`${torrent.subcategory.icon}`"></i></button>
                     </a>
                     <a :href="`/torrent/${torrent.id}/${torrent.slug}/`"
                       class="text-gray-300 hover:text-orange-400 transition-colors">
@@ -395,6 +405,40 @@ export default {
 
 .btn-icon:hover {
   background-color: #bf360c;
+  /* darker orange on hover */
+}
+
+
+.btn-icon-tr {
+  display: inline-flex;
+  /* keeps icon + text aligned */
+  align-items: center;
+  /* vertical center */
+  justify-content: center;
+  /* horizontal center */
+  gap: 0.5rem;
+  /* space between icon and text */
+  /* background-color: #e65100; */
+  /* orange background */
+  color: white;
+  /* text color */
+  padding: 0.45rem 0.25rem;
+  /* vertical / horizontal padding */
+  border-radius: 0.25rem;
+  /* rounded corners */
+  cursor: pointer;
+  /* pointer on hover */
+  font-size: 22px;
+  /* text size */
+  text-align: center;
+  /* centers text if wrapped */
+  border: none;
+  /* remove default button border */
+  margin-right: 10px;
+}
+
+.btn-icon-tr:hover {
+  text-decoration: underline;
   /* darker orange on hover */
 }
 </style>

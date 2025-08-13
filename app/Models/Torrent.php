@@ -20,7 +20,7 @@ class Torrent extends Model
         'slug',
         'description',
         'category_id',
-        'sub_category_id',
+        'subcategory_id',
         'uploader_id',
         'uploader',
         'info_hash',
@@ -78,7 +78,7 @@ class Torrent extends Model
         return [
             'name' => $data['name'] ?? null,
             'category_id' => $data['category_id'] ?? null,
-            'sub_category_id' => $data['sub_category_id'] ?? null,
+            'subcategory_id' => $data['subcategory_id'] ?? null,
             'seeders' => (int) ($data['seeds'] ?? 0),
             'leechers' => (int) ($data['leeches'] ?? 0),
             'size_formatted' => $data['size'] ?? null,
@@ -115,6 +115,11 @@ class Torrent extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function subcategory(): BelongsTo
+    {
+        return $this->belongsTo(SubCategory::class);
     }
 
     public function uploader(): BelongsTo
