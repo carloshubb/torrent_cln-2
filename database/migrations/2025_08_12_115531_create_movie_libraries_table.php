@@ -11,7 +11,7 @@ class CreateMovieLibrariesTable extends Migration
         Schema::create('movie_libraries', function (Blueprint $table) {
             $table->id();
             $table->string('img_url');
-            $table->string('rate');         // If you want float, change to $table->float('rate', 3, 1);
+            $table->float('rate',3,2);         // If you want float, change to $table->float('rate', 3, 1);
             $table->string('info_url');
             $table->string('info_title');
             $table->string('category');

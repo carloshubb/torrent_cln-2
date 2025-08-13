@@ -156,8 +156,10 @@ class FetchTrendingPage extends Command
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
         else $torrent['uploader'] = $uploader;
         $torrentLink = Torrent::where('name',$torrent['name'])->first();
-        $torrent['torrent_link'] = $torrentLink  ? $torrentLink->torrent_link  : null;        
-        $torrent['sub_category_id'] =  null;        
+        $torrent['torrent_link'] = $torrentLink  ? $torrentLink->torrent_link  : null; 
+        $torrent['ddd'] = $columns->filter('td.coll-1.name span.active i')->attr('class');    
+        $torrent['sub_category_id'] =  null;  
+        
         return $torrent;
     }
 

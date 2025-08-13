@@ -42,7 +42,7 @@ export default {
   setup() {
     const browseCategories = [
       {title:'Trending Torrents',icon:'📈',slug:'trending'},
-      {title:'Movie library',icon:'📚',slug:'MovieLibrary'},
+      {title:'Movie library',icon:'📚',slug:'movielibrary'},
       {title:'Top 100 Torrents',icon:'⭐',slug:'top-100'},
       {title:'Anime',icon:'🎌',slug:'Anime'},
       {title:'Applications',icon:'💾',slug:'Apps'},

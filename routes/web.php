@@ -57,7 +57,12 @@ Route::get('/torrent/{param1}/{param2}', function ($param1, $param2) {
     ]);
 });
 
-
+Route::get('/movielibrary/{param1}/', function ($param1) {
+    return Inertia::render('MovieLibrary', [
+        'page' => 'movielibrary',
+        'page' =>$param1            
+    ]);
+});
 
 
 
@@ -98,9 +103,7 @@ Route::get('/about', function () {
 Route::get('/upload', function () {
     return Inertia::render('Upload');
 });
-Route::get('/movielibrary', function () {
-    return Inertia::render('MovieLibrary');
-});
+
 Route::get('/login', function () {
     return Inertia::render('Login');
 });

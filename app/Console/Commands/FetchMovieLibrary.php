@@ -36,7 +36,7 @@ class FetchMovieLibrary extends Command
 
         $movies = [];
         $page = 1;
-        while ($page < 151) {
+        while ($page < 3) {
             $movies = [];
             $url = "https://1337x.to/movie-library/{$page}/";
             $response = $httpClient->request('GET', $url);
@@ -48,14 +48,23 @@ class FetchMovieLibrary extends Command
                     $movie = [];
                     $img = $row->filter('a img')->attr('data-original');
                     $width = $row->filter('a span.rating-wrap i')->attr('style');
+                    $with_value = 0;
+                    if ($width) {                        
+                        // Extract numeric part
+                        preg_match('/\d+(\.\d+)?/', $width, $matches);
+                        $percent = (float) $matches[0];
+                        // Convert to 0–5 scale
+                        $with_value = $percent / 100 * 5;
+                    }
                     $info_url = $row->filter('h3 a')->attr('href');
                     $info = $row->filter('h3 a')->text();
                     $category = $row->filter('div.category')->html();
                     $content = $row->filter('p')->text();
                     $movie['img_url'] = $img ? $img : null;
-                    $movie['rate'] = $width ? $width : null;
+                    $movie['rate'] = $width ? $with_value : null;
                     $movie['info_url'] = $info_url ? $info_url : null;
                     $movie['info_title'] = $info ? $info : null;
+                    $category = str_replace("<span>", "<span class='ml-5'>", $category);
                     $movie['category'] = $category ? $category : null;
                     $movie['content'] = $content ? $content : null;
                     $movies[] = $movie;
@@ -67,8 +76,6 @@ class FetchMovieLibrary extends Command
             $page++;
             sleep(0.5);
         }
-        
-       
     }
 
     private function saveMovies(array $movies): int
@@ -83,14 +90,14 @@ class FetchMovieLibrary extends Command
                     continue;
                 }
                 // Map the scraper data to the proper format using the model method
-                $movielibrary = MovieLibrary::where('img_url',$movie['img_url'])->first();
-                if($movielibrary == null)  $movielibrary = new MovieLibrary();               
+                $movielibrary = MovieLibrary::where('img_url', $movie['img_url'])->first();
+                if ($movielibrary == null)  $movielibrary = new MovieLibrary();
                 $movielibrary->img_url = $movie['img_url'];
                 $movielibrary->rate = $movie['rate'];
                 $movielibrary->info_url = $movie['info_url'];
                 $movielibrary->info_title = $movie['info_title'];
                 $movielibrary->category = $movie['category'];
-                $movielibrary->content = $movie['content'];               
+                $movielibrary->content = $movie['content'];
                 $movielibrary->save();
             } catch (\Illuminate\Database\QueryException $e) {
                 Log::error("Database error saving movie: " . $e->getMessage(), [
