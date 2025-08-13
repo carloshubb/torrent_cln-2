@@ -3,12 +3,20 @@
     <!-- Top Bar -->
     <div class="min-h-[40px] bg-[#000] border-b-5 border-[#822a0b] items-center ">
     <div class="mx-auto w-full grid-cols-1 gap-10 container text-right ">
-      <a href="" class="title text-white hover:text-red-600">Register</a>
+      <a href="" class="title text-white hover:text-red-600">CHAT</a>
       |
-      <a href="/login" class="title text-red-600 hover:text-red-600">Login</a>
-      
+      <a href="" class="title text-white hover:text-red-600">UPLOADS</a>
+      |
+      <a href="" class="title text-white hover:text-red-600">BOOKMARKS</a>
+      |
+      <a href="" class="title text-white hover:text-red-600">NOTIFICATIONS</a>
+      |
+      <a href="" class="title text-white hover:text-red-600">INBOX</a>
+      |
+      <a href="" class="title text-white hover:text-red-600">SETTINGS</a>
+      |
+      <a href="" class="title text-red-600 hover:text-red-600">LOGOUT</a>
     </div>
-    
   </div>
     <!-- Header -->
     <div class="bg-black/20 backdrop-blur-sm border-b border-orange-500/50">

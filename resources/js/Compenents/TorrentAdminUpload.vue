@@ -207,24 +207,39 @@
             </div>
           </div>
 
-          <!-- File Upload -->
+           <!-- CAPTCHA -->
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Image</label>
-            <div
-              class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-orange-400 transition-colors"
-              @dragover.prevent @drop.prevent="handleDrop">
-              <div
-                class="inline-flex items-center px-4 py-2 rounded-lg text-black cursor-pointer hover:opacity-90 transition-opacity bg-gradient-to-r from-blue-500 to-purple-600">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                  </path>
-                </svg>
-                Choose File
-                <input type="file" ref="fileInput" class="hidden" @change="handleFileUpload" accept="image/*">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Captcha</label>
+            <div class="flex items-start space-x-4">
+              <div class="flex-shrink-0">
+                <div class="bg-gray-600 px-4 py-8 rounded border-2 border-gray-400 relative overflow-hidden">
+                  <canvas 
+                    ref="captchaCanvas"
+                    width="120" 
+                    height="40"
+                    class="bg-gray-200 rounded"
+                  ></canvas>
+                  <button
+                    type="button"
+                    @click="refreshCaptcha"
+                    class="absolute top-1 right-1 text-white hover:text-gray-300 text-xs"
+                    title="Refresh Captcha"
+                  >
+                    ⟲
+                  </button>
+                </div>
               </div>
-              <p class="text-black text-sm mt-2">
-                {{ selectedFileName || 'Upload an image for your blog post' }}
-              </p>
+              <div class="flex-1">
+                <input 
+                  type="text" 
+                  v-model="form.captcha"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                  placeholder="Enter captcha code"
+                  maxlength="6"
+                  required
+                >
+                <p class="text-xs text-gray-500 mt-1">Enter the characters shown in the image above</p>
+              </div>
             </div>
           </div>
 
@@ -383,11 +398,95 @@ export default {
         type: '',
         tags: '',
         description: '',
-        file: null
+        file: null,
+        captcha: ''
       };
       this.selectedFileName = '';
       this.$refs.fileInput.value = '';
+      this.refreshCaptcha();
+    },
+
+    generateCaptcha() {
+      // Generate random 6-character alphanumeric string
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Excluded similar looking characters
+      this.captchaCode = '';
+      for (let i = 0; i < 6; i++) {
+        this.captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      this.drawCaptcha();
+    },
+
+    drawCaptcha() {
+      this.$nextTick(() => {
+        const canvas = this.$refs.captchaCanvas;
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Clear canvas
+        ctx.clearRect(0, 0, width, height);
+
+        // Set background
+        ctx.fillStyle = '#f3f4f6';
+        ctx.fillRect(0, 0, width, height);
+
+        // Add noise lines
+        for (let i = 0; i < 6; i++) {
+          ctx.strokeStyle = `hsl(${Math.random() * 360}, 50%, 70%)`;
+          ctx.lineWidth = Math.random() * 2 + 1;
+          ctx.beginPath();
+          ctx.moveTo(Math.random() * width, Math.random() * height);
+          ctx.lineTo(Math.random() * width, Math.random() * height);
+          ctx.stroke();
+        }
+
+        // Draw CAPTCHA text
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        for (let i = 0; i < this.captchaCode.length; i++) {
+          const char = this.captchaCode[i];
+          const x = (width / this.captchaCode.length) * i + (width / this.captchaCode.length) / 2;
+          const y = height / 2 + (Math.random() - 0.5) * 8;
+          
+          // Random color for each character
+          ctx.fillStyle = `hsl(${Math.random() * 360}, 60%, 40%)`;
+          
+          // Random rotation
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate((Math.random() - 0.5) * 0.5);
+          ctx.fillText(char, 0, 0);
+          ctx.restore();
+        }
+
+        // Add noise dots
+        for (let i = 0; i < 20; i++) {
+          ctx.fillStyle = `hsl(${Math.random() * 360}, 50%, 60%)`;
+          ctx.beginPath();
+          ctx.arc(
+            Math.random() * width,
+            Math.random() * height,
+            Math.random() * 2 + 1,
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+        }
+      });
+    },
+
+    refreshCaptcha() {
+      this.generateCaptcha();
+      this.form.captcha = '';
     }
+  },
+
+  mounted() {
+    this.generateCaptcha();
   }
 }
 </script>

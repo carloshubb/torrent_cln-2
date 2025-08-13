@@ -104,3 +104,12 @@ Route::get('/movielibrary', function () {
 Route::get('/login', function () {
     return Inertia::render('Login');
 });
+Route::get('/icon', function () {
+    return Inertia::render('Icon');
+});
+Route::get('/setting', function () {
+    return Inertia::render('AdminSettings');
+});
+Route::get('/adminuploads', function () {
+    return Inertia::render('AdminUploads');
+});
