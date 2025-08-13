@@ -112,6 +112,8 @@ export default {
           page_url = `/cat/${urlParts[1]}/${page}/`;
         }else if (urlParts[0] === 'search') {
           page_url = `/search/${urlParts[1]}/${page}/`;
+        }else if (urlParts[0] === 'movielibrary') {
+          page_url = `/movielibrary/${page}/`;
         } else {
           // fallback if path isn't /sub/...
           page_url = `/?page=${page-1}`;

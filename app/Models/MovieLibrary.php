@@ -14,4 +14,9 @@ class MovieLibrary extends Model
         'category',
         'content',
     ];
+
+     public function subCategory()
+    {
+        return $this->belongsTo(SubCategory::class, 'subcategory_id');
+    }
 }

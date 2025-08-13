@@ -106,10 +106,18 @@ class TorrentController extends Controller
         return response()->json($torrent);
     }
 
-    public function getMovieLibraryData(){
-        $movies= MovieLibrary::with('subCategory')
-                ->where('category_title', 'Most Popular Torrents this week')
-                ->paginate(10);
-        return response()->json($movies);        
+    public function getMovieLibraryData(Request $request)
+    {
+        $page = $request->query('page'); // 'mostpopular'        
+        $movies = MovieLibrary::with('subCategory')
+            ->paginate(24, ['*'], 'page', $page);
+        // Optional: add full image URL
+        $movies->getCollection()->transform(function ($movie) {
+            $movie->background_url = $movie->imag_url
+                ? url($movie->imag_url) // full path
+                : null;
+            return $movie;
+        });
+        return response()->json($movies);
     }
 }

@@ -18,4 +18,8 @@ class SubCategory extends Model
     {
         return $this->hasMany(PopularTorrent::class);
     }
+    public function movieLibraries()
+    {
+        return $this->hasMany(MovieLibrary::class, 'subcategory_id');
+    }
 }
