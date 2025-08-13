@@ -206,7 +206,9 @@
         </svg> -->
         <i class="fi fi-sr-clapperboard-play"></i>
         <!-- <h2 class="text-white font-bold ">⭐⭐⭐⭐⭐    {{ head_title }}</h2> -->
-         <h2 class="text-white font-bold" v-if="page_type == 'trending'">📈 {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'trending'"> {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'search'"> {{ head_title }}</h2>
+         <h2 class="text-white font-bold" v-if="page_type == 'dashboard'"> {{ head_title }}</h2>
          <h2 class="text-white font-bold" v-if="page_type == 'top'">⭐ {{ head_title }}</h2>
          <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Anime'">🎌 {{ head_title }}</h2>
          <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Apps'">💾 {{ head_title }}</h2>

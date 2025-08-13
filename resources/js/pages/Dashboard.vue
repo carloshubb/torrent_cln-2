@@ -238,7 +238,7 @@ async function fetchSearchTorrentData(search, page) {
   try {
     const response = await torrentService.get(`/torrents/type?type=search&search=${search}&page=${page}`);
     dashboard_data.push({
-      title: '',
+      title: `Searching  for: ${search}`,
       data: response.data,
       page: 'search'
     })

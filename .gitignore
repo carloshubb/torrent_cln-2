@@ -17,7 +17,7 @@
 
 # Laravel Mix / Vite
 /public/hot
-/public/build
+
 /.vite
 vite.config.local.js
 
