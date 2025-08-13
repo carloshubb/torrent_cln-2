@@ -1,7 +1,7 @@
 <template>
   <div class="lg:col-span-3">
     <!-- Status Message -->
-    <div class="bg-gray-200 mt-5 p-4 mb-6 rounded">
+    <div class="bg-gray-200 mt-5 p-4 mb-6 rounded" v-if="page == 'dashboard'">
       <h3 class="text-red-600 font-semibold mb-2">stream.1s file error</h3>
       <p class="text-gray-700 text-sm mb-2">
         For small number of requests at random cloudflare seems to redirect users and load
@@ -18,7 +18,7 @@
     </div>
 
     <!-- Movie Posters -->
-    <div v-if="moviePosters.length" class="grid grid-cols-7 gap-3 mb-8">
+    <div v-if="moviePosters.length && page == 'dashboard'" class="grid grid-cols-7 gap-3 mb-8">
       <div v-for="(movie, index) in moviePosters" :key="index" class="relative group cursor-pointer">
         <div
           class="bg-gray-800 aspect-[3/4] rounded-lg overflow-hidden hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 hover:scale-105">
@@ -51,11 +51,16 @@ import { ref, reactive, onMounted } from 'vue'
 
 export default {
   name: 'TorrentSite',
-
-  setup() {
+  props: {
+    page: {
+      type: String}
+  },
+  setup(props) {
 
     const navTabs = ['HOME', 'UPLOAD', 'RULES', 'CONTACT', 'ABOUT US']
-
+    const page = props.page;
+    console.log(props.page);
+    
     const moviePosters = reactive([
       { title: "The Meg 2", quality: "1080p", img: "//lx1.dyncdn.cc/cdn/83/83841d458d96af45ca4bfcf7cb6e7a39.jpg" },
       { title: "Oppenheimer", quality: "1080p", img: "//lx1.dyncdn.cc/cdn/6a/6ab59873a519d3ee0b4f19d17e7a24d2.jpg" },
@@ -80,6 +85,7 @@ export default {
     return {
       navTabs,
       moviePosters,
+      page,
       openLink
     }
   }

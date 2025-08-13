@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Http\Controllers\Auth\LoginController;
 Route::get('/', function () {
      return Inertia::render('Dashboard', [
         'page' => 'dashboard',   
@@ -67,7 +67,7 @@ Route::get('/movielibrary/{param1}/', function ($param1) {
 
 
 
-
+Route::post('/login', [LoginController::class, 'login']);
 
 
 

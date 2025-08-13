@@ -212,7 +212,6 @@ async function fetchTop100Torrents() {
 async function fetchHomePageImage() {
   try {
     const response = await torrentService.get(`/torrents/type?type=homeimage`);
-    console.log(response.data);
     dashboard_images.value = response.data; // update reactive value
   } catch (error) {
     console.error('Failed to fetch torrents:', error);
@@ -282,7 +281,7 @@ onMounted(() => {
 </script>
 <template>
   <AppLayout>
-    <TorrentHead :dashboard_images = "dashboard_images"/>
+    <TorrentHead :dashboard_images = "dashboard_images" :page = "props.page"/>
     <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page"
       :head_title="row.title" />
 
