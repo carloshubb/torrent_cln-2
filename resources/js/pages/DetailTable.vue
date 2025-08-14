@@ -39,7 +39,7 @@
               <div class="space-y-2">
                 <div class="flex justify-between">
                   <span class="text-gray-400">Downloads:</span>
-                  <span>{{ torrent.completed_downloads }}</span>
+                  <span>{{ torrent.detail.download_count }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Last checked:</span>

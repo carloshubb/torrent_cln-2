@@ -48,6 +48,7 @@ class TorrentDetail extends Model
         'files',
         'comments',
         'dateuploaded',
+        'download_count',
         'trackerlist',
     ];
 

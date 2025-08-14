@@ -45,7 +45,7 @@ class FectchExternalDataDaily extends Command
         #$catigories = Category::where('id', 9)->get();
         foreach ($catigories as $index => $category) {
             $page = 1;
-            while ($page < 151) {
+            while ($page < 2) {
                 $torrents = [];
                 $url = "https://1337x.to/cat/{$category->slug}/{$page}/";
                 $response = $httpClient->request('GET', $url);
@@ -78,13 +78,8 @@ class FectchExternalDataDaily extends Command
                 sleep(0.5);
             }
         }
-
-
-            // to get price and yield of the bonds, we need to scrape the bond page
-
-
-
-        ;
+         // to get price and yield of the bonds, we need to scrape the bond page
+       
     }
     private function convertTimeString($timeStr)
     {
@@ -227,7 +222,7 @@ class FectchExternalDataDaily extends Command
                 Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
             }
         });
-
+            
         $rows_magnet = $crawler->filter('a[href^="magnet:"]');
         $data['magnet_link'] = $rows_magnet->count() > 0 ? $rows_magnet->attr('href') : null;
         $infohash = $crawler->filter('div.infohash-box p span')->text();
@@ -654,7 +649,9 @@ class FectchExternalDataDaily extends Command
                 'has_sample',
                 'uploader_status'
             ]));
-
+            $updateData['download_count'] = $detailData['downloads'] ?? null;
+            $updateData['uploader'] = $detailData['uploadedby'] ?? null;
+            //dd($updateData['uploader']);
             $updateData['detail_scraped_at'] = now();
             $updateData['screenshots'] = $detailData['screenshots'] ?? null;
             if (is_array($updateData['screenshots'])) {
