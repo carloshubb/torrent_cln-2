@@ -26,11 +26,11 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful',
-               // 'redirect' => 'route('/')'
+                // 'redirect' => 'route('/')'
             ]);
         }
 
@@ -44,10 +44,16 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
+        
         return response()->json([
             'success' => true,
+            'url' =>'/',
             'message' => 'Logged out successfully'
         ]);
+    }
+
+    public function me(Request $request)
+    {
+        return response()->json($request->user());
     }
 }

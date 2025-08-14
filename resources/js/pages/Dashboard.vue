@@ -178,9 +178,8 @@ async function fetchCategoryTorrents(category, page) {
       XXX: "XXX Torrents download list"
     };
 
-    const title = titles[category] || "Torrents download list";
-    
-    
+    const title = titles[category] || "Torrents download list";   
+       
     dashboard_data.push({
       title: title,
       data: response.data,
@@ -295,11 +294,11 @@ onMounted(() => {
 })
 </script>
 <template>
+  
   <AppLayout>
     <TorrentHead :dashboard_images="dashboard_images" :page="props.page" />
     <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page"
       :head_title="row.title" />
-
   </AppLayout>
 
 </template>

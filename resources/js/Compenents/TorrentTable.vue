@@ -46,155 +46,30 @@
 
   </div>
 
-  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'Anime'">
+  
+  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'App'">
     <!-- Second row -->
     <div class="gap-2 bg-gray-300 p-2 rounded">
-      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Anime</h2>
+      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Applications</h2>
       <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fas fa-mask"></i> Anime</button>
-        <button class="btn-icon"><i class="fas fa-train"></i> Dual Audio</button>
-        <button class="btn-icon"><i class="fas fa-film"></i> Dubbed</button>
-        <button class="btn-icon"><i class="fas fa-video"></i> Raw</button>
-        <button class="btn-icon"><i class="fas fa-closed-captioning"></i> Subbed</button>
+        <button v-for="(subcategory, index) in subcategories" :key="index" class="btn-icon" @click="goToSubcategory(subcategory)">
+          <i :class="subcategory.icon"></i> {{ subcategory.name }}
+        </button>
       </div>
     </div>
   </div>
-  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'Apps'">
+  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat'">
     <!-- Second row -->
     <div class="gap-2 bg-gray-300 p-2 rounded">
-      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Anime</h2>
+      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for {{ torrent_type }}</h2>
       <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fab fa-android"></i> Android</button>
-        <button class="btn-icon"><i class="fab fa-apple"></i> iOS</button>
-        <button class="btn-icon"><i class="fab fa-linux"></i> Linux</button>
-        <button class="btn-icon"><i class="fas fa-laptop"></i> Mac</button>
-        <button class="btn-icon"><i class="fas fa-ellipsis-h"></i> Other</button>
-        <button class="btn-icon"><i class="fas fa-desktop"></i> PC Software</button>
-      </div>
-    </div>
-  </div>
-  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'Documentaries'">
-    <!-- Second row -->
-    <div class="gap-2 bg-gray-300 p-2 rounded">
-      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Documentaries</h2>
-      <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fas fa-solid fa-video"></i> Documentary</button>
+        <button v-for="(subcategory, index) in subcategories" :key="index" class="btn-icon" @click="goToSubcategory(subcategory)">
+          <i :class="subcategory.icon"></i> {{ subcategory.name }}
+        </button>
       </div>
     </div>
   </div>
 
-  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'Games'">
-    <!-- Second row -->
-    <div class="gap-2 bg-gray-300 p-2 rounded">
-      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Games</h2>
-      <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fas fa-gamepad"></i> 3DS</button>
-        <button class="btn-icon"> <i class="fas fa-dice-d6"></i> Dreamcast</button>
-        <button class="btn-icon"><i class="fas fa-tablet-alt"></i> DS</button>
-        <button class="btn-icon"><i class="fas fa-cube"></i> GameCube</button>
-        <button class="btn-icon"> <i class="fab fa-windows"></i> PC Game</button>
-        <button class="btn-icon"> <i class="fab fa-playstation"></i> PS1</button>
-        <button class="btn-icon"> <i class="fab fa-playstation"></i> PS2</button>
-        <button class="btn-icon"> <i class="fab fa-playstation"></i> PS3</button>
-        <button class="btn-icon"> <i class="fab fa-playstation"></i> PS4</button>
-        <button class="btn-icon"><i class="fas fa-compact-disc"></i> PSP</button>
-        <button class="btn-icon"><i class="fas fa-gamepad"></i> Switch</button>
-        <button class="btn-icon"><i class="fas fa-gamepad"></i> Wii</button>
-        <button class="btn-icon"><i class="fab fa-xbox"></i> Xbox</button>
-        <button class="btn-icon"><i class="fab fa-xbox"></i> Xbox360</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'Movies'">
-    <!-- Second row -->
-    <div class="gap-2 bg-gray-300 p-2 rounded">
-      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Movies</h2>
-      <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fas fa-cube"></i> 3D</button>
-        <button class="btn-icon"><i class="fas fa-film"></i> Bollywood</button>
-        <button class="btn-icon"><i class="fas fa-video"></i> Divx/Xvid</button>
-        <button class="btn-icon"><i class="fas fa-language"></i> Dubs/Dual Audio</button>
-        <button class="btn-icon"><i class="fas fa-compact-disc"></i> DVD</button>
-        <button class="btn-icon"><i class="fas fa-photo-video"></i> h.264/x264</button>
-        <button class="btn-icon"><i class="fas fa-highlighter"></i> HD</button>
-        <button class="btn-icon"><i class="fas fa-photo-video"></i> HEVC/x265</button>
-        <button class="btn-icon"><i class="fas fa-file-video"></i> Mp4</button>
-        <button class="btn-icon"><i class="fas fa-compact-disc"></i> SVCD/VCD</button>
-        <button class="btn-icon"><i class="fas fa-tv"></i> UHD</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'Music'">
-    <!-- Second row -->
-    <div class="gap-2 bg-gray-300 p-2 rounded">
-      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Music</h2>
-      <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fas fa-music"></i> AAC</button>
-        <button class="btn-icon"><i class="fas fa-compact-disc"></i> Album</button>
-        <button class="btn-icon"><i class="fas fa-box"></i> Box Set</button>
-        <button class="btn-icon"><i class="fas fa-microphone"></i> Concerts</button>
-        <button class="btn-icon"><i class="fas fa-book"></i> Discography</button>
-        <button class="btn-icon"><i class="fas fa-compact-disc"></i> DVD</button>
-        <button class="btn-icon"><i class="fas fa-volume-mute"></i> Lossless</button>
-        <button class="btn-icon"><i class="fas fa-headphones"></i> MP3</button>
-        <button class="btn-icon"><i class="fas fa-question"></i> Other</button>
-        <button class="btn-icon"><i class="fas fa-radio"></i> Radio</button>
-        <button class="btn-icon"><i class="fas fa-dot-circle"></i> Single</button>
-        <button class="btn-icon"><i class="fas fa-video"></i> Video</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'Other'">
-    <!-- Second row -->
-    <div class="gap-2 bg-gray-300 p-2 rounded">
-      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Other</h2>
-      <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fas fa-headphones"></i> Audiobook</button>
-        <button class="btn-icon"><i class="fas fa-mask"></i> Comics</button>
-        <button class="btn-icon"><i class="fas fa-book-open"></i> E-Books</button>
-        <button class="btn-icon"><i class="fas fa-gamepad"></i> Emulation</button>
-        <button class="btn-icon"><i class="fas fa-images"></i> Images</button>
-        <button class="btn-icon"><i class="fas fa-mobile-alt"></i> Mobile Phone</button>
-        <button class="btn-icon"><i class="fas fa-code"></i> Nulled Script</button>
-        <button class="btn-icon"><i class="fas fa-cog"></i> Other</button>
-        <button class="btn-icon"><i class="fas fa-volume-up"></i> Sounds</button>
-        <button class="btn-icon"><i class="fas fa-graduation-cap"></i> Tutorials</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'TV'">
-    <!-- Second row -->
-    <div class="gap-2 bg-gray-300 p-2 rounded">
-      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for TV</h2>
-      <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fas fa-smile"></i> Cartoon</button>
-        <button class="btn-icon"><i class="fas fa-film"></i> Divx/Xvid</button>
-        <button class="btn-icon"><i class="fas fa-compact-disc"></i> DVD</button>
-        <button class="btn-icon"><i class="fas fa-fire"></i> HD</button>
-        <button class="btn-icon"><i class="fas fa-compress"></i> HEVC/x265</button>
-        <button class="btn-icon"><i class="fas fa-video"></i> SD</button>
-        <button class="btn-icon"><i class="fas fa-clock"></i> SVCD/VCD</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'XXX'">
-    <!-- Second row -->
-    <div class="gap-2 bg-gray-300 p-2 rounded">
-      <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for XXX</h2>
-      <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button class="btn-icon"><i class="fas fa-gamepad"></i> Games</button>
-        <button class="btn-icon"><i class="fas fa-users"></i> Hentai</button>
-        <button class="btn-icon"><i class="fas fa-newspaper"></i> Magazine</button>
-        <button class="btn-icon"><i class="fas fa-camera"></i> Picture</button>
-        <button class="btn-icon"><i class="fas fa-video"></i> Video</button>
-      </div>
-    </div>
-  </div>
   <div class="lg:col-span-3 ">
     <!-- Popular Torrents Section -->
     <div class="bg-gray-800 rounded-lg overflow-hidden shadow-xl mt-6">
@@ -206,19 +81,21 @@
         </svg> -->
         <i class="fi fi-sr-clapperboard-play"></i>
         <!-- <h2 class="text-white font-bold ">⭐⭐⭐⭐⭐    {{ head_title }}</h2> -->
-         <h2 class="text-white font-bold" v-if="page_type == 'trending'"> {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'search'"> {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'dashboard'"> {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'top'">⭐ {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Anime'">🎌 {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Apps'">💾 {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Documentaries'">📋 {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Games'">🎮 {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Movies'">🎬 {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Music'">🎵 {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Other'">📁 {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'TV'">📺 {{ head_title }}</h2>
-         <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'XXX'">🔞{{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'trending'"> {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'sub' && torrents"> {{ torrents[0].subcategory.name }} Torrents download list</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'search'"> {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'dashboard'"> {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'top'">⭐ {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Anime'">🎌 {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Apps'">💾 {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Documentaries'">📋 {{ head_title
+          }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Games'">🎮 {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Movies'">🎬 {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Music'">🎵 {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'Other'">📁 {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'TV'">📺 {{ head_title }}</h2>
+        <h2 class="text-white font-bold" v-if="page_type == 'cat' && torrent_type == 'XXX'">🔞{{ head_title }}</h2>
 
       </div>
 
@@ -243,7 +120,8 @@
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
                     <a :href="`/sub/${torrent.subcategory_id}/0/`">
-                      <button class="btn-icon-tr" v-if="torrent.subcategory"><i :class="`${torrent.subcategory.icon}`"></i></button>
+                      <button class="btn-icon-tr" v-if="torrent.subcategory"><i
+                          :class="`${torrent.subcategory.icon}`"></i></button>
                     </a>
                     <a :href="`/torrent/${torrent.id}/${torrent.slug}/`"
                       class="text-gray-300 hover:text-orange-400 transition-colors">
@@ -321,13 +199,15 @@ export default {
   setup(props) {
     const currentPage = ref(props.torrents.current_page || 1)
     const lastPage = ref(props.torrents.last_page || 1) // default to 7 if not passed
-    const torrents = ref(props.torrents.data)
+    const torrents = ref(props.torrents.data.data)
     const page_type = ref(props.page)
+    const subcategories = props.torrents.subcategories ? ref(props.torrents.subcategories) : null
     const pathSegments = window.location.pathname
       .split('/')
       .filter(segment => segment); // remove empty entries    
     const torrent_type = pathSegments[1]; // "Anime"
-
+    console.log(props.torrents.subcategories);
+    
     const formatApprovedAt = (dateString) => {
       const date = dayjs(dateString)
       const now = dayjs()
@@ -348,7 +228,9 @@ export default {
         currentPage.value = page
       }
     }
-
+    const goToSubcategory = (subcategory) =>{
+      window.location.href = `/sub/${subcategory.id}/0/`;
+    }
     onMounted(() => {
       //console.log(torrent_type);
 
@@ -363,6 +245,8 @@ export default {
       viewTorrent,
       onPageChange,
       torrent_type,
+      subcategories,
+      goToSubcategory,
       head_title: props.head_title
     }
   },

@@ -4,7 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
-
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -24,5 +25,15 @@ class AppServiceProvider extends ServiceProvider
         if (app()->environment('local')) {
             URL::forceScheme('https');
         }
+
+        Inertia::share([
+        'auth' => [
+            'user' => fn () => Auth::user() ? [
+                'id' => Auth::id(),
+                'name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+            ] : null,
+        ],
+    ]);
     }
 }
