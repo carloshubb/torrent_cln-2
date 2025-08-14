@@ -1,1 +1,0 @@
-import{c as o,o as a,a as s,t as r}from"./app-CLUrKNd9.js";/* empty css            */const n={class:"p-6"},c={__name:"Home",props:{message:String},setup(t){return(l,e)=>(a(),o("div",n,[e[0]||(e[0]=s("h1",{class:"text-2xl font-bold"},"Home Page",-1)),s("p",null,r(t.message),1)]))}};export{c as default};
