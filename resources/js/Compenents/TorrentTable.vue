@@ -99,18 +99,18 @@
           </thead>
           <tbody>
             <tr v-for="(torrent, index) in torrents" :key="index"
-              class="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer text-xs "
+              class="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer text-xs"
               @click="viewTorrent(torrent)">
-              <td class="px-2 py-2 ">
+              <td class="px-2 py-3">
                 <div class="flex items-center justify-between w-full">
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
                     <a :href="`/sub/${torrent.subcategory_id}/0/`">
-                      <button class="btn-icon-tr" v-if="torrent.subcategory"><i
+                      <button class="" v-if="torrent.subcategory"><i
                           :class="`${torrent.subcategory.icon}`"></i></button>
                     </a>
                     <a :href="`/torrent/${torrent.id}/${torrent.slug}/`"
-                      class="text-gray-300 hover:text-orange-400 transition-colors">
+                      class="text-gray-300 hover:text-orange-400 transition-colors ml-3">
                       {{ torrent.name }}
                     </a>
                   </div>
