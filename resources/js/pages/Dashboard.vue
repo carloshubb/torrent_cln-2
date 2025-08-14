@@ -2,7 +2,7 @@
 import AppLayout from './../layouts/AppLayout.vue'
 import TorrentTable from '../Compenents/TorrentTable.vue'
 import TorrentHead from '../Compenents/TorrentHead.vue'
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 import torrentService from '@/api/torrentService.js'
 import { Head } from '@inertiajs/vue3'
 
@@ -158,8 +158,11 @@ async function fetchSubCategoryTorrents(category, page) {
     const response = await torrentService.get(`/torrents/type?type=subcategory&sub_cat=${category}&page=${page}`);
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data type=subcategory&sub_cat=someValue
+    
+    
+    const title = response.data ? response.data.data.data[0].subcategory.name+ " Torrents download list" : 'Torrents download list';
     dashboard_data.push({
-      title: '',
+      title: title,
       data: response.data,
       page: 'sub'
     })
@@ -235,7 +238,12 @@ async function fetchTop100Torrents() {
 async function fetchHomePageImage() {
   try {
     const response = await torrentService.get(`/torrents/type?type=homeimage`);
-    dashboard_images.value = response.data; // update reactive value
+    dashboard_images.push({
+      title:'images',
+      data : response.data,
+    })
+    
+    
   } catch (error) {
     console.error('Failed to fetch torrents:', error);
   }
@@ -259,7 +267,6 @@ onMounted(() => {
   
   fetchHomePageImage()
   if (props.page === 'dashboard') {
-
     dashboard_data.splice(0)
     fetchMostPopularTorrents()
     fetchPopularMovieTorrents()
@@ -305,7 +312,7 @@ onMounted(() => {
 <template>
   <Head :title=$page.props.title />
   <AppLayout>
-    <TorrentHead :dashboard_images="dashboard_images" :page="props.page" />
+    <TorrentHead v-if="dashboard_images.length > 0" :images="dashboard_images" :page="props.page" />
     <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page" :icon="row.icon"
       :head_title="row.title" />
   </AppLayout>
