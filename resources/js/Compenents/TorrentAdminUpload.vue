@@ -349,7 +349,7 @@ export default {
         });
 
         // Laravel API call example
-        const response = await fetch('/api/torrents', {
+        const response = await fetch('/torrents', {
           method: 'POST',
           body: formData,
           headers: {
