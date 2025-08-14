@@ -60,7 +60,7 @@ class FectchExternalHomeDataDaily extends Command
                     $torrents[] = $torrent;
                 }
             } catch (\Exception $e) {
-                Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
+                Log::warning("Error parsing torrent row 1 {$i}: " . $e->getMessage());
             }
         });
 
@@ -70,16 +70,21 @@ class FectchExternalHomeDataDaily extends Command
         // to get price and yield of the bonds, we need to scrape the bond page
 
         //get image of home page
-        $images_tag = $crawler->filter('div li a img');
+        $images_tag = $crawler->filter('div li a');
         $image_list = [];
         $images_tag->each(function (Crawler $row, $i) use (&$image_list) {
             try {
-                $image = $row->attr('src');
-                $image_list[] = $image;
+                $data['image'] = $row->filter('img')->attr('src');
+                $data['title'] = $row->attr('title');
+                $data['link_url'] = $row->count() > 0
+                    ? $row->attr('href')
+                    : null;
 
-                $this->info($image);
+                $image_list[] = $data;
+
+                
             } catch (\Exception $e) {
-                Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
+                Log::warning("Error parsing torrent row 2 {$i}: " . $e->getMessage());
             }
         });
         $this->saveHomeImageList($image_list);
@@ -195,9 +200,9 @@ class FectchExternalHomeDataDaily extends Command
                 // Map the scraper data to the proper format using the model method
 
                 HomeImageList::create([
-                    'title' => 'Sample Banner',
-                    'image_url' => $image,
-                    'link' =>$image,
+                    'title' => $image['title'],
+                    'image_url' => $image['image'],
+                    'link' => $image['link_url'],
                     'order' => 1,
                     'is_active' => true,
                 ]);

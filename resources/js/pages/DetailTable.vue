@@ -27,7 +27,7 @@
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Total Size:</span>
-                  <span>{{ torrent.detail.size_formatted }}</span>
+                  <span>{{ torrent.size_formatted }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-400">Uploaded By:</span>
@@ -142,7 +142,7 @@
                   class="mt-4 text-gray-300 leading-relaxed"></div>
               </div>
             
-              <div v-else-if="activeTab === 'COMMENTS 1'">
+              <div v-else-if="activeTab === 'COMMENTS'">
                 <div v-if="torrent?.detail?.comments" v-html="torrent.detail.comments"
                   class="mt-4 text-gray-300 leading-relaxed"></div>
               </div>
