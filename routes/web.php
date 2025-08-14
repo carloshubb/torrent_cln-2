@@ -110,9 +110,3 @@ Route::get('/login', function () {
 Route::get('/icon', function () {
     return Inertia::render('Icon');
 });
-Route::get('/setting', function () {
-    return Inertia::render('AdminSettings');
-});
-Route::get('/adminuploads', function () {
-    return Inertia::render('AdminUploads');
-});
