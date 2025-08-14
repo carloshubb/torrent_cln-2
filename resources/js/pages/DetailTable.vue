@@ -115,7 +115,7 @@
           </div>
 
           <!-- Hash -->
-          <div class="text-center text-xs text-gray-400 mb-4">
+          <div class="text-center text-xs text-black mb-4">
             <span class="font-semibold">INFO HASH:</span> {{torrent.detail.infohash }}
           </div>
 
