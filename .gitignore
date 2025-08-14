@@ -24,7 +24,7 @@ vite.config.local.js
 # Logs
 /storage/logs/*.log
 *.log
-
+vite.config.jss
 # Cache
 bootstrap/cache/*.php
 bootstrap/cache/*.json
