@@ -7,7 +7,17 @@
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-    @vite('resources/js/app.js')
+
+    @php
+        $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+    @endphp
+    
+    @if(isset($manifest['resources/css/app.css']))
+        <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+    @endif
+    
+    <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
+
     @inertiaHead
 </head>
 <body class="font-sans antialiased">
