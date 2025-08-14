@@ -14,11 +14,12 @@ export default defineConfig({
         
     ],
     server: {
-        https: true,
-        host: '0.0.0.0',
-        hmr: {
-            host: '1331x.com',
-            protocol: 'wss',
-        },
+        host: '127.0.0.1',
+        // https: true,
+        // host: '0.0.0.0',
+        // hmr: {
+        //     host: '1331x.com',
+        //     protocol: 'wss',
+        // },
     },
 });
