@@ -65,7 +65,7 @@ export default {
     { title: 'CONTACT', slug: "/contact" },
     { title: 'ABOUT US', slug: "/about" }];
 
-
+// 
 
     const moviePosters = reactive([
       { title: "The Meg 2", quality: "1080p" },
