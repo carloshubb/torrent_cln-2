@@ -1,5 +1,5 @@
 <template>
-  <div class="px-2">
+  <div class="px-2 md:px-0">
     <!-- Status Message -->
     <div class="bg-gray-200 mt-5 p-4 mb-6 rounded" v-if="page == 'dashboard'">
       <h3 class="text-red-600 font-semibold mb-2">Discover High-Quality Streaming with 1331x.cc: Your Ultimate Media Hub

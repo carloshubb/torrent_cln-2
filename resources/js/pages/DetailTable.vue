@@ -2,10 +2,10 @@
 
   <Head :title=$page.props.title />
   <AppLayout>
-    <div class="max-w-7xl mx-auto py-4" v-if="torrent">
-      <div class="flex gap-6">
+    <div class="max-w-7xl mx-auto px-2 py-4" v-if="torrent">
+      <div class="">
         <!-- Main Content -->
-        <div class="flex-1">
+        <div class="flex-1 ">
           <!-- Title -->
           <div class="bg-gray-700 px-4 py-2 rounded">
             <h1 class="text-lg font-semibold">{{ torrent.name }}</h1>
