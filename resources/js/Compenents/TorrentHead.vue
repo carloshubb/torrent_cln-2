@@ -85,7 +85,7 @@
 <script>
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 
-const visibleCount = 6; // number of slides visible
+const visibleCount = ref(6); // number of slides visible
 const currentIndex = ref(0);
 let slideInterval = null; // to store setInterval reference
 export default {
@@ -102,7 +102,6 @@ export default {
 
     const navTabs = ['HOME', 'UPLOAD', 'RULES', 'CONTACT', 'ABOUT US']
     const page = props.page;
-    console.log(props.images[0].data.data);
 
     const moviePosters = ref([])
     moviePosters.value = props.images[0].data.data? props.images[0].data.data : [];
@@ -114,7 +113,7 @@ export default {
     }
 
     function nextSlide() {
-      if (currentIndex.value < moviePosters.value.length - visibleCount) {
+      if (currentIndex.value < moviePosters.value.length - visibleCount.value) {
         currentIndex.value++;
       } else {
         currentIndex.value = 0; // loop back to start
@@ -125,7 +124,7 @@ export default {
       if (currentIndex.value > 0) {
         currentIndex.value--;
       } else {
-        currentIndex.value = moviePosters.value.length - visibleCount; // go to last group
+        currentIndex.value = moviePosters.value.length - visibleCount.value; // go to last group
       }
     }
 
@@ -147,11 +146,25 @@ export default {
       console.log('TorrentSite component mounted')
       startAutoSlide();
       // Initialize component, fetch data, etc.
+      updateVisibleCount()
+      window.addEventListener('resize', updateVisibleCount)
     })
 
     onBeforeUnmount(() => {
       stopAutoSlide();
+      //
+      window.removeEventListener('resize', updateVisibleCount)
     });
+
+    function updateVisibleCount() {
+      console.log(visibleCount.value);
+      if (window.innerWidth < 640) { // Tailwind's `sm` breakpoint
+        visibleCount.value = 3;
+      } else {
+        visibleCount.value = 6;
+      }
+    }
+        
 
     return {
       navTabs,
