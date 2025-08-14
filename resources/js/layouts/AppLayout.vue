@@ -8,16 +8,16 @@
       <!-- LeftSpace -->
       <LeftSpace />
       <!-- Content -->
-      
-        
-         <main class="w-233">
+
+
+      <main class="w-233">
         <slot />
-         </main>
-        
+      </main>
+
       <!-- Sidebar -->
-        <Sidebar />
+      <Sidebar />
       <!-- RightSpace -->
-       
+
       <RightSpace />
     </div>
 
