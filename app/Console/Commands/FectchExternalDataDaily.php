@@ -72,15 +72,15 @@ class FectchExternalDataDaily extends Command
                         Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
                     }
                 });
-             
+
                 $this->saveTorrent($torrents);
                 $page++;
                 sleep(0.5);
             }
         }
 
-       
-        // to get price and yield of the bonds, we need to scrape the bond page
+
+            // to get price and yield of the bonds, we need to scrape the bond page
 
 
 
@@ -180,17 +180,23 @@ class FectchExternalDataDaily extends Command
         $date = $columns->filter('td.coll-date')->count() > 0 ? $columns->filter('td.coll-date')->text() : null;
         $torrent['date_uploaded'] = $this->convertTimeString($date);
         $torrent['size'] = $columns->filter('td.coll-4')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4')->text())[0]) : null;
+        $size_only = "";
+        if (preg_match('/([\d\.]+\s[GMK]B)/', $torrent['size'], $matches)) {
+            $size_only = $matches[1];
+            
+        }
+        $torrent['size'] = $size_only; 
         $uploader = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->text() : null;
         $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
         else $torrent['uploader'] = $uploader;
         $torrent['category_id'] = $category->id;
         $torrent['category_name'] = $category->name;
-        $this->info($torrent['uploader']);
+        $this->info($torrent['size']);
         return $torrent;
     }
 
-    
+
     private function parseDetailPage($html)
     {
 
@@ -210,7 +216,7 @@ class FectchExternalDataDaily extends Command
                     } else {
                         $fieldName = '';
                     }
-                  
+
                     $fieldValue = $item->filter('span')->text();
                     $data[$fieldName] = $fieldValue;
                 });
@@ -261,7 +267,7 @@ class FectchExternalDataDaily extends Command
         } else {
             $description = null;
         }
-       
+
         $data['description'] = $description ? $description : null;
         $files = $crawler->filter('div#files')->html();
         $data['files'] = $files ? $files : null;
