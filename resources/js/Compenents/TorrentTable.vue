@@ -89,19 +89,19 @@
         <table class="w-full">
           <thead class="bg-gray-700">
             <tr>
-              <th class="text-left px-4 py-3 text-gray-300 font-semibold">name</th>
-              <th class="text-center px-4 py-3 text-gray-300 font-semibold">se</th>
-              <th class="text-center px-4 py-3 text-gray-300 font-semibold">le</th>
-              <th class="text-center px-4 py-3 text-gray-300 font-semibold">time</th>
-              <th class="text-center px-4 py-3 text-gray-300 font-semibold">size</th>
-              <th class="text-center px-4 py-3 text-gray-300 font-semibold">uploader</th>
+              <th class="text-left px-4 py-1 text-gray-300 font-semibold">name</th>
+              <th class="text-center px-4 py-1 text-gray-300 font-semibold">se</th>
+              <th class="text-center px-4 py-1 text-gray-300 font-semibold">le</th>
+              <th class="text-center px-4 py-1 text-gray-300 font-semibold">time</th>
+              <th class="text-center px-4 py-1 text-gray-300 font-semibold">size</th>
+              <th class="text-center px-4 py-1 text-gray-300 font-semibold">uploader</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(torrent, index) in torrents" :key="index"
-              class="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer"
+              class="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer text-xs "
               @click="viewTorrent(torrent)">
-              <td class="px-4 py-3">
+              <td class="px-2 py-2 ">
                 <div class="flex items-center justify-between w-full">
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
@@ -117,28 +117,28 @@
 
                   <!-- Right side: badge -->
                   <span v-if="torrent.comments_count"
-                    class="bg-white text-orange-600 rounded text-xs font-semibold px-1.5 py-0.5">
+                    class="bg-gray-500 text-black-900 rounded text-xs font-semibold px-2">
                     {{ torrent.comments_count }}
                   </span>
                 </div>
               </td>
-              <td class="text-center px-4 py-3">
-                <span class="bg-green-600 text-white px-2 py-1 rounded text-sm font-bold">
+              <td class="text-center px-2 py-2">
+                <span class="bg-green-600 text-white px-1 text-xs rounded ">
                   {{ torrent.seeders }}
                 </span>
               </td>
-              <td class="text-center px-4 py-3">
-                <span class="bg-red-600 text-white px-2 py-1 rounded text-sm font-bold">
+              <td class="text-center px-2 py-2">
+                <span class="bg-red-800 text-white px-1 text-xs rounded ">
                   {{ torrent.leechers }}
                 </span>
               </td>
-              <td class="text-center px-4 py-3 text-gray-400 text-sm">
+              <td class="text-center px-2 py-2 text-gray-400 ">
                 {{ formatApprovedAt(torrent.approved_at) }}
               </td>
-              <td class="text-center px-4 py-3 text-gray-400 text-sm">
+              <td class="text-center px-2 py-2 text-gray-400 ">
                 {{ torrent.size_formatted }}
               </td>
-              <td class="text-center px-4 py-3">
+              <td class="text-center px-2 py-2">
                 <a :href="torrent.uploader">
                   <span class="text-orange-400 hover:text-orange-300 transition-colors">
                     {{ torrent.uploader?.split('/')[2] }}
