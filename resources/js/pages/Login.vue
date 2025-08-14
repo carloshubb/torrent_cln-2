@@ -122,10 +122,10 @@ export default {
     };
 
     onMounted(() => {
-      checkAuth();
+      //checkAuth();
     });
 
-    expose({ checkAuth });
+   // expose({ checkAuth });
   },
 
   methods: {
