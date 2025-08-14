@@ -14,11 +14,11 @@ export default defineConfig({
         
     ],
     server: {
-        //https: true,
+        https: true,
         host: '0.0.0.0',
-        // hmr: {
-        //     host: 'myapp.loca.lt',
-        //     protocol: 'wss',
-        // },
+        hmr: {
+            host: '1331x.com',
+            protocol: 'wss',
+        },
     },
 });
