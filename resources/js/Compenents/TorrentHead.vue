@@ -1,25 +1,31 @@
 <template>
-  <div class="lg:col-span-3">
+  <div class="px-2">
     <!-- Status Message -->
     <div class="bg-gray-200 mt-5 p-4 mb-6 rounded" v-if="page == 'dashboard'">
-      <h3 class="text-red-600 font-semibold mb-2">Discover High-Quality Streaming with 1331x.cc: Your Ultimate Media Hub</h3>
+      <h3 class="text-red-600 font-semibold mb-2">Discover High-Quality Streaming with 1331x.cc: Your Ultimate Media Hub
+      </h3>
       <p class="text-gray-700 text-sm mb-2">
-        Welcome to <span class="font-mono text-orange-600">1331x.c</span>,   your go-to destination for seamless streaming and online media enjoyment. 
+        Welcome to <span class="font-mono text-orange-600">1331x.c</span>, your go-to destination for seamless streaming
+        and online media enjoyment.
       </p>
-      <p class="text-gray-700 text-sm mb-2">Whether you’re a casual viewer or a passionate movie buff, we provide a platform that prioritizes quality, speed, and reliability.
+      <p class="text-gray-700 text-sm mb-2">Whether you’re a casual viewer or a passionate movie buff, we provide a
+        platform that prioritizes quality, speed, and reliability.
       </p>
       <p class="text-gray-700 text-sm mb-2">
-        With 1331x.c,  you  can access a wide variety of content, including movies, TV shows, documentaries, and more,  all  available  in  high-definition.
+        With 1331x.c, you can access a wide variety of content, including movies, TV shows, documentaries, and more, all
+        available in high-definition.
       </p>
       <p class="text-gray-700 text-sm mb-2">
-         Our site is designed for easy navigation, ensuring a hassle-free experience from start to finish.
+        Our site is designed for easy navigation, ensuring a hassle-free experience from start to finish.
       </p>
       <p class="text-gray-700 text-sm">
-       Getting started with 1331x.cc is simple. Just visit our homepage, browse through our extensive library, and start streaming in seconds.
-       </p>
-       <p class="text-gray-700 text-sm">
-       If you're facing any restrictions due to regional access, we provide Tor onion support for additional privacy and ease of access.
-       </p>
+        Getting started with 1331x.cc is simple. Just visit our homepage, browse through our extensive library, and
+        start streaming in seconds.
+      </p>
+      <p class="text-gray-700 text-sm">
+        If you're facing any restrictions due to regional access, we provide Tor onion support for additional privacy
+        and ease of access.
+      </p>
     </div>
 
     <!-- Movie Posters -->
@@ -29,12 +35,7 @@
           class="bg-gray-800 aspect-[3/4] rounded-lg overflow-hidden hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 hover:scale-105">
           <div class="w-full h-full bg-gradient-to-br from-orange-700 to-red-800 flex items-center justify-center">
             <div class="text-white text-center">
-              <img
-                :src="movie.img"
-                alt=""
-                class="h-48 w-auto mx-auto mb-2 rounded"
-                @error="handleImgError($event)"
-              />
+              <img :src="movie.img" alt="" class="h-48 w-auto mx-auto mb-2 rounded" @error="handleImgError($event)" />
               <div class="text-xs font-bold mb-1">{{ movie.title }}</div>
               <div class="text-xs opacity-75">{{ movie.quality }}</div>
             </div>
@@ -58,14 +59,15 @@ export default {
   name: 'TorrentSite',
   props: {
     page: {
-      type: String}
+      type: String
+    }
   },
   setup(props) {
 
     const navTabs = ['HOME', 'UPLOAD', 'RULES', 'CONTACT', 'ABOUT US']
     const page = props.page;
     console.log(props.page);
-    
+
     const moviePosters = reactive([
       { title: "The Meg 2", quality: "1080p", img: "//lx1.dyncdn.cc/cdn/83/83841d458d96af45ca4bfcf7cb6e7a39.jpg" },
       { title: "Oppenheimer", quality: "1080p", img: "//lx1.dyncdn.cc/cdn/6a/6ab59873a519d3ee0b4f19d17e7a24d2.jpg" },

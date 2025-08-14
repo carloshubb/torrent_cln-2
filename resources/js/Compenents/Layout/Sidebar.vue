@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6 ml-8 w-70 mt-5 ">
+  <div class="md:col-span-3 px-2 md:px-0 mt-5">
     <!-- Browse Torrents -->
     <div class="bg-gray-800 rounded-lg overflow-hidden shadow-xl">
       <div class="bg-gradient-to-r from-orange-500 to-gray-500 px-4 py-3">
@@ -18,7 +18,7 @@
     </div>
 
     <!-- Links -->
-    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-xl">
+    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-xl mt-4">
       <div class="bg-gradient-to-r from-orange-500 to-gray-500 px-4 py-3">
         <h3 class="text-white font-bold">1331X LINKS</h3>
       </div>
