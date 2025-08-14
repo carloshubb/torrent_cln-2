@@ -1,4 +1,6 @@
 <template>
+
+  <Head :title="'Login as Member'" />
   <div class="min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full space-y-8">
       <div>
@@ -80,104 +82,91 @@
   </div>
 </template>
 
-<script>
-import { onMounted } from 'vue';
+<script setup>
+import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { Head } from '@inertiajs/vue3';
+const form = reactive({
+  email: '',
+  password: '',
+  remember: false
+});
+const errors = reactive({});
+const loading = ref(false);
+const message = ref('');
+const messageType = ref('');
 
-export default {
-  name: 'LoginComponent',
 
-  data() {
-    return {
-      form: {
-        email: '',
-        password: '',
-        remember: false
-      },
-      errors: {},
-      loading: false,
-      message: '',
-      messageType: ''
-    }
-  },
+onMounted(() => {
+  //checkAuth();
+});
+const router = useRouter();
 
-  setup(_, { expose }) {
-    const router = useRouter();
-
-    const checkAuth = async () => {
-      try {
-        const res = await fetch('/me', {
-          method: 'GET',
-          credentials: 'include'
-        });
-
-        if (res.ok) {
-          // already logged in → go dashboard
-          //router.push('/');
-          window.location.href = '/'
-        }
-      } catch (err) {
-        // not logged in → stay on login page
-      }
-    };
-
-    onMounted(() => {
-      //checkAuth();
+const checkAuth = async () => {
+  try {
+    const res = await fetch('/me', {
+      method: 'GET',
+      credentials: 'include'
     });
 
-   // expose({ checkAuth });
-  },
-
-  methods: {
-    async handleLogin() {
-      this.loading = true;
-      this.errors = {};
-      this.message = '';
-
-      try {
-        const csrfToken = document
-          .querySelector('meta[name="csrf-token"]')
-          ?.getAttribute('content');
-
-        if (!csrfToken) {
-          throw new Error('CSRF token not found. Please refresh the page.');
-        }
-
-        const response = await fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken,
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          body: JSON.stringify(this.form),
-          credentials: 'include'
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.success) {
-          this.message = data.message;
-          this.messageType = 'success';
-
-          localStorage.setItem('user', JSON.stringify(data.user));
-
-           window.location.href = '/'
-        } else {
-          if (data.errors) {
-            this.errors = data.errors;
-          }
-          this.message = data.message || 'Login failed.';
-          this.messageType = 'error';
-        }
-      } catch (error) {
-        this.message = error.message || 'Network error.';
-        this.messageType = 'error';
-      } finally {
-        this.loading = false;
-      }
+    if (res.ok) {
+      // already logged in → go dashboard
+      // router.push('/');
+      window.location.href = '/'
     }
+  } catch (err) {
+    // not logged in → stay on login page
   }
 };
+
+const handleLogin = async () => {
+  loading.value = true;
+  message.value = '';
+  messageType.value = '';
+
+  try {
+    const csrfToken = document
+      .querySelector('meta[name="csrf-token"]')
+      ?.getAttribute('content');
+
+    if (!csrfToken) {
+      throw new Error('CSRF token not found. Please refresh the page.');
+    }
+
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrfToken,
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify(this.form),
+      credentials: 'include'
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      message.value = data.message;
+      messageType.value = 'success';
+
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      window.location.href = '/'
+    } else {
+      if (data.errors) {
+        errors.value = data.errors;
+      }
+      message.value = data.message || 'Login failed.';
+      messageType.value = 'error';
+    }
+  } catch (error) {
+    message.value = error.message || 'Network error.';
+    messageType.value = 'error';
+  } finally {
+    loading.value = false;
+  }
+};
+
 </script>

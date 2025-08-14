@@ -1,6 +1,5 @@
 <template>
-  <div class="pt-5   bg-gradient-to-r from-gray-350 to-gray-500 ">
-    
+  <div class="pt-5 bg-gradient-to-r from-gray-350 to-gray-500">
     <div class="max-w-4xl mx-auto">
       <!-- Account Upgrade Section -->
       <div class="bg-white rounded-lg shadow-sm border mb-6">
@@ -9,7 +8,8 @@
         </div>
         <div class="p-6">
           <p class="text-gray-700 leading-relaxed">
-            Once you upload 100+ torrents with good quality description you can request your account upgraded to verified Uploader.
+            Once you upload 100+ torrents with good quality description you can request your account upgraded to
+            verified Uploader.
           </p>
         </div>
       </div>
@@ -21,25 +21,15 @@
         </div>
         <div class="p-6 space-y-3">
           <!-- Announce URLs List -->
-          <div 
-            v-for="url in announceUrls" 
-            :key="url.id"
-            class="group"
-          >
+          <div v-for="url in announceUrls" :key="url.id" class="group">
             <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-              <a 
-                :href="url.link" 
-                class="text-orange-600 hover:text-orange-700 font-medium underline break-all flex-1"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a :href="url.link" class="text-orange-600 hover:text-orange-700 font-medium underline break-all flex-1"
+                target="_blank" rel="noopener noreferrer">
                 {{ url.link }}
               </a>
-              <button 
-                @click="copyToClipboard(url.link)"
+              <button @click="copyToClipboard(url.link)"
                 class="ml-4 px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-sm rounded transition-colors"
-                :class="{ 'bg-green-500 hover:bg-green-600': copiedUrl === url.id }"
-              >
+                :class="{ 'bg-green-500 hover:bg-green-600': copiedUrl === url.id }">
                 {{ copiedUrl === url.id ? 'Copied!' : 'Copy' }}
               </button>
             </div>
@@ -50,13 +40,16 @@
             <div class="flex items-start">
               <div class="flex-shrink-0">
                 <svg class="w-5 h-5 text-blue-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                  <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clip-rule="evenodd"></path>
                 </svg>
               </div>
               <div class="ml-3">
                 <h3 class="text-sm font-medium text-blue-800">Important Information</h3>
                 <p class="mt-1 text-sm text-blue-700">
-                  Please use one of the announce URLs above when creating your torrent file. Make sure to include a detailed description for better quality.
+                  Please use one of the announce URLs above when creating your torrent file. Make sure to include a
+                  detailed description for better quality.
                 </p>
               </div>
             </div>
@@ -67,7 +60,9 @@
             <div class="flex items-start">
               <div class="flex-shrink-0">
                 <svg class="w-5 h-5 text-yellow-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                  <path fill-rule="evenodd"
+                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd"></path>
                 </svg>
               </div>
               <div class="ml-3">
@@ -81,32 +76,32 @@
               </div>
             </div>
           </div>
-        
+        </div>
+      </div>
+
+      <!-- Success Toast -->
+      <div v-if="showToast"
+        class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300"
+        :class="{ 'translate-y-0 opacity-100': showToast, 'translate-y-2 opacity-0': !showToast }">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"></path>
+          </svg>
+          URL copied to clipboard!
+        </div>
       </div>
     </div>
 
-    <!-- Success Toast -->
-    <div 
-      v-if="showToast"
-      class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300"
-      :class="{ 'translate-y-0 opacity-100': showToast, 'translate-y-2 opacity-0': !showToast }"
-    >
-      <div class="flex items-center">
-        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-        </svg>
-        URL copied to clipboard!
-      </div>
-    </div>
-  </div>
     <!-- Main Content -->
-    <div class="container  mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8">
       <div class="bg-white rounded-lg shadow-lg p-6">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-orange-400 pb-2">
           Create New Blog Post
         </h2>
 
-        <form @submit.prevent="submitPost" class="space-y-6 text-black" >
+        <form @submit.prevent="submitPost" class="space-y-6 text-black">
           <!-- Title -->
           <div>
             <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">Title</label>
@@ -114,14 +109,40 @@
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
               placeholder="Enter post title" required>
           </div>
+
+          <!-- Torrent File Upload -->
           <div>
-            <label for="title" class="block text-sm font-semibold text-black mb-2">Torrent File</label>
-            <input type="text" id="title" v-model="form.title"
-              class="w-100 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-              placeholder="Enter torrent file" required>
-            <button type="button" class="bg-gray-600 text-white font-bold px-4 py-2 rounded hover:bg-orange-500">
-              broswe
-            </button>
+            <label for="torrentFile" class="block text-sm font-semibold text-black mb-2">Torrent File</label>
+            <div class="flex items-center space-x-3">
+              <!-- Hidden file input -->
+              <input 
+                type="file" 
+                ref="fileInput"
+                id="torrentFile"
+                @change="handleFileSelect"
+                accept=".torrent"
+                class="hidden"
+              >
+              
+              <!-- Display selected file path -->
+              <input 
+                type="text" 
+                v-model="selectedFilePath"
+                readonly
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 focus:outline-none"
+                placeholder="No file selected"
+              >
+              
+              <!-- Browse button -->
+              <button 
+                type="button" 
+                @click="openFileDialog"
+                class="bg-gray-600 hover:bg-orange-500 text-white font-bold px-4 py-2 rounded transition-colors"
+              >
+                Browse
+              </button>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Select a .torrent file to upload</p>
           </div>
 
           <!-- Content Text -->
@@ -197,47 +218,33 @@
             <div class="border border-gray-300 rounded-md p-3 bg-gray-50">
               <div class="flex flex-wrap gap-2 text-xs mb-3">
                 <button type="button" v-for="tool in formatTools" :key="tool" @click="applyFormat(tool)"
-                  class="px-2 py-1 bg-gray-500 hover:bg-gray-400 rounded transition-colors">
+                  class="px-2 py-1 bg-gray-500 text-white hover:bg-gray-400 rounded transition-colors">
                   {{ tool }}
                 </button>
               </div>
               <textarea ref="descriptionTextarea" v-model="form.description" rows="4"
-                class="w-full px-3 py-2 border-2 bg-white  rounded focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical"
+                class="w-full px-3 py-2 border-2 bg-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical"
                 placeholder="Enter formatted description here..."></textarea>
             </div>
           </div>
 
-           <!-- CAPTCHA -->
+          <!-- CAPTCHA -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Captcha</label>
             <div class="flex items-start space-x-4">
               <div class="flex-shrink-0">
                 <div class="bg-gray-600 px-4 py-8 rounded border-2 border-gray-400 relative overflow-hidden">
-                  <canvas 
-                    ref="captchaCanvas"
-                    width="120" 
-                    height="40"
-                    class="bg-gray-200 rounded"
-                  ></canvas>
-                  <button
-                    type="button"
-                    @click="refreshCaptcha"
-                    class="absolute top-1 right-1 text-white hover:text-gray-300 text-xs"
-                    title="Refresh Captcha"
-                  >
+                  <canvas ref="captchaCanvas" width="120" height="40" class="bg-gray-200 rounded"></canvas>
+                  <button type="button" @click="refreshCaptcha"
+                    class="absolute top-1 right-1 text-white hover:text-gray-300 text-xs" title="Refresh Captcha">
                     ⟲
                   </button>
                 </div>
               </div>
               <div class="flex-1">
-                <input 
-                  type="text" 
-                  v-model="form.captcha"
+                <input type="text" v-model="form.captcha"
                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                  placeholder="Enter captcha code"
-                  maxlength="6"
-                  required
-                >
+                  placeholder="Enter captcha code" maxlength="6" required>
                 <p class="text-xs text-gray-500 mt-1">Enter the characters shown in the image above</p>
               </div>
             </div>
@@ -262,12 +269,13 @@ export default {
   data() {
     return {
       isSubmitting: false,
-      selectedFileName: '',
-      recentPosts: [
-        { id: 1, title: 'Post about new technology trends and innovations' },
-        { id: 2, title: 'How to build modern web applications' },
-        { id: 3, title: 'Best practices for responsive design' },
-        { id: 4, title: 'Tips for improving website performance' }
+      selectedFilePath: '',
+      captchaCode: '',
+      showToast: false,
+      copiedUrl: null,
+      announceUrls: [
+        { id: 1, link: 'http://tracker.example.com:8080/announce' },
+        { id: 2, link: 'http://tracker2.example.com:6969/announce' }
       ],
       formatTools: ['Bold', 'Italic', 'Underline', 'Quote', 'Code', 'List', 'Link', 'Full Screen'],
       form: {
@@ -278,71 +286,107 @@ export default {
         type: '',
         tags: '',
         description: '',
-        file: null
+        torrentFile: null,
+        captcha: ''
       }
     }
   },
   methods: {
+    // Open file dialog
+    openFileDialog() {
+      this.$refs.fileInput.click();
+    },
+
+    // Handle file selection
+    handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.form.torrentFile = file;
+        this.selectedFilePath = file.name; // Show just filename for security
+        
+        // For debugging - you can see full file info in console
+        console.log('Selected file:', {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          lastModified: new Date(file.lastModified)
+        });
+        
+        this.showToast = true;
+        setTimeout(() => this.showToast = false, 3000);
+      }
+    },
+
+    // Submit form with file
     async submitPost() {
       this.isSubmitting = true;
 
       try {
         // Validate required fields
-        if (!this.form.title || !this.form.content || !this.form.language || !this.form.category || !this.form.type) {
-          alert('Please fill in all required fields');
+        if (!this.form.title || !this.form.content || !this.form.language || 
+            !this.form.category || !this.form.type || !this.form.torrentFile) {
+          alert('Please fill in all required fields and select a torrent file');
           return;
         }
 
-        // Prepare form data
+        // Validate CAPTCHA
+        if (this.form.captcha.toUpperCase() !== this.captchaCode) {
+          alert('Invalid CAPTCHA code. Please try again.');
+          this.refreshCaptcha();
+          return;
+        }
+
+        // Prepare FormData for file upload
         const formData = new FormData();
+        
+        // Add all form fields
         Object.keys(this.form).forEach(key => {
-          if (this.form[key]) {
+          if (key === 'torrentFile' && this.form[key]) {
+            formData.append('torrent_file', this.form[key]);
+          } else if (this.form[key] && key !== 'torrentFile') {
             formData.append(key, this.form[key]);
           }
         });
 
-        // Here you would typically make an API call
-        // Example: await this.$http.post('/api/posts', formData);
+        // Laravel API call example
+        const response = await fetch('/torrents', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            // Don't set Content-Type header - let browser set it with boundary for FormData
+          }
+        });
 
-        console.log('Submitting post:', this.form);
-
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        alert('Blog post submitted successfully!');
-        this.resetForm();
+        if (response.ok) {
+          const result = await response.json();
+          alert('Torrent uploaded successfully!');
+          this.resetForm();
+        } else {
+          throw new Error('Upload failed');
+        }
 
       } catch (error) {
         console.error('Error submitting post:', error);
-        alert('Error submitting post. Please try again.');
+        alert('Error uploading torrent. Please try again.');
       } finally {
         this.isSubmitting = false;
       }
     },
 
-    handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.form.file = file;
-        this.selectedFileName = file.name;
-        console.log('File selected:', file.name);
+    // Copy URL to clipboard
+    async copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        const urlObj = this.announceUrls.find(url => url.link === text);
+        this.copiedUrl = urlObj.id;
+        setTimeout(() => this.copiedUrl = null, 2000);
+      } catch (err) {
+        console.error('Failed to copy: ', err);
       }
     },
 
-    handleDrop(event) {
-      const files = event.dataTransfer.files;
-      if (files.length > 0) {
-        const file = files[0];
-        if (file.type.startsWith('image/')) {
-          this.form.file = file;
-          this.selectedFileName = file.name;
-          console.log('File dropped:', file.name);
-        } else {
-          alert('Please select an image file');
-        }
-      }
-    },
-
+    // Apply text formatting
     applyFormat(tool) {
       const textarea = this.$refs.descriptionTextarea;
       const start = textarea.selectionStart;
@@ -382,13 +426,13 @@ export default {
         formattedText +
         this.form.description.substring(end);
 
-      // Focus back to textarea
       this.$nextTick(() => {
         textarea.focus();
         textarea.setSelectionRange(start + formattedText.length, start + formattedText.length);
       });
     },
 
+    // Reset form
     resetForm() {
       this.form = {
         title: '',
@@ -398,17 +442,17 @@ export default {
         type: '',
         tags: '',
         description: '',
-        file: null,
+        torrentFile: null,
         captcha: ''
       };
-      this.selectedFileName = '';
+      this.selectedFilePath = '';
       this.$refs.fileInput.value = '';
       this.refreshCaptcha();
     },
 
+    // Generate CAPTCHA
     generateCaptcha() {
-      // Generate random 6-character alphanumeric string
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Excluded similar looking characters
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       this.captchaCode = '';
       for (let i = 0; i < 6; i++) {
         this.captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -416,19 +460,17 @@ export default {
       this.drawCaptcha();
     },
 
+    // Draw CAPTCHA on canvas
     drawCaptcha() {
       this.$nextTick(() => {
         const canvas = this.$refs.captchaCanvas;
         if (!canvas) return;
-        
+
         const ctx = canvas.getContext('2d');
         const width = canvas.width;
         const height = canvas.height;
 
-        // Clear canvas
         ctx.clearRect(0, 0, width, height);
-
-        // Set background
         ctx.fillStyle = '#f3f4f6';
         ctx.fillRect(0, 0, width, height);
 
@@ -451,11 +493,8 @@ export default {
           const char = this.captchaCode[i];
           const x = (width / this.captchaCode.length) * i + (width / this.captchaCode.length) / 2;
           const y = height / 2 + (Math.random() - 0.5) * 8;
-          
-          // Random color for each character
+
           ctx.fillStyle = `hsl(${Math.random() * 360}, 60%, 40%)`;
-          
-          // Random rotation
           ctx.save();
           ctx.translate(x, y);
           ctx.rotate((Math.random() - 0.5) * 0.5);
@@ -479,6 +518,7 @@ export default {
       });
     },
 
+    // Refresh CAPTCHA
     refreshCaptcha() {
       this.generateCaptcha();
       this.form.captcha = '';
@@ -492,7 +532,6 @@ export default {
 </script>
 
 <style scoped>
-/* Custom styles if needed */
 .custom-file-input {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }

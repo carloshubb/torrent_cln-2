@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use SandFox\Bencode\Bencode;
 use App\Models\Torrent;
 use App\Models\PopularTorrent;
 use App\Models\HomeImageList;
 use App\Models\MovieLibrary;
 use App\Models\SubCategory;
+use App\Models\TorrentDetail;
 
 class TorrentController extends Controller
 {
@@ -80,7 +81,7 @@ class TorrentController extends Controller
             $torrents['subcategories'] = SubCategory::with(['category',])
                 ->whereHas('category', function ($query) use ($category) {
                     $query->where('slug', $category);
-                })->get();   
+                })->get();
         } // Fetch most Category torrents based on type
         else if ($type === 'trending') {
             $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending Torrents last 24 hours')
@@ -134,5 +135,66 @@ class TorrentController extends Controller
             return $movie;
         });
         return response()->json($movies);
+    }
+
+    public function store(Request $request)
+    {
+
+        $torrentFile = $request->file('torrent_file');
+        $rawData = file_get_contents($torrentFile->getRealPath());
+        $torrent = Bencode::decode($rawData);
+
+        // Get the raw bencoded "info" dictionary (important for infohash)
+        $infoRaw = Bencode::encode($torrent['info']);
+
+        // Calculate SHA-1 hash
+        $infoHashBinary = sha1($infoRaw, true);   // binary form
+        $infoHashHex    = sha1($infoRaw);         // hex form (for display)
+
+        // Torrent metadata
+        $name = $torrent['info']['name'] ?? '';
+        $pieceLength = $torrent['info']['piece length'] ?? 0;
+
+        // Calculate total size
+        $totalSize = 0;
+        if (isset($torrent['info']['files'])) {
+            // Multi-file torrent
+            foreach ($torrent['info']['files'] as $file) {
+                $totalSize += $file['length'];
+            }
+        } else {
+            // Single-file torrent
+            $totalSize = $torrent['info']['length'] ?? 0;
+        }
+        $data['file_name'] = $name;
+        $total_size = number_format($totalSize / 1048576, 2) . " MB";
+        $magnet = "magnet:?xt=urn:btih:$infoHashHex&dn=" . urlencode($name);
+        $data['file_name'] = $name;
+        //dd($request->all());
+        $torrent = new Torrent();
+        $torrent->name = $request->title ? $request->title : '';
+        $torrent->slug = '124567sydh9i-6ukuhyuk8u-9iy';
+        $torrent->description = $request->description ? $request->description : '';;
+        $torrent->category_id = 1;
+        $torrent->subcategory_id = 1;
+        $torrent->magnet_link = $magnet;
+        $torrent->info_hash = $infoHashHex;
+        $torrent->size_formatted = $total_size;
+        $torrent->seeders = 0;
+        $torrent->leechers = 0;
+        $torrent->save();
+
+        $torrent_detail = new TorrentDetail();
+        $torrent_detail->torrent_id =  $torrent->id;
+        $torrent_detail->full_description =  $request->description;
+        $torrent_detail->language =  $request->language;
+        $torrent_detail->seeders =  0;
+        $torrent_detail->leechers =  0;
+        $torrent_detail->magnet_link =  $magnet;
+        $torrent_detail->infohash =  $infoHashHex;
+        $torrent_detail->description =  $request->description;
+        $torrent_detail->save();
+        dd($torrent,$torrent_detail);
+        
     }
 }

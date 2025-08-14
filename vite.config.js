@@ -13,11 +13,13 @@ export default defineConfig({
         tailwindcss(),
         
     ],
+    base: '/',
     server: {
-        //https: true,
-        host: '127.0.0.1', // or 0.0.0.0
+        host: '127.0.0.1',
+        // https: true,
+        // host: '0.0.0.0',
         // hmr: {
-        //     host: 'myapp.loca.lt',
+        //     host: '1331x.com',
         //     protocol: 'wss',
         // },
     },
