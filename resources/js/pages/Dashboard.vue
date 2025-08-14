@@ -20,6 +20,7 @@ async function fetchMostPopularTorrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
+      icon: 'flaticon-top',
       title: 'MOST POPULAR THIS WEEK',
       data: response.data,
       page: 'dashboard'
@@ -36,6 +37,7 @@ async function fetchPopularMovieTorrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
+      icon: 'flaticon-movies',
       title: 'Popular Movie Torrents THIS WEEK',
       data: response.data,
       page: 'dashboard'
@@ -52,6 +54,7 @@ async function fetchPopularForeignMovieTorrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
+      icon: 'flaticon-movies',
       title: 'Popular Foreign Movie Torrents THIS WEEK',
       data: response.data,
       page: 'dashboard'
@@ -68,6 +71,7 @@ async function fetchPopularTVTorrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
+      icon: 'flaticon-tv',
       title: 'Popular TV Torrents THIS WEEK',
       data: response.data,
       page: 'dashboard'
@@ -84,6 +88,7 @@ async function fetchPopularMusicTorrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
+      icon: 'flaticon-music',
       title: 'Popular Music Torrents THIS WEEK',
       data: response.data,
       page: 'dashboard'
@@ -100,6 +105,7 @@ async function fetchPopularApplicationTorrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
+      icon: 'flaticon-apps',
       title: 'Popular Application Torrents THIS WEEK',
       data: response.data,
       page: 'dashboard'
@@ -116,6 +122,7 @@ async function fetchPopularGameTorrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
+      icon: 'flaticon-games',
       title: 'Popular Game Torrents THIS WEEK',
       data: response.data,
       page: 'dashboard'
@@ -132,6 +139,7 @@ async function fetchPopularOtherTorrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
+      icon: 'flaticon-other',
       title: 'Popular Other Torrents THIS WEEK',
       data: response.data,
       page: 'dashboard'
@@ -297,7 +305,7 @@ onMounted(() => {
   
   <AppLayout>
     <TorrentHead :dashboard_images="dashboard_images" :page="props.page" />
-    <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page"
+    <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page" :icon="row.icon"
       :head_title="row.title" />
   </AppLayout>
 
