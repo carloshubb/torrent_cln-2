@@ -118,14 +118,14 @@ class FectchExternalHomeDataDaily extends Command
         foreach ($torrents as $torrentData) {
             try {
                 // Validate required fields before processing
-                if (empty($torrentData['name']) || empty($torrentData['sub_category_id'])) {
+                if (empty($torrentData['name']) || empty($torrentData['subcategory_id'])) {
                     $this->warn("Skipping torrent - missing required fields");
                     continue;
                 }
                 // Map the scraper data to the proper format using the model method
 
                 $popular_torrent = new PopularTorrent();
-                $popular_torrent->sub_category_id = $torrentData['sub_category_id'];
+                $popular_torrent->subcategory_id = $torrentData['subcategory_id'];
                 $popular_torrent->torrent_link = $torrentData['torrent_link'];
                 $popular_torrent->name = $torrentData['name'];
                 $popular_torrent->seeders = $torrentData['seeds'];
@@ -159,9 +159,9 @@ class FectchExternalHomeDataDaily extends Command
         $suburl = $columns->filter('td.coll-1.name a')->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(0)->attr('href') : null;
         if ($suburl) {
             $tmp_list = explode("/", $suburl)[2];
-            $torrent['sub_category_id'] = $tmp_list ?  $tmp_list : null;
+            $torrent['subcategory_id'] = $tmp_list ?  $tmp_list : null;
         } else {
-            $torrent['sub_category_id'] = null;
+            $torrent['subcategory_id'] = null;
         }
         $this->info($suburl);
         $suburl = $columns->filter('td.coll-1.name a')->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(0)->attr('href') : null;
@@ -176,7 +176,7 @@ class FectchExternalHomeDataDaily extends Command
         $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
         else $torrent['uploader'] = $uploader;
-        $torrentLink = Torrent::where('name', $torrent['name'])->where('sub_category_id', $torrent['sub_category_id'])->first();
+        $torrentLink = Torrent::where('name', $torrent['name'])->where('subcategory_id', $torrent['subcategory_id'])->first();
         $torrent['torrent_link'] = $torrentLink  ? $torrentLink->torrent_link  : null;
 
         return $torrent;

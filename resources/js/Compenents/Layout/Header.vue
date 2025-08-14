@@ -2,37 +2,31 @@
   <header class="bg-gray-800 border-b border-gray-700">
     <!-- Top Bar -->
     <div class="min-h-[40px] bg-[#000] border-b-5 border-[#822a0b] items-center ">
-    <div class="mx-auto w-full grid-cols-1 gap-10 container text-right ">
-      <a href="" class="title text-white hover:text-red-600">Register</a>
-      |
-      <a href="/login" class="title text-red-600 hover:text-red-600">Login</a>
-      
+      <div class="mx-auto w-full grid-cols-1 gap-10 container text-right ">
+        <span  v-if="isLoggedIn" class="title text-white hover:text-red-600" @click="logout">Logout</span>
+        <a href="/login" v-if="!isLoggedIn" class="title text-red-600 hover:text-red-600">Login</a>
+
+      </div>
+
     </div>
-    
-  </div>
     <!-- Header -->
     <div class="bg-black/20 backdrop-blur-sm border-b border-orange-500/50">
       <div class="max-w-7xl mx-auto px-4">
-          
+
         <!-- Main Header -->
         <div class="flex items-center justify-between py-4">
           <div class="text-4xl font-bold text-white">
             1331<span class="text-orange-500">X</span>
           </div>
-          
+
           <div class="flex items-center space-x-2 flex-1 max-w-md mx-8">
-            <input
-              type="text"
-              placeholder="Search for torrents..."
-              v-model="searchQuery"
-              class="flex-1 bg-gray-800 border border-gray-600 text-white px-4 py-2 rounded-l focus:outline-none focus:border-orange-500"
-            />
-            <button 
-              @click="handleSearch"
-              class="bg-orange-500 hover:bg-orange-700 text-white px-6 py-2 rounded-r transition-colors flex items-center"
-            >
+            <input type="text" placeholder="Search for torrents..." v-model="searchQuery"
+              class="flex-1 bg-gray-800 border border-gray-600 text-white px-4 py-2 rounded-l focus:outline-none focus:border-orange-500" />
+            <button @click="handleSearch"
+              class="bg-orange-500 hover:bg-orange-700 text-white px-6 py-2 rounded-r transition-colors flex items-center">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
               SEARCH
             </button>
@@ -41,17 +35,12 @@
 
         <!-- Navigation -->
         <nav class="w-full max-w-9/10 flex space-x-3 mb-3">
-          <button 
-            v-for="(tab, index) in navTabs" 
-            :key="index"
-            @click="openMenu(tab)"
-            :class="[
-              'px-23 py-3 transition-colors',
-              index === 0 
-                ? 'bg-gray-700 text-white-bold border-l-3 border-orange-100 hover:bg-black-900' 
-                : 'bg-orange-600 text-white hover:bg-gray-700'
-            ]"
-          >
+          <button v-for="(tab, index) in navTabs" :key="index" @click="openMenu(tab)" :class="[
+            'px-23 py-3 transition-colors',
+            index === 0
+              ? 'bg-gray-700 text-white-bold border-l-3 border-orange-100 hover:bg-black-900'
+              : 'bg-orange-600 text-white hover:bg-gray-700'
+          ]">
             {{ tab.title }}
           </button>
         </nav>
@@ -61,22 +50,22 @@
 </template>
 
 <script>
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 
 import { ref, reactive, onMounted } from 'vue'
-
+const isLoggedIn = ref(false);
 export default {
   name: 'TorrentSite',
   setup() {
     const searchQuery = ref('')
-    
-    const navTabs = [{title :'HOME',slug:"/"}, 
-                     {title :'UPLOAD',slug:"/upload"},
-                     {title :'RULES',slug:"/rules"},
-                     {title :'CONTACT',slug:"/contact"},
-                     {title :'ABOUT US',slug:"/about"}];
-    
-  
+
+    const navTabs = [{ title: 'HOME', slug: "/" },
+    { title: 'UPLOAD', slug: "/upload" },
+    { title: 'RULES', slug: "/rules" },
+    { title: 'CONTACT', slug: "/contact" },
+    { title: 'ABOUT US', slug: "/about" }];
+
+
 
     const moviePosters = reactive([
       { title: "The Meg 2", quality: "1080p" },
@@ -90,7 +79,7 @@ export default {
 
     const browseCategories = [
       'Trending Torrents',
-      'Movie library', 
+      'Movie library',
       'Top 100 Torrents',
       'Anime',
       'Applications',
@@ -120,11 +109,11 @@ export default {
     const handleSearch = () => {
       if (searchQuery.value.trim()) {
         console.log('Searching for:', searchQuery.value)
-        window.location.href = "/search/"+searchQuery.value+"/1/";
+        window.location.href = "/search/" + searchQuery.value + "/1/";
       }
     }
 
-    
+
 
     const browseCategory = (category) => {
       console.log('Browsing category:', category)
@@ -137,24 +126,46 @@ export default {
       // Implement external link logic
       // Open in new tab or navigate
     }
-    const openMenu = (item) =>{
+    const openMenu = (item) => {
       console.log(item);
       window.location.href = item.slug;
     }
+
+    const logout = async () => {
+      try {
+        const response = await fetch('/logout', {
+          method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json'
+          }
+        });
+        window.location.href = "/";
+        // if (response.redirected) {
+        //   window.location.href = response.url; // Follow Laravel redirect
+        // }
+      } catch (error) {
+        console.error('Logout failed:', error);
+      }
+    };
+
     onMounted(() => {
-     
+      const page = usePage();
+      isLoggedIn.value = !!page.props.auth.user;
+      console.log(isLoggedIn.value);
+      
       // Initialize component, fetch data, etc.
     })
 
     return {
       searchQuery,
       navTabs,
-     
+      isLoggedIn,
       moviePosters,
       browseCategories,
       externalLinks,
       handleSearch,
-     
+      logout,
       openMenu,
       browseCategory,
       openLink

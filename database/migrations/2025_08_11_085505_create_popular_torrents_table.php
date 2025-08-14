@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('popular_torrents', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sub_category_id')->nullable(); // Foreign key to torrents table
+            $table->unsignedBigInteger('subcategory_id')->nullable(); // Foreign key to torrents table
             $table->String('torrent_link')->nullable(); // Number of views
             $table->String('category_title')->nullable(); // Number of views
             $table->String('name')->nullable(); // Number of views

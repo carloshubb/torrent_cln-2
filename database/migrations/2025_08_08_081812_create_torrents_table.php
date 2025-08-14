@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('slug', 500)->unique();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('sub_category_id')->nullable();
+            $table->unsignedBigInteger('subcategory_id')->nullable();
             $table->unsignedBigInteger('uploader_id')->nullable();
             $table->string('uploader', 255)->nullable();// SHA1 hash
             $table->string('info_hash', 40)->nullable();// SHA1 hash

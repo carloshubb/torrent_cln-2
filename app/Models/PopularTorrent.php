@@ -10,7 +10,7 @@ class PopularTorrent extends Model
     protected $table = 'popular_torrents';
 
     protected $fillable = [
-        'sub_category_id',
+        'subcategory_id',
         'torrent_link',
         'category_title',
         'name',

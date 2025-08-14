@@ -166,8 +166,22 @@ async function fetchCategoryTorrents(category, page) {
     const response = await torrentService.get(`/torrents/type?type=category&cat=${category}&page=${page}`);
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data type=subcategory&sub_cat=someValue
+    const titles = {
+      Anime: "Anime Torrents download list",
+      Apps: "Apps Torrents download list",
+      Documentaries: "Documentaries Torrents download list",
+      Games: "Games Torrents download list",
+      Movies: "Movies Torrents download list",
+      Music: "Music Torrents download list",
+      Other: "Other Torrents download list",
+      TV: "TV Torrents download list",
+      XXX: "XXX Torrents download list"
+    };
+
+    const title = titles[category] || "Torrents download list";   
+       
     dashboard_data.push({
-      title: '',
+      title: title,
       data: response.data,
       page: 'cat'
     })
@@ -183,7 +197,7 @@ async function fetchTrendingTorrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data type=subcategory&sub_cat=someValue
     dashboard_data.push({
-      title: '',
+      title: 'TRENDING TORRENTS LAST 24 HOURS',
       data: response.data,
       page: 'trending'
     })
@@ -199,7 +213,7 @@ async function fetchTop100Torrents() {
     // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data type=subcategory&sub_cat=someValue
     dashboard_data.push({
-      title: '',
+      title: 'TOP 100 TORRENTS',
       data: response.data,
       page: 'top'
     })
@@ -219,11 +233,11 @@ async function fetchHomePageImage() {
 }
 
 // Fetch Search Torrent Data
-async function fetchSearchTorrentData(search,page) {
+async function fetchSearchTorrentData(search, page) {
   try {
     const response = await torrentService.get(`/torrents/type?type=search&search=${search}&page=${page}`);
-     dashboard_data.push({
-      title: '',
+    dashboard_data.push({
+      title: `Searching  for: ${search}`,
       data: response.data,
       page: 'search'
     })
@@ -236,7 +250,7 @@ onMounted(() => {
   console.log('Page:', props.page);
   fetchHomePageImage()
   if (props.page === 'dashboard') {
-    
+
     dashboard_data.splice(0)
     fetchMostPopularTorrents()
     fetchPopularMovieTorrents()
@@ -246,7 +260,7 @@ onMounted(() => {
     fetchPopularApplicationTorrents()
     fetchPopularGameTorrents()
     fetchPopularOtherTorrents()
-    
+
   }
   else if (props.page === 'sub') {
     dashboard_data.splice(0)
@@ -273,18 +287,18 @@ onMounted(() => {
     dashboard_data.splice(0)
     const search = props.params.split("@")[0] ? props.params.split("@")[0] : null;
     const page = props.params.split("@")[1] ? props.params.split("@")[1] : null;
-    fetchSearchTorrentData(search,page)
+    fetchSearchTorrentData(search, page)
   }
 
 
 })
 </script>
 <template>
+  
   <AppLayout>
-    <TorrentHead :dashboard_images = "dashboard_images" :page = "props.page"/>
+    <TorrentHead :dashboard_images="dashboard_images" :page="props.page" />
     <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page"
       :head_title="row.title" />
-
   </AppLayout>
 
 </template>

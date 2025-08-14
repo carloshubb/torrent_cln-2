@@ -110,7 +110,7 @@ class FetchTrendingPage extends Command
                 // Map the scraper data to the proper format using the model method
                
                 $popular_torrent = new PopularTorrent();               
-                $popular_torrent->sub_category_id = $torrentData['sub_category_id'];                
+                $popular_torrent->subcategory_id = $torrentData['subcategory_id'];                
                 $popular_torrent->torrent_link = $torrentData['torrent_link'];
                 $popular_torrent->name = $torrentData['name'];
                 $popular_torrent->seeders = $torrentData['seeds'];                
@@ -158,7 +158,7 @@ class FetchTrendingPage extends Command
         $torrentLink = Torrent::where('name',$torrent['name'])->first();
         $torrent['torrent_link'] = $torrentLink  ? $torrentLink->torrent_link  : null; 
         $torrent['ddd'] = $columns->filter('td.coll-1.name span.active i')->attr('class');    
-        $torrent['sub_category_id'] =  null;  
+        $torrent['subcategory_id'] =  null;  
         
         return $torrent;
     }

@@ -7,9 +7,9 @@ import { reactive } from 'vue'
 
 </script>
 <template>
+  <router-view></router-view>
   <AppLayout> 
-     <TorrentAdminUpload/>
-    
+     <TorrentAdminUpload/>    
   </AppLayout>
    
 </template>

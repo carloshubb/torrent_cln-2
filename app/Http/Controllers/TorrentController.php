@@ -9,6 +9,7 @@ use App\Models\Torrent;
 use App\Models\PopularTorrent;
 use App\Models\HomeImageList;
 use App\Models\MovieLibrary;
+use App\Models\SubCategory;
 
 class TorrentController extends Controller
 {
@@ -19,44 +20,50 @@ class TorrentController extends Controller
         $type = $request->query('type'); // 'mostpopular'        
         // Fetch torrents based on type
         if ($type === 'mostpopular') {
-            $torrents = PopularTorrent::with('subCategory')
+            $torrents['data'] = PopularTorrent::with('subcategory')
                 ->where('category_title', 'Most Popular Torrents this week')
                 ->paginate(10);
         } // Fetch most movie torrents based on type
         else if ($type === 'popularmovie') {
-            $torrents = PopularTorrent::with('subCategory')
+            $torrents['data'] = PopularTorrent::with('subcategory')
                 ->where('category_title', 'Popular Movie Torrents')
                 ->paginate(10);
         } // Fetch most foreign movie torrents based on type
         else if ($type === 'popularforeignmovie') {
-            $torrents = PopularTorrent::where('category_title', 'Popular Foreign Movie Torrents')
+            $torrents['data'] = PopularTorrent::with('subcategory')
+                ->where('category_title', 'Popular Foreign Movie Torrents')
                 ->paginate(10);
         } // Fetch most TV torrents based on type
         else if ($type === 'populartv') {
-            $torrents = PopularTorrent::where('category_title', 'Popular TV Torrents')
+            $torrents['data'] = PopularTorrent::with('subcategory')
+                ->where('category_title', 'Popular TV Torrents')
                 ->paginate(10);
         } // Fetch most Game torrents based on type
         else if ($type === 'populargame') {
-            $torrents = PopularTorrent::where('category_title', 'Popular Game Torrents')
+            $torrents['data'] = PopularTorrent::with('subcategory')
+                ->where('category_title', 'Popular Game Torrents')
                 ->paginate(10);
         } // Fetch most Music torrents based on type
         else if ($type === 'popularmusic') {
-            $torrents = PopularTorrent::where('category_title', 'Popular Music Torrents')
+            $torrents['data'] = PopularTorrent::with('subcategory')
+                ->where('category_title', 'Popular Music Torrents')
                 ->paginate(10);
         } // Fetch most Application torrents based on type
         else if ($type === 'popularapplication') {
-            $torrents = PopularTorrent::where('category_title', 'Popular Application Torrents')
+            $torrents['data'] = PopularTorrent::with('subcategory')
+                ->where('category_title', 'Popular Application Torrents')
                 ->paginate(10);
         } // Fetch most Application torrents based on type
         else if ($type === 'popularother') {
-            $torrents = PopularTorrent::where('category_title', 'Popular Other Torrents')
+            $torrents['data'] = PopularTorrent::with('subcategory')
+                ->where('category_title', 'Popular Other Torrents')
                 ->paginate(10);
         } // Fetch most Sub Category torrents based on type
         else if ($type === 'subcategory') {
             $subcategory = $request->query('sub_cat');
             $currentPage = $request->query('page', 1); // get 'page' from query string, default to 1
             //dd($subcategory);
-            $torrents = Torrent::where('sub_category_id', $subcategory)
+            $torrents['data'] = Torrent::with('subcategory')->where('subcategory_id', $subcategory)
                 ->orderByDesc('approved_at')
                 ->paginate(10, ['*'], 'page', $currentPage + 1);
         } // Fetch most Category torrents based on type
@@ -64,31 +71,39 @@ class TorrentController extends Controller
             $category = $request->query('cat');
             $currentPage = $request->query('page', 1); // get 'page' from query string, default to 1
             //dd($category);
-            $torrents = Torrent::whereHas('category', function ($query) use ($category) {
-                $query->where('slug', $category);
-            })->orderByDesc('approved_at')
+            $torrents['data'] = Torrent::with(['category', 'subcategory'])
+                ->whereHas('category', function ($query) use ($category) {
+                    $query->where('slug', $category);
+                })
+                ->orderByDesc('approved_at')
                 ->paginate(10, ['*'], 'page', $currentPage);
+            $torrents['subcategories'] = SubCategory::with(['category',])
+                ->whereHas('category', function ($query) use ($category) {
+                    $query->where('slug', $category);
+                })->get();   
         } // Fetch most Category torrents based on type
         else if ($type === 'trending') {
-            $torrents = PopularTorrent::where('category_title', 'Trending Torrents last 24 hours')
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending Torrents last 24 hours')
                 ->paginate(10000);
         } // Fetch most Category torrents based on type
         else if ($type === 'top') {
-            $torrents = PopularTorrent::where('category_title', 'top 100 Torrents')
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 Torrents')
                 ->paginate(10000);
         } // Fetch most Category torrents based on type
         else if ($type === 'homeimage') {
-            $torrents = HomeImageList::all();
+            $torrents['data'] = HomeImageList::all();
         } // Fetch Search Torrent Data
         else if ($type === 'search') {
             $search = $request->query('search');
+            //dd($search);
             $page = $request->query('page');
-            $torrents = Torrent::where('name', 'LIKE', `%{$search}%`)
-                ->orwhere('uploader', 'LIKE', `%{$search}%`)
+            $search = trim($search);
+            $torrents['data'] = Torrent::with(['category', 'subcategory'])->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('uploader', 'LIKE', "%{$search}%")
                 ->orderByDesc('approved_at')
                 ->paginate(10, ['*'], 'page', $page);
         } else {
-            //$torrents = Torrent::all();
+            //$torrents['data'] = Torrent::all();
         }
 
         return response()->json($torrents);
