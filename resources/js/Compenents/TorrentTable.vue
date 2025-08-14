@@ -187,8 +187,8 @@ export default {
   },
 
   setup(props) {
-    const currentPage = ref(props.torrents.current_page || 1)
-    const lastPage = ref(props.torrents.last_page || 1) // default to 7 if not passed
+    const currentPage = ref(props.torrents.data.current_page || 1)
+    const lastPage = ref(props.torrents.data.last_page || 1) // default to 7 if not passed
     const torrents = ref(props.torrents.data.data)
     const page_type = ref(props.page)
     const subcategories = props.torrents.subcategories ? ref(props.torrents.subcategories) : null
@@ -196,7 +196,7 @@ export default {
       .split('/')
       .filter(segment => segment); // remove empty entries    
     const torrent_type = pathSegments[1]; // "Anime"
-    console.log(props.torrents.subcategories);
+    console.log(props.torrents, currentPage, torrents);
 
     const formatApprovedAt = (dateString) => {
       const date = dayjs(dateString)
@@ -321,16 +321,16 @@ export default {
 
 /*  */
 .featured-list .featured-heading {
-    line-height: 30px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+  line-height: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .featured-heading {
-    background-color: #d1d1d1;
-    border-radius: 4px 4px 0 0;
-    padding: 0 13px 0 68px;
-    position: relative;
+  background-color: #d1d1d1;
+  border-radius: 4px 4px 0 0;
+  padding: 0 13px 0 68px;
+  position: relative;
 }
 
 
@@ -346,27 +346,28 @@ export default {
   border-top-left-radius: 3px;
   background-color: #d63600;
 }
+
 .featured-icon:after {
-    position: absolute;
-    right: -8px;
-    top: 50%;
-    content: "";
-    height: 0;
-    width: 0;
-    margin-top: -8px;
-    border-bottom: 8px solid transparent;
-    border-left: 8px solid #d63600;
-    border-top: 8px solid transparent;
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  content: "";
+  height: 0;
+  width: 0;
+  margin-top: -8px;
+  border-bottom: 8px solid transparent;
+  border-left: 8px solid #d63600;
+  border-top: 8px solid transparent;
 }
 
 .featured-heading .featured-icon i {
-    left: 50%;
-    margin-left: -12px;
-    margin-top: -12px;
-    position: absolute;
-    top: 50%;
-    line-height: 1;
-    font-size: 22px;
+  left: 50%;
+  margin-left: -12px;
+  margin-top: -12px;
+  position: absolute;
+  top: 50%;
+  line-height: 1;
+  font-size: 22px;
 }
 
 </style>

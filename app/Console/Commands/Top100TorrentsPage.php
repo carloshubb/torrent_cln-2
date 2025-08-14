@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Torrent;
 use App\Models\PopularTorrent;
 use DateTime;
+
 class Top100TorrentsPage extends Command
 {
     /**
@@ -28,48 +29,55 @@ class Top100TorrentsPage extends Command
     /**
      * Execute the console command.
      */
-   public function handle()
+    public function handle()
     {
-        $httpClient = HttpClient::create();        
+        $httpClient = HttpClient::create();
         $torrents = [];
-        $url = "https://1337x.to/top-100";
-        $response = $httpClient->request('GET', $url);
-        $html = $response->getContent();
-        $crawler = new Crawler($html);
-        $rows = $crawler->filter('.featured-list');       
-        $rows->each(function (Crawler $row, $i) use (&$torrents) {
-            try {
-                $torrent = [];
-                $category_title = $row->filter('strong')->text();
-                PopularTorrent::where('category_title',$category_title)->delete();
-                $columns = $row->filter('div.table-list-wrap table > tbody > tr');
-                $columns->each(function (Crawler $item, $ii) use (&$torrents,$category_title) {
-                    $this->info("Scraped page {$ii}");
-                    $torrent = $this->extractTorrentData($item);   
-                    $torrent['category_title'] =  $category_title;                
-                    $torrents[] = $torrent;
-                });
-                //
-                if (!empty($torrent['name'])) {
-                  
-                    $torrents[] = $torrent;
+        $urls = [
+            "https://1337x.to/top-100",
+            "https://1337x.to/top-100-movies",
+            "https://1337x.to/top-100-television",
+            "https://1337x.to/top-100-games",
+            "https://1337x.to/top-100-music",
+            "https://1337x.to/top-100-documentaries",
+            "https://1337x.to/top-100-anime",
+            "https://1337x.to/top-100-other",
+            "https://1337x.to/top-100-xxx",
+            "https://1337x.to/top-100-applications"
+        ];
+        foreach ($urls as $url) {  
+            $torrents = [];          
+            $response = $httpClient->request('GET', $url);
+            $html = $response->getContent();
+            $crawler = new Crawler($html);
+            $rows = $crawler->filter('.featured-list');
+            $rows->each(function (Crawler $row, $i) use (&$torrents) {
+                try {
+                    $torrent = [];
+                    $category_title = $row->filter('strong')->text();
+                    PopularTorrent::where('category_title', $category_title)->delete();
+                    $columns = $row->filter('div.table-list-wrap table > tbody > tr');
+                    $columns->each(function (Crawler $item, $ii) use (&$torrents, $category_title) {
+                        $this->info("Scraped page {$ii}");
+                        $torrent = $this->extractTorrentData($item);
+                        $torrent['category_title'] =  $category_title;
+                        $torrents[] = $torrent;
+                    });
+                    //
+                    if (!empty($torrent['name'])) {
+
+                        $torrents[] = $torrent;
+                    }
+                } catch (\Exception $e) {
+                    Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
                 }
-               
-                
-                
-            } catch (\Exception $e) {
-                Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
-            }
-        });
-        
-        $this->saveTorrent($torrents);
-        sleep(0.5);
-        $this->info("Scraping Bonds List complete.");
+            });
+            $this->saveTorrent($torrents);
+            sleep(0.5);
+            $this->info("Scraping {$url} List complete.");
+        }
         // to get price and yield of the bonds, we need to scrape the bond page
-
-
-
-        $this->info("All bonds updated with price and yield.");
+        $this->info("All Top Torrent Scrapping completed.");
     }
     private function convertTimeString($timeStr)
     {
@@ -109,21 +117,20 @@ class Top100TorrentsPage extends Command
                     continue;
                 }
                 // Map the scraper data to the proper format using the model method
-               
-                $popular_torrent = new PopularTorrent();               
-                $popular_torrent->subcategory_id = $torrentData['subcategory_id'];                
+
+                $popular_torrent = new PopularTorrent();
+                $popular_torrent->subcategory_id = $torrentData['subcategory_id'];
                 $popular_torrent->torrent_link = $torrentData['torrent_link'];
                 $popular_torrent->name = $torrentData['name'];
-                $popular_torrent->seeders = $torrentData['seeds'];                
+                $popular_torrent->seeders = $torrentData['seeds'];
                 $popular_torrent->category_title = $torrentData['category_title'];
-                
+
                 $popular_torrent->comments_count = $torrentData['comments_count'];
                 $popular_torrent->leechers = $torrentData['leeches'];
                 $popular_torrent->approved_at = $torrentData['date_uploaded'];
                 $popular_torrent->size_formatted = $torrentData['size'];
                 $popular_torrent->uploader = $torrentData['uploader'];
                 $popular_torrent->save();
-                
             } catch (\Illuminate\Database\QueryException $e) {
                 Log::error("Database error saving torrent: " . $e->getMessage(), [
                     'torrent_data' => $torrentData,
@@ -142,7 +149,7 @@ class Top100TorrentsPage extends Command
 
     private function extractTorrentData(Crawler $columns)
     {
-        
+
         $suburl = $columns->filter('td.coll-1.name a')->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(0)->attr('href') : null;
         if ($suburl) {
             $tmp_list = explode("/", $suburl)[2];
@@ -163,9 +170,9 @@ class Top100TorrentsPage extends Command
         $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
         else $torrent['uploader'] = $uploader;
-        $torrentLink = Torrent::where('name',$torrent['name'])->where('subcategory_id',$torrent['subcategory_id'])->first();
-        $torrent['torrent_link'] = $torrentLink  ? $torrentLink->torrent_link  : null;
-        
+        //$torrentLink = Torrent::where('name', $torrent['name'])->where('subcategory_id', $torrent['subcategory_id'])->first();
+        $torrent['torrent_link'] = $columns->filter('td.coll-1.name a')->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(1)->attr('href') : null;
+
         return $torrent;
     }
 }

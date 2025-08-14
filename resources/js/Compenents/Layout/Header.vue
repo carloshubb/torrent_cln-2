@@ -15,8 +15,8 @@
       <div class="logo text-4xl font-bold text-white mb-2 md:mb-0 md:inline-block md:mr-4">
         1331<span class="text-orange-500">X</span>
       </div>
-        <input type="text" placeholder="Search for torrents..." v-model="searchQuery"
-          class="block w-full md:w-64 md:inline-block focus:outline-none bg-gray-800 border border-gray-600 text-white px-4 py-2 rounded focus:border-orange-500" />
+      <input type="text" placeholder="Search for torrents..." v-model="searchQuery" @keyup.enter="handleSearch"
+        class="block w-full md:w-64 md:inline-block focus:outline-none bg-gray-800 border border-gray-600 text-white px-4 py-2 rounded focus:border-orange-500" />
     </div>
 
     <!-- Navbar -->
@@ -48,7 +48,14 @@
 <script setup>
 import { ref } from "vue";
 const isMenuOpen = ref(false);
-
+const searchQuery = ref(""); // <-- define searchQuery
+// Methods
+const handleSearch = () => {
+  if (searchQuery.value.trim()) {
+    console.log('Searching for:', searchQuery.value)
+    window.location.href = "/search/" + searchQuery.value + "/1/";
+  }
+}
 const navTabs = [{ title: 'HOME', slug: "/" },
 { title: 'UPLOAD', slug: "/upload" },
 { title: 'RULES', slug: "/rules" },

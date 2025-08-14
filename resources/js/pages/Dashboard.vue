@@ -313,7 +313,7 @@ onMounted(() => {
   <Head :title=$page.props.title />
   <AppLayout>
     <TorrentHead v-if="dashboard_images.length > 0" :images="dashboard_images" :page="props.page" />
-    <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page" :icon="row.icon"
+    <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page"   :icon="row.icon"
       :head_title="row.title" />
   </AppLayout>
 </template>
