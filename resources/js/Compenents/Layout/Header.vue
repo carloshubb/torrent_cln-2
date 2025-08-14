@@ -1,27 +1,27 @@
 <template>
   <header class="bg-gray-800 border-b border-gray-700">
     <!-- Top Bar -->
-    <div class="min-h-[40px] bg-[#000] border-b-5 border-[#822a0b] items-center ">
-      <div class="mx-auto w-full grid-cols-1 gap-10 container text-right ">
-        <span  v-if="isLoggedIn" class="title text-white hover:text-red-600" @click="logout">Logout</span>
-        <a href="/login" v-if="!isLoggedIn" class="title text-red-600 hover:text-red-600">Login</a>
-
+    <div class="min-h-[40px] bg-[#000] border-b-5 border-[#822a0b]">
+      <div class="max-w-7xl mx-auto px-4 text-right">
+        <div class="flex-1 items-center py-1">
+          <span v-if="isLoggedIn" class="title text-white hover:text-red-600" @click="logout">Logout</span>
+          <a href="/login" v-if="!isLoggedIn" class="title text-red-600 hover:text-red-600">Login</a>
+        </div>
+        
       </div>
-
     </div>
     <!-- Header -->
     <div class="bg-black/20 backdrop-blur-sm border-b border-orange-500/50">
       <div class="max-w-7xl mx-auto px-4">
-
         <!-- Main Header -->
         <div class="flex items-center justify-between py-4">
           <div class="text-4xl font-bold text-white">
             1331<span class="text-orange-500">X</span>
           </div>
 
-          <div class="flex items-center space-x-2 flex-1 max-w-md mx-8">
+          <div class="flex items-center space-x-2 flex-1 max-w-md 0">
             <input type="text" placeholder="Search for torrents..." v-model="searchQuery"
-              class="flex-1 bg-gray-800 border border-gray-600 text-white px-4 py-2 rounded-l focus:outline-none focus:border-orange-500" />
+              class="flex-1 bg-gray-800 border border-gray-600 text-white px-4 py-2 mr-0 rounded-l focus:outline-none focus:border-orange-500" />
             <button @click="handleSearch"
               class="bg-orange-500 hover:bg-orange-700 text-white px-6 py-2 rounded-r transition-colors flex items-center">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,9 +34,9 @@
         </div>
 
         <!-- Navigation -->
-        <nav class="w-full max-w-9/10 flex space-x-3 mb-3">
+        <nav class="grid grid-cols-5 gap-4 mb-3">
           <button v-for="(tab, index) in navTabs" :key="index" @click="openMenu(tab)" :class="[
-            'px-23 py-3 transition-colors',
+            'flex-1 px-20 py-3 transition-colors',
             index === 0
               ? 'bg-gray-700 text-white-bold border-l-3 border-orange-100 hover:bg-black-900'
               : 'bg-orange-600 text-white hover:bg-gray-700'
@@ -153,7 +153,7 @@ export default {
       const page = usePage();
       isLoggedIn.value = !!page.props.auth.user;
       console.log(isLoggedIn.value);
-      
+
       // Initialize component, fetch data, etc.
     })
 

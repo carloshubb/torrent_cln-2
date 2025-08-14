@@ -46,24 +46,27 @@
 
   </div>
 
-  
+
   <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat' && torrent_type == 'App'">
     <!-- Second row -->
     <div class="gap-2 bg-gray-300 p-2 rounded">
       <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for Applications</h2>
       <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button v-for="(subcategory, index) in subcategories" :key="index" class="btn-icon" @click="goToSubcategory(subcategory)">
+        <button v-for="(subcategory, index) in subcategories" :key="index" class="btn-icon"
+          @click="goToSubcategory(subcategory)">
           <i :class="subcategory.icon"></i> {{ subcategory.name }}
         </button>
       </div>
     </div>
   </div>
+
   <div class="space-y-4 p-4 bg-gray-900" v-if="page_type == 'cat'">
     <!-- Second row -->
     <div class="gap-2 bg-gray-300 p-2 rounded">
       <h2 class="text-orange-600 font-bold text-lg mb-2">Subcategories for {{ torrent_type }}</h2>
       <div class="p-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded flex flex-wrap gap-2">
-        <button v-for="(subcategory, index) in subcategories" :key="index" class="btn-icon" @click="goToSubcategory(subcategory)">
+        <button v-for="(subcategory, index) in subcategories" :key="index" class="btn-icon"
+          @click="goToSubcategory(subcategory)">
           <i :class="subcategory.icon"></i> {{ subcategory.name }}
         </button>
       </div>
@@ -72,10 +75,14 @@
 
   <div class="lg:col-span-3 ">
     <!-- Popular Torrents Section -->
-    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-xl mt-6">
-      <div class="bg-gradient-to-r from-orange-400 to-red-500 px-4 py-3 flex items-center">
-
-        <h2 class="text-white font-bold">⭐⭐⭐⭐⭐{{ head_title }}</h2>
+    <div class="featured-list bg-gray-800 rounded-lg overflow-hidden shadow-xl mt-6">
+      <div class="featured-heading bg-gradient-to-r from-orange-400 to-red-500 px-4 py-3 flex items-center">
+        <h2 class="text-white font-bold">
+          <span class="featured-icon">
+            <i :class=icon></i>
+          </span>
+          {{ head_title }}
+        </h2>
       </div>
 
       <div class="overflow-x-auto">
@@ -161,6 +168,10 @@ dayjs.extend(relativeTime)
 export default {
   name: 'TorrentSite',
   props: {
+    icon: {
+      type: String,
+      default: 'flaticon-top' // Default icon if not provided
+    },
     torrents: {
       type: Object, // Expecting { data: Array, lastPage: Number } or similar
       required: true
@@ -186,7 +197,7 @@ export default {
       .filter(segment => segment); // remove empty entries    
     const torrent_type = pathSegments[1]; // "Anime"
     console.log(props.torrents.subcategories);
-    
+
     const formatApprovedAt = (dateString) => {
       const date = dayjs(dateString)
       const now = dayjs()
@@ -207,7 +218,7 @@ export default {
         currentPage.value = page
       }
     }
-    const goToSubcategory = (subcategory) =>{
+    const goToSubcategory = (subcategory) => {
       window.location.href = `/sub/${subcategory.id}/0/`;
     }
     onMounted(() => {
@@ -226,6 +237,7 @@ export default {
       torrent_type,
       subcategories,
       goToSubcategory,
+      icon: props.icon,
       head_title: props.head_title
     }
   },
@@ -306,4 +318,55 @@ export default {
   text-decoration: underline;
   /* darker orange on hover */
 }
+
+/*  */
+.featured-list .featured-heading {
+    line-height: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.featured-heading {
+    background-color: #d1d1d1;
+    border-radius: 4px 4px 0 0;
+    padding: 0 13px 0 68px;
+    position: relative;
+}
+
+
+.featured-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 50px;
+  padding: 0 10px;
+  display: block;
+  color: #fff;
+  border-top-left-radius: 3px;
+  background-color: #d63600;
+}
+.featured-icon:after {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    content: "";
+    height: 0;
+    width: 0;
+    margin-top: -8px;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #d63600;
+    border-top: 8px solid transparent;
+}
+
+.featured-heading .featured-icon i {
+    left: 50%;
+    margin-left: -12px;
+    margin-top: -12px;
+    position: absolute;
+    top: 50%;
+    line-height: 1;
+    font-size: 22px;
+}
+
 </style>

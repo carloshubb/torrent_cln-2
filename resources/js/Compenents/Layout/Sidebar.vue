@@ -5,16 +5,16 @@
       <div class="bg-gradient-to-r from-orange-500 to-gray-500 px-4 py-3">
         <h3 class="text-white font-bold">BROWSE TORRENTS</h3>
       </div>
-      <div class="p-4 space-y-2">
-        <div v-for="(category, index) in browseCategories" :key="index"
-          class="flex items-center text-gray-300 hover:text-orange-400 cursor-pointer transition-colors py-1"
+      <ul class="list-box">
+        <li v-for="(category, index) in browseCategories" :key="index"
+          class="flex text-gray-300 hover:text-orange-400 cursor-pointer transition-colors px-4 py-1 border-b-1 border-gray-600"
           @click="browseCategory(category)">
-          <div class="w-4 h-4  rounded-sm mr-3 flex items-center justify-center">
-            <div> {{ category.icon}}</div>
-          </div>
-          {{ category.title}}
-        </div>
-      </div>
+          <a href="">
+            <i :class=category.icon></i>
+            {{ category.title }}
+          </a>
+        </li>
+      </ul>
     </div>
 
     <!-- Links -->
@@ -41,19 +41,19 @@ export default {
   name: 'TorrentSite',
   setup() {
     const browseCategories = [
-      {title:'Trending Torrents',icon:'📈',slug:'trending'},
-      {title:'Movie library',icon:'📚',slug:'movielibrary'},
-      {title:'Top 100 Torrents',icon:'⭐',slug:'top-100'},
-      {title:'Anime',icon:'🎌',slug:'Anime'},
-      {title:'Applications',icon:'💾',slug:'Apps'},
-      {title:'Documentaries',icon:'📋',slug:'Documentaries'},
-      {title:'Games',icon:'🎮',slug:'Games'},
-      {title:'Movies',icon:'🎬',slug:'Movies'},
-      {title:'Music',icon:'🎵',slug:'Music'},
-      {title:'Other',icon:'📁',slug:'Other'},
-      {title:'Television',icon:'📺',slug:'TV'},
-      {title:'XXX',icon:'🔞',slug:'XXX'},
-      
+      { title: 'Trending Torrents', icon: 'flaticon-trending', slug: 'trending' },
+      { title: 'Movie library', icon: 'flaticon-movie-library', slug: 'movielibrary' },
+      { title: 'Top 100 Torrents', icon: 'flaticon-top', slug: 'top-100' },
+      { title: 'Anime', icon: 'flaticon-ninja-portrait', slug: 'Anime' },
+      { title: 'Applications', icon: 'flaticon-apps', slug: 'Apps' },
+      { title: 'Documentaries', icon: 'flaticon-documentary', slug: 'Documentaries' },
+      { title: 'Games', icon: 'flaticon-games', slug: 'Games' },
+      { title: 'Movies', icon: 'flaticon-movies', slug: 'Movies' },
+      { title: 'Music', icon: 'flaticon-music', slug: 'Music' },
+      { title: 'Other', icon: 'flaticon-other', slug: 'Other' },
+      { title: 'Television', icon: 'flaticon-tv', slug: 'TV' },
+      { title: 'XXX', icon: 'flaticon-xxx', slug: 'XXX' },
+
     ]
     const externalLinks = [
       '1331x Status',
@@ -73,14 +73,14 @@ export default {
 
     const browseCategory = (category) => {
       console.log('Browsing category:', category)
-      if(category.slug == 'trending' || category.slug == 'top-100'){
-         window.location.href = `/${category.slug}`;       
-      } 
-      else if(category.slug == 'movielibrary'){
-         window.location.href = `/${category.slug}/1/`;       
+      if (category.slug == 'trending' || category.slug == 'top-100') {
+        window.location.href = `/${category.slug}`;
       }
-      else{
-         window.location.href = `/cat/${category.slug}/1/`;       
+      else if (category.slug == 'movielibrary') {
+        window.location.href = `/${category.slug}/1/`;
+      }
+      else {
+        window.location.href = `/cat/${category.slug}/1/`;
       }
       // Implement category browsing logic
       // Navigate to category page or filter torrents
@@ -88,35 +88,35 @@ export default {
 
     const openLink = (link) => {
       console.log('Opening link:', link)
-      if(link == '1331x Status'){
-         window.location.href = `https://1337x-status.org/`;       
-      } 
-      else if(link == '1331x Chat'){
-         window.location.href = `https://1337x.to/login`;       
+      if (link == '1331x Status') {
+        window.location.href = `https://1337x-status.org/`;
       }
-      else if(link == 'Torrent9'){
-         window.location.href = `https://torrentz9.org/`;       
+      else if (link == '1331x Chat') {
+        window.location.href = `https://1337x.to/login`;
       }
-      else if(link == 'uTrix'){
-         window.location.href = `https://uflix.to/`;       
+      else if (link == 'Torrent9') {
+        window.location.href = `https://torrentz9.org/`;
       }
-      else if(link == 'Njalla'){
-         window.location.href = `https://njal.la/`;       
+      else if (link == 'uTrix') {
+        window.location.href = `https://uflix.to/`;
       }
-      else if(link == 'PRQ'){
-         window.location.href = `https://prq.se/`;       
+      else if (link == 'Njalla') {
+        window.location.href = `https://njal.la/`;
       }
-      else if(link == 'Limetorrents'){
-         window.location.href = `https://www.limetorrents.lol/`;       
+      else if (link == 'PRQ') {
+        window.location.href = `https://prq.se/`;
       }
-      else if(link == 'TorrentFunk'){
-         window.location.href = `https://www.torrentfunk.com/`;       
+      else if (link == 'Limetorrents') {
+        window.location.href = `https://www.limetorrents.lol/`;
       }
-      else if(link == 'ThePornDude'){
-         window.location.href = `https://theporndude.com/`;       
+      else if (link == 'TorrentFunk') {
+        window.location.href = `https://www.torrentfunk.com/`;
       }
-      else if(link == 'Torlock'){
-         window.location.href = `https://www.torlock.com/`;       
+      else if (link == 'ThePornDude') {
+        window.location.href = `https://theporndude.com/`;
+      }
+      else if (link == 'Torlock') {
+        window.location.href = `https://www.torlock.com/`;
       }
       // Implement external link logic
       // Open in new tab or navigate
@@ -141,5 +141,27 @@ export default {
 /* Add any component-specific styles here if needed */
 .bg-gray-750 {
   background-color: rgba(168, 174, 185, 0.5);
+}
+
+.list-box li {
+    color: #dadada;
+    display: block;
+    font-size: 14px;
+    line-height: 38px;
+    padding: 0 12px 0 49px;
+    position: relative;
+}
+.list-box li i {
+  height: 30px;
+  left: 12px;
+  margin-right: 7px;
+  position: absolute;
+  top: 0;
+  width: 30px;
+  color: #56add9;
+  font-size: 23px;
+}
+.list-box i.flaticon-trending, .list-box i.flaticon-movie-library, .list-box i.flaticon-tv-library {
+    color: #89ad19;
 }
 </style>
