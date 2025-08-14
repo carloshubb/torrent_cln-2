@@ -255,7 +255,7 @@ async function fetchSearchTorrentData(search, page) {
 }
 // Run fetch on component mount
 onMounted(() => {
-  console.log('Page:', props.page);
+  
   fetchHomePageImage()
   if (props.page === 'dashboard') {
 

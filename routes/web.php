@@ -12,6 +12,7 @@ Route::get('/', function () {
         'params' =>''     
     ]);
 })->name('home');
+
 Route::get('/sub/{param1}/{param2}', function ($param1, $param2) {
     // You can use $param1 and $param2 here
     return Inertia::render('Dashboard', [
