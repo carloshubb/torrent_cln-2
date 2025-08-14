@@ -1,5 +1,5 @@
 <template>
-  <div class=" py-6  ">
+  <div class="px-2 md:px-0 mt-5">
     <div class="max-w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
       <!-- Header -->
       <div class="bg-gray-600 px-6 py-4">
