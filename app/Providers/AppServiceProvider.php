@@ -21,10 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
-        if (app()->environment('local')) {
-            URL::forceScheme('https');
-        }
+        // Force HTTPS in production
+        // if (app()->environment('production')) {
+        //     URL::forceScheme('https');
+        // }
 
         Inertia::share([
         'auth' => [
