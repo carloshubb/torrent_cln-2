@@ -81,7 +81,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/me', [LoginController::class, 'me']);
 Route::post('/logout', [LoginController::class, 'logout']);
 Route::get('/uploadtest', [TorrentController::class, 'uploadtorrent']);
-
+Route::post('/torrents', [TorrentController::class, 'store'])->name('torrents.store');
 
 Route::get('/home', function () {
     return Inertia::render('Home', [
