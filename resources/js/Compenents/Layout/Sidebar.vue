@@ -8,8 +8,8 @@
       <ul class="list-box">
         <li v-for="(category, index) in browseCategories" :key="index"
           class="flex text-gray-300 hover:text-orange-400 cursor-pointer transition-colors px-4 py-1 border-b-1 border-gray-600"
-          @click="browseCategory(category)">
-          <a href="">
+          >
+          <a :href="category.slug">
             <i :class=category.icon></i>
             {{ category.title }}
           </a>
@@ -41,18 +41,18 @@ export default {
   name: 'TorrentSite',
   setup() {
     const browseCategories = [
-      { title: 'Trending Torrents', icon: 'flaticon-trending', slug: 'trending' },
-      { title: 'Movie library', icon: 'flaticon-movie-library', slug: 'movielibrary' },
-      { title: 'Top 100 Torrents', icon: 'flaticon-top', slug: 'top-100' },
-      { title: 'Anime', icon: 'flaticon-ninja-portrait', slug: 'Anime' },
-      { title: 'Applications', icon: 'flaticon-apps', slug: 'Apps' },
-      { title: 'Documentaries', icon: 'flaticon-documentary', slug: 'Documentaries' },
-      { title: 'Games', icon: 'flaticon-games', slug: 'Games' },
-      { title: 'Movies', icon: 'flaticon-movies', slug: 'Movies' },
-      { title: 'Music', icon: 'flaticon-music', slug: 'Music' },
-      { title: 'Other', icon: 'flaticon-other', slug: 'Other' },
-      { title: 'Television', icon: 'flaticon-tv', slug: 'TV' },
-      { title: 'XXX', icon: 'flaticon-xxx', slug: 'XXX' },
+      { title: 'Trending Torrents', icon: 'flaticon-trending', slug: '/trending' },
+      { title: 'Movie library', icon: 'flaticon-movie-library', slug: '/movielibrary/1' },
+      { title: 'Top 100 Torrents', icon: 'flaticon-top', slug: '/top-100' },
+      { title: 'Anime', icon: 'flaticon-ninja-portrait', slug: '/cat/Anime/1' },
+      { title: 'Applications', icon: 'flaticon-apps', slug: '/cat/Apps/1' },
+      { title: 'Documentaries', icon: 'flaticon-documentary', slug: '/cat/Documentaries/1' },
+      { title: 'Games', icon: 'flaticon-games', slug: '/cat/Games/1' },
+      { title: 'Movies', icon: 'flaticon-movies', slug: '/cat/Movies/1' },
+      { title: 'Music', icon: 'flaticon-music', slug: '/cat/Music/1' },
+      { title: 'Other', icon: 'flaticon-other', slug: '/cat/Other/1' },
+      { title: 'Television', icon: 'flaticon-tv', slug: '/cat/TV/1' },
+      { title: 'XXX', icon: 'flaticon-xxx', slug: '/cat/XXX/1' },
 
     ]
     const externalLinks = [
