@@ -1,6 +1,6 @@
 <template>
   <div class="pt-5   bg-gradient-to-r from-gray-350 to-gray-500 ">
-    
+
     <div class="max-w-4xl mx-auto">
       <!-- Account Upgrade Section -->
       <div class="bg-white rounded-lg shadow-sm border mb-6">
@@ -9,7 +9,8 @@
         </div>
         <div class="p-6">
           <p class="text-gray-700 leading-relaxed">
-            Once you upload 100+ torrents with good quality description you can request your account upgraded to verified Uploader.
+            Once you upload 100+ torrents with good quality description you can request your account upgraded to
+            verified Uploader.
           </p>
         </div>
       </div>
@@ -21,25 +22,16 @@
         </div>
         <div class="p-6 space-y-3">
           <!-- Announce URLs List -->
-          <div 
-            v-for="url in announceUrls" 
-            :key="url.id"
-            class="group"
-          >
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-              <a 
-                :href="url.link" 
-                class="text-orange-600 hover:text-orange-700 font-medium underline break-all flex-1"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+          <div v-for="url in announceUrls" :key="url.id" class="group">
+            <div
+              class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <a :href="url.link" class="text-orange-600 hover:text-orange-700 font-medium underline break-all flex-1"
+                target="_blank" rel="noopener noreferrer">
                 {{ url.link }}
               </a>
-              <button 
-                @click="copyToClipboard(url.link)"
+              <button @click="copyToClipboard(url.link)"
                 class="ml-4 px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-sm rounded transition-colors"
-                :class="{ 'bg-green-500 hover:bg-green-600': copiedUrl === url.id }"
-              >
+                :class="{ 'bg-green-500 hover:bg-green-600': copiedUrl === url.id }">
                 {{ copiedUrl === url.id ? 'Copied!' : 'Copy' }}
               </button>
             </div>
@@ -50,13 +42,16 @@
             <div class="flex items-start">
               <div class="flex-shrink-0">
                 <svg class="w-5 h-5 text-blue-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                  <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clip-rule="evenodd"></path>
                 </svg>
               </div>
               <div class="ml-3">
                 <h3 class="text-sm font-medium text-blue-800">Important Information</h3>
                 <p class="mt-1 text-sm text-blue-700">
-                  Please use one of the announce URLs above when creating your torrent file. Make sure to include a detailed description for better quality.
+                  Please use one of the announce URLs above when creating your torrent file. Make sure to include a
+                  detailed description for better quality.
                 </p>
               </div>
             </div>
@@ -67,7 +62,9 @@
             <div class="flex items-start">
               <div class="flex-shrink-0">
                 <svg class="w-5 h-5 text-yellow-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                  <path fill-rule="evenodd"
+                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd"></path>
                 </svg>
               </div>
               <div class="ml-3">
@@ -81,24 +78,24 @@
               </div>
             </div>
           </div>
-        
-      </div>
-    </div>
 
-    <!-- Success Toast -->
-    <div 
-      v-if="showToast"
-      class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300"
-      :class="{ 'translate-y-0 opacity-100': showToast, 'translate-y-2 opacity-0': !showToast }"
-    >
-      <div class="flex items-center">
-        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-        </svg>
-        URL copied to clipboard!
+        </div>
+      </div>
+
+      <!-- Success Toast -->
+      <div v-if="showToast"
+        class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300"
+        :class="{ 'translate-y-0 opacity-100': showToast, 'translate-y-2 opacity-0': !showToast }">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"></path>
+          </svg>
+          URL copied to clipboard!
+        </div>
       </div>
     </div>
-  </div>
     <!-- Main Content -->
     <div class="container  mx-auto px-4 py-8">
       <div class="bg-white rounded-lg shadow-lg p-6">
@@ -106,7 +103,7 @@
           Create New Blog Post
         </h2>
 
-        <form @submit.prevent="submitPost" class="space-y-6 text-black" >
+        <form @submit.prevent="submitPost" class="space-y-6 text-black">
           <!-- Title -->
           <div>
             <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">Title</label>
@@ -119,9 +116,12 @@
             <input type="text" id="title" v-model="form.title"
               class="w-100 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
               placeholder="Enter torrent file" required>
-            <button type="submit" class="bg-gray-600 text-white font-bold px-4 py-2 rounded hover:bg-orange-500">
-              broswe
+            <button type="button" class="bg-gray-600 text-white font-bold px-4 py-2 rounded hover:bg-orange-500"
+              @click="openFileDialog">
+              Browse
             </button>
+            <!-- Hidden file input -->
+            <input type="file" ref="fileInput" @change="handleFileSelect" style="display: none;" />
           </div>
 
           <!-- Content Text -->
@@ -207,37 +207,23 @@
             </div>
           </div>
 
-           <!-- CAPTCHA -->
+          <!-- CAPTCHA -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Captcha</label>
             <div class="flex items-start space-x-4">
               <div class="flex-shrink-0">
                 <div class="bg-gray-600 px-4 py-8 rounded border-2 border-gray-400 relative overflow-hidden">
-                  <canvas 
-                    ref="captchaCanvas"
-                    width="120" 
-                    height="40"
-                    class="bg-gray-200 rounded"
-                  ></canvas>
-                  <button
-                    type="button"
-                    @click="refreshCaptcha"
-                    class="absolute top-1 right-1 text-white hover:text-gray-300 text-xs"
-                    title="Refresh Captcha"
-                  >
+                  <canvas ref="captchaCanvas" width="120" height="40" class="bg-gray-200 rounded"></canvas>
+                  <button type="button" @click="refreshCaptcha"
+                    class="absolute top-1 right-1 text-white hover:text-gray-300 text-xs" title="Refresh Captcha">
                     ⟲
                   </button>
                 </div>
               </div>
               <div class="flex-1">
-                <input 
-                  type="text" 
-                  v-model="form.captcha"
+                <input type="text" v-model="form.captcha"
                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                  placeholder="Enter captcha code"
-                  maxlength="6"
-                  required
-                >
+                  placeholder="Enter captcha code" maxlength="6" required>
                 <p class="text-xs text-gray-500 mt-1">Enter the characters shown in the image above</p>
               </div>
             </div>
@@ -251,6 +237,30 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded shadow-lg w-96">
+      <h2 class="text-lg font-bold mb-4">File Selected</h2>
+
+      <p v-if="tempFile">
+        <strong>Path:</strong> {{ fakePath }} <br>
+        <strong>File Name:</strong> {{ tempFile.name }} <br>
+        <strong>Size:</strong> {{ (tempFile.size / 1024).toFixed(2) }} KB
+      </p>
+
+      <div class="mt-4 flex justify-end space-x-2">
+        <button class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500" @click="cancelSelection">
+          Cancel
+        </button>
+        <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" @click="confirmSelection">
+          OK
+        </button>
       </div>
     </div>
   </div>
@@ -279,7 +289,10 @@ export default {
         tags: '',
         description: '',
         file: null
-      }
+      },
+      showModal: false,
+      tempFile: null, // file waiting for confirmation
+      selectedFile: null // confirmed file
     }
   },
   methods: {
@@ -420,7 +433,7 @@ export default {
       this.$nextTick(() => {
         const canvas = this.$refs.captchaCanvas;
         if (!canvas) return;
-        
+
         const ctx = canvas.getContext('2d');
         const width = canvas.width;
         const height = canvas.height;
@@ -451,10 +464,10 @@ export default {
           const char = this.captchaCode[i];
           const x = (width / this.captchaCode.length) * i + (width / this.captchaCode.length) / 2;
           const y = height / 2 + (Math.random() - 0.5) * 8;
-          
+
           // Random color for each character
           ctx.fillStyle = `hsl(${Math.random() * 360}, 60%, 40%)`;
-          
+
           // Random rotation
           ctx.save();
           ctx.translate(x, y);
@@ -482,6 +495,42 @@ export default {
     refreshCaptcha() {
       this.generateCaptcha();
       this.form.captcha = '';
+    },
+
+    openFileDialog() {
+      this.$refs.fileInput.click();
+    },
+    handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.tempFile = file;
+        this.showModal = true;
+      }
+    },
+    confirmSelection() {
+      this.selectedFile = this.tempFile;
+      this.showModal = false;
+      console.log("Confirmed file:", this.selectedFile);
+
+      // Example: Upload to Laravel
+      const formData = new FormData();
+      formData.append("file", this.selectedFile);
+      console.log(this.selectedFile);
+
+      // fetch("/upload", {
+      //   method: "POST",
+      //   body: formData,
+      //   headers: {
+      //     "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+      //   }
+      // })
+      // .then(res => res.json())
+      // .then(data => console.log("Upload response:", data))
+      // .catch(err => console.error(err));
+    },
+    cancelSelection() {
+      this.tempFile = null;
+      this.showModal = false;
     }
   },
 

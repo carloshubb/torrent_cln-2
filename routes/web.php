@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\TorrentController;
+
 Route::get('/', function () {
      return Inertia::render('Dashboard', [
         'page' => 'dashboard',   
@@ -71,6 +73,7 @@ Route::get('/movielibrary/{param1}/', function ($param1) {
 Route::post('/login', [LoginController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/me', [LoginController::class, 'me']);
 Route::post('/logout', [LoginController::class, 'logout']);
+Route::get('/uploadtest', [TorrentController::class, 'uploadtorrent']);
 
 
 Route::get('/home', function () {
