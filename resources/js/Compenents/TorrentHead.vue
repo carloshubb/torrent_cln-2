@@ -2,19 +2,24 @@
   <div class="lg:col-span-3">
     <!-- Status Message -->
     <div class="bg-gray-200 mt-5 p-4 mb-6 rounded" v-if="page == 'dashboard'">
-      <h3 class="text-red-600 font-semibold mb-2">stream.1s file error</h3>
+      <h3 class="text-red-600 font-semibold mb-2">Discover High-Quality Streaming with 1331x.cc: Your Ultimate Media Hub</h3>
       <p class="text-gray-700 text-sm mb-2">
-        For small number of requests at random cloudflare seems to redirect users and load
-        https://www.cloudflare-terms-of-service-abuse.com/stream.1s
+        Welcome to <span class="font-mono text-orange-600">1331x.c</span>,   your go-to destination for seamless streaming and online media enjoyment. 
       </p>
-      <p class="text-gray-700 text-sm mb-2">This does not seem to be caused by problem on our end.</p>
+      <p class="text-gray-700 text-sm mb-2">Whether you’re a casual viewer or a passionate movie buff, we provide a platform that prioritizes quality, speed, and reliability.
+      </p>
       <p class="text-gray-700 text-sm mb-2">
-        New alternative domain is <span class="font-mono text-orange-600">x1331x.cc</span>
+        With 1331x.c,  you  can access a wide variety of content, including movies, TV shows, documentaries, and more,  all  available  in  high-definition.
+      </p>
+      <p class="text-gray-700 text-sm mb-2">
+         Our site is designed for easy navigation, ensuring a hassle-free experience from start to finish.
       </p>
       <p class="text-gray-700 text-sm">
-        Users affected by domain blocking can start using Tor V3 onion domain (<span
-          class="font-mono">l331xdarkk...</span>)
-      </p>
+       Getting started with 1331x.cc is simple. Just visit our homepage, browse through our extensive library, and start streaming in seconds.
+       </p>
+       <p class="text-gray-700 text-sm">
+       If you're facing any restrictions due to regional access, we provide Tor onion support for additional privacy and ease of access.
+       </p>
     </div>
 
     <!-- Movie Posters -->

@@ -4,6 +4,7 @@ import TorrentTable from '../Compenents/TorrentTable.vue'
 import TorrentHead from '../Compenents/TorrentHead.vue'
 import { reactive, onMounted, ref } from 'vue'
 import torrentService from '@/api/torrentService.js'
+import { Head } from '@inertiajs/vue3'
 
 // get props data
 const props = defineProps({
@@ -309,11 +310,10 @@ onMounted(() => {
 })
 </script>
 <template>
-  
+  <Head :title=$page.props.title />
   <AppLayout>
     <TorrentHead v-if="dashboard_images.length > 0" :images="dashboard_images" :page="props.page" />
     <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page" :icon="row.icon"
       :head_title="row.title" />
   </AppLayout>
-
 </template>
