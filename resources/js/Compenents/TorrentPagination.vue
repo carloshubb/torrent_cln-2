@@ -39,7 +39,8 @@ export default {
       const pages = []
       const total = this.lastPage
       const current = this.currentPage
-
+      console.log(total,current);
+      
       // Helper to add page object
       const addPage = (number, display = null, isEllipsis = false) => {
         pages.push({

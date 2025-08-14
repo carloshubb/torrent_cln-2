@@ -187,8 +187,8 @@ export default {
   },
 
   setup(props) {
-    const currentPage = ref(props.torrents.current_page || 1)
-    const lastPage = ref(props.torrents.last_page || 1) // default to 7 if not passed
+    const currentPage = ref(props.torrents.data.current_page || 1)
+    const lastPage = ref(props.torrents.data.last_page || 1) // default to 7 if not passed
     const torrents = ref(props.torrents.data.data)
     const page_type = ref(props.page)
     const subcategories = props.torrents.subcategories ? ref(props.torrents.subcategories) : null
@@ -196,7 +196,7 @@ export default {
       .split('/')
       .filter(segment => segment); // remove empty entries    
     const torrent_type = pathSegments[1]; // "Anime"
-    console.log(props.torrents.subcategories);
+    console.log(props.torrents,currentPage,torrents);
 
     const formatApprovedAt = (dateString) => {
       const date = dayjs(dateString)
