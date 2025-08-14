@@ -1,11 +1,13 @@
 <template>
+
+  <Head :title=$page.props.title />
   <AppLayout>
-    <div class="max-w-7xl mx-auto px-4 py-4" v-if="torrent">
+    <div class="max-w-7xl mx-auto py-4" v-if="torrent">
       <div class="flex gap-6">
         <!-- Main Content -->
         <div class="flex-1">
           <!-- Title -->
-          <div class="bg-gray-700 px-4 py-2 mb-4 rounded">
+          <div class="bg-gray-700 px-4 py-2 rounded">
             <h1 class="text-lg font-semibold">{{ torrent.name }}</h1>
           </div>
 
@@ -75,8 +77,10 @@
               </button>
               <transition name="slide">
                 <div v-if="showDropdown" class="dropdown">
-                  <a :href="`http://itorrents.org/torrent/${torrent.detail.infohash}.torrent`" target="_blank">ITORRENTS MIRROR</a>
-                  <a :href="`http://torrage.info/torrent.php?h=${torrent.detail.infohash}`" target="_blank">TRRAGE MIRROR</a>
+                  <a :href="`http://itorrents.org/torrent/${torrent.detail.infohash}.torrent`" target="_blank">ITORRENTS
+                    MIRROR</a>
+                  <a :href="`http://torrage.info/torrent.php?h=${torrent.detail.infohash}`" target="_blank">TRRAGE
+                    MIRROR</a>
                   <a :href="`http://btcache.me/torrent/${torrent.detail.infohash}`" target="_blank">BTCACHE MIRROR</a>
                   <a :href="`${torrent.detail.magnet_link}`">NONE WORKING? USERMAGNET</a>
                 </div>
@@ -94,29 +98,9 @@
             </div>
           </div>
 
-          <!-- Movie Info Card -->
-          <div class="bg-orange-600 p-4 rounded flex space-x-4 mb-4 hidden">
-            <img :src="movieInfo.poster" :alt="movieInfo.title" class="w-24 h-36 object-cover rounded" />
-            <div class="flex-1">
-              <h2 class="text-xl font-bold mb-2">{{ movieInfo.title }}</h2>
-              <p class="text-xs mb-2 uppercase tracking-wide">{{ movieInfo.genres.join(' • ') }}</p>
-              <p class="text-sm leading-relaxed">{{ movieInfo.description }}</p>
-              <div class="flex items-center mt-3">
-                <div v-for="star in 5" :key="star" class="w-4 h-4 mr-1">
-                  <svg :class="star <= movieInfo.rating ? 'fill-orange-400 text-orange-400' : 'text-gray-400'"
-                    fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                    </path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Hash -->
           <div class="text-center text-xs text-black mb-4">
-            <span class="font-semibold">INFO HASH:</span> {{torrent.detail.infohash }}
+            <span class="font-semibold">INFO HASH:</span> {{ torrent.detail.infohash }}
           </div>
 
           <!-- Tabs -->
@@ -141,14 +125,14 @@
                 <div v-if="torrent?.detail?.files" v-html="torrent.detail.files"
                   class="mt-4 text-gray-300 leading-relaxed"></div>
               </div>
-            
+
               <div v-else-if="activeTab === 'COMMENTS 1'">
                 <div v-if="torrent?.detail?.comments" v-html="torrent.detail.comments"
                   class="mt-4 text-gray-300 leading-relaxed"></div>
               </div>
-            
+
               <div v-else-if="activeTab === 'TRACKER LIST'">
-               <div v-if="torrent?.detail?.trackerlist" v-html="torrent.detail.trackerlist"
+                <div v-if="torrent?.detail?.trackerlist" v-html="torrent.detail.trackerlist"
                   class="mt-4 text-gray-300 leading-relaxed"></div>
               </div>
             </div>
@@ -159,110 +143,59 @@
       </div>
     </div>
   </AppLayout>
-
 </template>
-<script>
+<script setup>
 import { ref, reactive, onMounted } from 'vue'
 import AppLayout from './../layouts/AppLayout.vue'
 import torrentService from '@/api/torrentService.js'
 import { usePage } from '@inertiajs/vue3';
-export default {
-  components: {
-    AppLayout
-  },
-  name: 'TorrentSitePage',
-  setup() {
-    const searchQuery = ref('')
-    const activeTab = ref('DESCRIPTION')
-    const showDropdown = ref(false)
-    const tabs = ['DESCRIPTION', 'FILES', 'COMMENTS 1', 'TRACKER LIST']
-    const page = usePage(); // reactive
-    const torrent = ref(null) // Will hold the API response
-    // Methods
-    const handleSearch = () => {
-      console.log('Searching for:', searchQuery.value)
-      // Implement search functionality
-    }
+import { Head } from '@inertiajs/vue3';
 
-    const downloadMagnet = () => {
-      console.log('Downloading magnet link')
-      // Implement magnet download
-    }
+const searchQuery = ref('')
+const activeTab = ref('DESCRIPTION')
+const showDropdown = ref(false)
+const tabs = ref(['DESCRIPTION', 'FILES', 'COMMENTS 1', 'TRACKER LIST']);
 
-    const downloadTorrent = () => {
-      showDropdown.value = !showDropdown.value;
-    }
-
-    const playStream = () => {
-      console.log('Starting stream')
-      // Implement streaming functionality
-    }
-
-    // Fetch data from API
-    const fetchTorrentDetails = async (id, slug) => {
-      try {
-        const response = await torrentService.get(`/torrent/${id}/${slug}`);
-        torrent.value = response.data // Assign to ref
-      } catch (error) {
-        console.error('Error fetching torrent details:', error);
-      }
-    };
-
-    // Fetch data when mounted
-    onMounted(() => {
-      console.log('Page type:', page.props.torrent_id);
-      const torrentId = page.props.torrent_id; // 
-      const torrentSlug = page.props.torrent_slug; // 
-      fetchTorrentDetails(torrentId, torrentSlug);
-
-
-    });
-
-    return {
-      searchQuery,
-      activeTab,
-      torrentInfo,
-      movieInfo,
-      tabs,
-      torrent,
-      handleSearch,
-      downloadMagnet,
-      downloadTorrent,
-      playStream,
-      showDropdown
-    }
-  }
+const torrent = ref(null) // Will hold the API response
+// Methods
+const handleSearch = () => {
+  console.log('Searching for:', searchQuery.value)
+  // Implement search functionality
 }
 
+const downloadMagnet = () => {
+  console.log('Downloading magnet link')
+  // Implement magnet download
+}
 
-const torrentInfo = reactive({
-  title: 'Jurassic World Rebirth 2025 1080p WEBRip DOPS Lx265 NeoNoir',
-  category: 'Movies',
-  type: 'HEVC/x265',
-  language: 'English',
-  size: '2.0 GB',
-  uploader: 'NeoNoir',
-  downloads: '82751',
-  lastChecked: '49 minutes ago',
-  dateUploaded: '4 days ago',
-  seeders: '5452',
-  leechers: '2620',
-  hash: '911CCD0C4C8A23284A920B61528888D293AC055B'
-})
+const downloadTorrent = () => {
+  showDropdown.value = !showDropdown.value;
+}
 
-const movieInfo = reactive({
-  title: 'JURASSIC WORLD REBIRTH',
-  genres: ['SCIENCE FICTION', 'ADVENTURE', 'ACTION'],
-  description: "Five years after the events of Jurassic World Dominion, covert operations expert Zora Bennett is contracted to lead a skilled team on a top-secret mission to secure genetic material from the world's three most massive dinosaurs. When Zora's operation intersects with a civilian family whose boating expedition was capsized, they all find themselves stranded on an island where they come face-to-face with a sinister, shocking discovery that's been hidden from the world for decades.",
-  rating: 3,
-  poster: 'https://via.placeholder.com/120x180/374151/ffffff?text=Movie+Poster'
-})
+const playStream = () => {
+  console.log('Starting stream')
+  // Implement streaming functionality
+}
 
-const tabs = ['DESCRIPTION', 'FILES', 'COMMENTS', 'TRACKER LIST']
+// Fetch data from API
+const fetchTorrentDetails = async (id, slug) => {
+  try {
+    const response = await torrentService.get(`/torrent/${id}/${slug}`);
+    torrent.value = response.data // Assign to ref
+  } catch (error) {
+    console.error('Error fetching torrent details:', error);
+  }
+};
+
+// Fetch data when mounted
+onMounted(() => {
+  const page = usePage();
+  const torrentId = page.props.torrent_id; // 
+  const torrentSlug = page.props.torrent_slug; // 
+  fetchTorrentDetails(torrentId, torrentSlug);
+});
 
 
-const detail_data = [];
-//detail_data.push({ data: torrentInfo, info: movieInfo })
 
 </script>
 <style scoped>

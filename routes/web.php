@@ -9,6 +9,7 @@ use App\Http\Controllers\TorrentController;
 Route::get('/', function () {
      return Inertia::render('Dashboard', [
         'page' => 'dashboard',   
+        'title' => 'Download verified torrents: movies, music, games, software',
         'params' =>''     
     ]);
 })->name('home');
@@ -25,6 +26,7 @@ Route::get('/cat/{param1}/{param2}', function ($param1, $param2) {
     // You can use $param1 and $param2 here
     return Inertia::render('Dashboard', [
         'page' => 'cat',
+        'title' => 'Download '.$param1 . ' Torrents',
         'params' =>$param1."@".$param2,            
     ]);
 });
@@ -40,6 +42,7 @@ Route::get('/search/{param1}/{param2}', function ($param1, $param2) {
 Route::get('/trending', function () {
     return Inertia::render('Dashboard', [
         'page' => 'trending',
+        'title' => 'Trending Torrents',
         'params' =>null,            
     ]);
 });
@@ -48,6 +51,7 @@ Route::get('/trending', function () {
 Route::get('/top-100', function () {
     return Inertia::render('Dashboard', [
         'page' => 'top',
+        'title' => 'Top 100  Torrents This Month',
         'params' =>null,            
     ]);
 });
@@ -56,6 +60,7 @@ Route::get('/torrent/{param1}/{param2}', function ($param1, $param2) {
     // You can use $param1 and $param2 here
     return Inertia::render('DetailTable', [
         'page' => 'detail',
+        'title' => 'Download '.$param2 . ' Torrent',
         'torrent_id' =>$param1,            
         'torrent_slug' =>$param2,            
     ]);
@@ -64,6 +69,7 @@ Route::get('/torrent/{param1}/{param2}', function ($param1, $param2) {
 Route::get('/movielibrary/{param1}/', function ($param1) {
     return Inertia::render('MovieLibrary', [
         'page' => 'movielibrary',
+        'title' => 'Movie Library',
         'page' =>$param1            
     ]);
 });

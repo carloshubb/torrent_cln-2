@@ -1,4 +1,5 @@
 <template>
+  <Head :title=$page.props.title />
   <AppLayout>
     <div class="pt-5 w-full bg-gradient-to-r from-gray-250 to-gray-500 text-white">
       <div class="container">
@@ -210,6 +211,7 @@ import { ref, computed, onMounted } from 'vue'
 import AppLayout from './../layouts/AppLayout.vue'
 import torrentService from '@/api/torrentService.js'
 import TorrentPagination from '../Compenents/TorrentPagination.vue'
+import { Head } from '@inertiajs/vue3'
 
 // get props data
 const props = defineProps({
