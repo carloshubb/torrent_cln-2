@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use SandFox\Bencode\Bencode;
 use App\Models\Torrent;
 use App\Models\PopularTorrent;
@@ -11,7 +12,8 @@ use App\Models\HomeImageList;
 use App\Models\MovieLibrary;
 use App\Models\SubCategory;
 use App\Models\TorrentDetail;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 class TorrentController extends Controller
 {
     //
@@ -139,6 +141,7 @@ class TorrentController extends Controller
 
     public function store(Request $request)
     {
+        $user_name = Auth::user()->username;
 
         $torrentFile = $request->file('torrent_file');
         $rawData = file_get_contents($torrentFile->getRealPath());
@@ -148,7 +151,7 @@ class TorrentController extends Controller
         $infoRaw = Bencode::encode($torrent['info']);
 
         // Calculate SHA-1 hash
-        $infoHashBinary = sha1($infoRaw, true);   // binary form
+        
         $infoHashHex    = sha1($infoRaw);         // hex form (for display)
 
         // Torrent metadata
@@ -170,20 +173,25 @@ class TorrentController extends Controller
         $total_size = number_format($totalSize / 1048576, 2) . " MB";
         $magnet = "magnet:?xt=urn:btih:$infoHashHex&dn=" . urlencode($name);
         $data['file_name'] = $name;
-        //dd($request->all());
+        
+        $slug = Str::slug($request->title);
         $torrent = new Torrent();
         $torrent->name = $request->title ? $request->title : '';
-        $torrent->slug = '124567sydh9i-6ukuhyuk8u-9iy';
+        $torrent->slug = $slug ? $slug : '';
         $torrent->description = $request->description ? $request->description : '';;
-        $torrent->category_id = 1;
-        $torrent->subcategory_id = 1;
+        $torrent->category_id = $request->category;
+        $torrent->subcategory_id = $request->subcategory;
         $torrent->magnet_link = $magnet;
         $torrent->info_hash = $infoHashHex;
         $torrent->size_formatted = $total_size;
         $torrent->seeders = 0;
         $torrent->leechers = 0;
+        $torrent->approved_at = date("Y-m-d H:i:s");
+        $torrent->uploader = "/user/{$user_name}/";
         $torrent->save();
 
+        $category = Category::find($request->category);
+        $subcategory = SubCategory::find($request->subcategory);
         $torrent_detail = new TorrentDetail();
         $torrent_detail->torrent_id =  $torrent->id;
         $torrent_detail->full_description =  $request->description;
@@ -193,8 +201,19 @@ class TorrentController extends Controller
         $torrent_detail->magnet_link =  $magnet;
         $torrent_detail->infohash =  $infoHashHex;
         $torrent_detail->description =  $request->description;
+        $torrent_detail->category = $category->name;
+        $torrent_detail->type =  $subcategory->name;
         $torrent_detail->save();
-        dd($torrent,$torrent_detail);
+        return response()->json([
+            'success' => true,
+            'message' => 'Torrent uploaded successfully',
+            'torrent' => $torrent
+        ]);
         
+    }
+
+    public function getCategory(Request $request){
+        $category['data'] = Category::with('subcategory')->get();
+        return response()->json($category);
     }
 }

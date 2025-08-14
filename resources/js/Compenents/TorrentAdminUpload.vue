@@ -22,7 +22,8 @@
         <div class="p-6 space-y-3">
           <!-- Announce URLs List -->
           <div v-for="url in announceUrls" :key="url.id" class="group">
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+            <div
+              class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
               <a :href="url.link" class="text-orange-600 hover:text-orange-700 font-medium underline break-all flex-1"
                 target="_blank" rel="noopener noreferrer">
                 {{ url.link }}
@@ -115,30 +116,17 @@
             <label for="torrentFile" class="block text-sm font-semibold text-black mb-2">Torrent File</label>
             <div class="flex items-center space-x-3">
               <!-- Hidden file input -->
-              <input 
-                type="file" 
-                ref="fileInput"
-                id="torrentFile"
-                @change="handleFileSelect"
-                accept=".torrent"
-                class="hidden"
-              >
-              
+              <input type="file" ref="fileInput" id="torrentFile" @change="handleFileSelect" accept=".torrent"
+                class="hidden">
+
               <!-- Display selected file path -->
-              <input 
-                type="text" 
-                v-model="selectedFilePath"
-                readonly
+              <input type="text" v-model="selectedFilePath" readonly
                 class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 focus:outline-none"
-                placeholder="No file selected"
-              >
-              
+                placeholder="No file selected">
+
               <!-- Browse button -->
-              <button 
-                type="button" 
-                @click="openFileDialog"
-                class="bg-gray-600 hover:bg-orange-500 text-white font-bold px-4 py-2 rounded transition-colors"
-              >
+              <button type="button" @click="openFileDialog"
+                class="bg-gray-600 hover:bg-orange-500 text-white font-bold px-4 py-2 rounded transition-colors">
                 Browse
               </button>
             </div>
@@ -176,27 +164,25 @@
               <div class="grid grid-cols-2 gap-3">
                 <div>
                   <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-                  <select id="category" v-model="form.category"
+                  <select id="category" v-model="form.category" @change="handleCategoryChange"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
                     required>
                     <option value="">Choose One</option>
-                    <option value="technology">Technology</option>
-                    <option value="lifestyle">Lifestyle</option>
-                    <option value="business">Business</option>
-                    <option value="education">Education</option>
-                    <option value="health">Health</option>
+                    <option v-for="cat in categories" :key="cat.id" :value="cat.id">
+                      {{ cat.name }}
+                    </option>
                   </select>
+
                 </div>
                 <div>
                   <label for="type" class="block text-sm font-semibold text-gray-700 mb-2">Type</label>
-                  <select id="type" v-model="form.type"
+                  <select id="subcategory" v-model="form.subcategory"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
                     required>
-                    <option value="">Choose category</option>
-                    <option value="article">Article</option>
-                    <option value="tutorial">Tutorial</option>
-                    <option value="review">Review</option>
-                    <option value="news">News</option>
+                    <option value="">Choose sub category</option>
+                    <option v-for="item in sub_categories" :key="item.value" :value="item.id">
+                      {{ item.name }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -264,15 +250,31 @@
 </template>
 
 <script>
+import { reactive, onMounted, ref } from 'vue'
 export default {
+
   name: 'BlogPostForm',
-  data() {
+  props: {
+    categories: {
+      type: Array
+    }
+  },
+  data(props) {
+    console.log(props.categories);
+    const categories = ref([]);
+    const sub_categories = ref([]);
+    categories.value = props.categories ? props.categories : [];
+    sub_categories.value = props.categories ? props.categories[0].subcategory : [];
+    console.log(props.categories[0].subcategory);
+
     return {
       isSubmitting: false,
       selectedFilePath: '',
       captchaCode: '',
       showToast: false,
       copiedUrl: null,
+      categories,
+      sub_categories,
       announceUrls: [
         { id: 1, link: 'http://tracker.example.com:8080/announce' },
         { id: 2, link: 'http://tracker2.example.com:6969/announce' }
@@ -283,7 +285,7 @@ export default {
         content: '',
         language: '',
         category: '',
-        type: '',
+        subcategory: '',
         tags: '',
         description: '',
         torrentFile: null,
@@ -303,7 +305,7 @@ export default {
       if (file) {
         this.form.torrentFile = file;
         this.selectedFilePath = file.name; // Show just filename for security
-        
+
         // For debugging - you can see full file info in console
         console.log('Selected file:', {
           name: file.name,
@@ -311,7 +313,7 @@ export default {
           type: file.type,
           lastModified: new Date(file.lastModified)
         });
-        
+
         this.showToast = true;
         setTimeout(() => this.showToast = false, 3000);
       }
@@ -320,11 +322,12 @@ export default {
     // Submit form with file
     async submitPost() {
       this.isSubmitting = true;
-
+      console.log(this.form);
+      
       try {
         // Validate required fields
-        if (!this.form.title || !this.form.content || !this.form.language || 
-            !this.form.category || !this.form.type || !this.form.torrentFile) {
+        if (!this.form.title || !this.form.content || !this.form.language ||
+          !this.form.category || !this.form.subcategory || !this.form.torrentFile) {
           alert('Please fill in all required fields and select a torrent file');
           return;
         }
@@ -338,7 +341,7 @@ export default {
 
         // Prepare FormData for file upload
         const formData = new FormData();
-        
+
         // Add all form fields
         Object.keys(this.form).forEach(key => {
           if (key === 'torrentFile' && this.form[key]) {
@@ -357,18 +360,19 @@ export default {
             // Don't set Content-Type header - let browser set it with boundary for FormData
           }
         });
-
-        if (response.ok) {
+        this.resetForm();
+        this.isSubmitting = false;
+        if (response.success) {
           const result = await response.json();
-          alert('Torrent uploaded successfully!');
+          //alert('Torrent uploaded successfully!');
           this.resetForm();
         } else {
           throw new Error('Upload failed');
         }
 
       } catch (error) {
-        console.error('Error submitting post:', error);
-        alert('Error uploading torrent. Please try again.');
+        //console.error('Error submitting post:', error);
+        //alert('Error uploading torrent. Please try again.');
       } finally {
         this.isSubmitting = false;
       }
@@ -439,6 +443,7 @@ export default {
         content: '',
         language: '',
         category: '',
+        sub_categories : '',
         type: '',
         tags: '',
         description: '',
@@ -522,7 +527,17 @@ export default {
     refreshCaptcha() {
       this.generateCaptcha();
       this.form.captcha = '';
+    },
+    handleCategoryChange() {
+      console.log(this.categories,this.form.category);
+      
+      const selected = this.categories.find(cat => cat.id === parseInt(this.form.category));
+      this.sub_categories = selected ? selected.subcategory : [];
+      console.log(selected);
+      
+      this.form.subcategory = ""; // reset subcategory
     }
+
   },
 
   mounted() {
