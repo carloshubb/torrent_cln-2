@@ -1,182 +1,58 @@
 <template>
-  <header class="bg-gray-800 border-b border-gray-700">
-    <!-- Top Bar -->
-    <div class="min-h-[40px] bg-[#000] border-b-5 border-[#822a0b]">
-      <div class="max-w-7xl mx-auto px-4 text-right">
-        <div class="flex-1 items-center py-1">
-          <span v-if="isLoggedIn" class="title text-white hover:text-red-600" @click="logout">Logout</span>
-          <a href="/login" v-if="!isLoggedIn" class="title text-red-600 hover:text-red-600">Login</a>
-        </div>
-        
+  <!-- Top Bar -->
+  <div class="hidden md:flex min-h-[40px] bg-[#000] border-b-5 border-[#822a0b]">
+    <div class="w-7xl mx-auto text-right">
+      <div class="flex-1 items-center py-1">
+        <span v-if="isLoggedIn" class="title text-white hover:text-red-600" @click="logout">Logout</span>
+        <a href="/login" v-if="!isLoggedIn" class="title text-red-600 hover:text-red-600">Login</a>
       </div>
     </div>
-    <!-- Header -->
-    <div class="bg-black/20 backdrop-blur-sm border-b border-orange-500/50">
-      <div class="max-w-7xl mx-auto px-4">
-        <!-- Main Header -->
-        <div class="flex items-center justify-between py-4">
-          <div class="text-4xl font-bold text-white">
-            1331<span class="text-orange-500">X</span>
-          </div>
+  </div>
+  <div class="bg-gray-800 backdrop-blur-sm border-b border-orange-500/50">
+    <!-- Logo & Search Box -->
+    <div class="justify-between md:flex md:w-7xl mx-auto items-center py-3 px-4 md:px-0 ">
 
-          <div class="flex items-center space-x-2 flex-1 max-w-md 0">
-            <input type="text" placeholder="Search for torrents..." v-model="searchQuery"
-              class="flex-1 bg-gray-800 border border-gray-600 text-white px-4 py-2 mr-0 rounded-l focus:outline-none focus:border-orange-500" />
-            <button @click="handleSearch"
-              class="bg-orange-500 hover:bg-orange-700 text-white px-6 py-2 rounded-r transition-colors flex items-center">
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-              SEARCH
-            </button>
-          </div>
-        </div>
-
-        <!-- Navigation -->
-        <nav class="grid grid-cols-5 gap-4 mb-3">
-          <button v-for="(tab, index) in navTabs" :key="index" @click="openMenu(tab)" :class="[
-            'flex-1 px-20 py-3 transition-colors',
-            index === 0
-              ? 'bg-gray-700 text-white-bold border-l-3 border-orange-100 hover:bg-black-900'
-              : 'bg-orange-600 text-white hover:bg-gray-700'
-          ]">
-            {{ tab.title }}
-          </button>
-        </nav>
+      <div class="logo text-4xl font-bold text-white mb-2 md:mb-0 md:inline-block md:mr-4">
+        1331<span class="text-orange-500">X</span>
       </div>
+        <input type="text" placeholder="Search for torrents..." v-model="searchQuery"
+          class="block w-full md:w-64 md:inline-block focus:outline-none bg-gray-800 border border-gray-600 text-white px-4 py-2 rounded focus:border-orange-500" />
     </div>
-  </header>
+
+    <!-- Navbar -->
+    <header class="flex justify-between items-center px-4 py-3 ">
+
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:grid w-7xl mx-auto grid-cols-5 gap-4">
+        <a v-for="(tab, index) in navTabs" :key="index" :href=tab.slug :class="[
+          'flex-1 px-10 py-3 transition-colors text-center',
+          index === 0
+            ? 'bg-gray-700 text-white border-l-3 border-orange-100 hover:bg-black-900'
+            : 'bg-orange-600 text-white hover:bg-gray-700'
+        ]">{{ tab.title }}</a>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden" @click="isMenuOpen = !isMenuOpen">
+        ☰
+      </button>
+    </header>
+  </div>
+  <!-- Mobile Nav -->
+  <nav v-if="isMenuOpen" class="md:hidden bg-gray-800 text-white px-4 py-2 space-y-2">
+    <a v-for="(tab, index) in navTabs" :key="index" :href=tab.slug class="block">{{ tab.title }}</a>
+  </nav>
 </template>
 
-<script>
-import { Link, usePage } from '@inertiajs/vue3'
+<script setup>
+import { ref } from "vue";
+const isMenuOpen = ref(false);
 
-import { ref, reactive, onMounted } from 'vue'
-const isLoggedIn = ref(false);
-export default {
-  name: 'TorrentSite',
-  setup() {
-    const searchQuery = ref('')
+const navTabs = [{ title: 'HOME', slug: "/" },
+{ title: 'UPLOAD', slug: "/upload" },
+{ title: 'RULES', slug: "/rules" },
+{ title: 'CONTACT', slug: "/contact" },
+{ title: 'ABOUT US', slug: "/about" }];
 
-    const navTabs = [{ title: 'HOME', slug: "/" },
-    { title: 'UPLOAD', slug: "/upload" },
-    { title: 'RULES', slug: "/rules" },
-    { title: 'CONTACT', slug: "/contact" },
-    { title: 'ABOUT US', slug: "/about" }];
-
-// 
-
-    const moviePosters = reactive([
-      { title: "The Meg 2", quality: "1080p" },
-      { title: "Oppenheimer", quality: "1080p" },
-      { title: "The Phoenician", quality: "1080p" },
-      { title: "Scream VI", quality: "1080p" },
-      { title: "Marc Maron", quality: "1080p" },
-      { title: "100 Men and Me", quality: "1080p" },
-      { title: "Fantastic Four", quality: "1080p" }
-    ])
-
-    const browseCategories = [
-      'Trending Torrents',
-      'Movie library',
-      'Top 100 Torrents',
-      'Anime',
-      'Applications',
-      'Documentaries',
-      'Games',
-      'Movies',
-      'Music',
-      'Other',
-      'Television',
-      'XXX'
-    ]
-
-    const externalLinks = [
-      '1337x Status',
-      '1337x Chat',
-      'Torrent9',
-      'uTrix',
-      'Njalla',
-      'PRQ',
-      'Limetorrents',
-      'TorrentFunk',
-      'ThePornDude',
-      'Torlock'
-    ]
-
-    // Methods
-    const handleSearch = () => {
-      if (searchQuery.value.trim()) {
-        console.log('Searching for:', searchQuery.value)
-        window.location.href = "/search/" + searchQuery.value + "/1/";
-      }
-    }
-
-
-
-    const browseCategory = (category) => {
-      console.log('Browsing category:', category)
-      // Implement category browsing logic
-      // Navigate to category page or filter torrents
-    }
-
-    const openLink = (link) => {
-      console.log('Opening link:', link)
-      // Implement external link logic
-      // Open in new tab or navigate
-    }
-    const openMenu = (item) => {
-      console.log(item);
-      window.location.href = item.slug;
-    }
-
-    const logout = async () => {
-      try {
-        const response = await fetch('/logout', {
-          method: 'POST',
-          headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Content-Type': 'application/json'
-          }
-        });
-        window.location.href = "/";
-        // if (response.redirected) {
-        //   window.location.href = response.url; // Follow Laravel redirect
-        // }
-      } catch (error) {
-        console.error('Logout failed:', error);
-      }
-    };
-
-    onMounted(() => {
-      const page = usePage();
-      isLoggedIn.value = !!page.props.auth.user;
-      console.log(isLoggedIn.value);
-
-      // Initialize component, fetch data, etc.
-    })
-
-    return {
-      searchQuery,
-      navTabs,
-      isLoggedIn,
-      moviePosters,
-      browseCategories,
-      externalLinks,
-      handleSearch,
-      logout,
-      openMenu,
-      browseCategory,
-      openLink
-    }
-  }
-}
 </script>
-
-<style scoped>
-/* Add any component-specific styles here if needed */
-.bg-gray-750 {
-  background-color: rgb(55, 65, 81, 0.5);
-}
-</style>

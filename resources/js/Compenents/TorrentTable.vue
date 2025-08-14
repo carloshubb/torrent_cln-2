@@ -73,7 +73,7 @@
     </div>
   </div>
 
-  <div class="lg:col-span-3 ">
+  <div class="px-2">
     <!-- Popular Torrents Section -->
     <div class="featured-list bg-gray-800 rounded-lg overflow-hidden shadow-xl mt-6">
       <div class="featured-heading bg-gradient-to-r from-orange-400 to-red-500 px-4 py-3 flex items-center">
@@ -86,14 +86,14 @@
       </div>
 
       <div class="overflow-x-auto">
-        <table class="w-full">
+        <table class="min-w-full">
           <thead class="bg-gray-700">
             <tr>
               <th class="text-left px-4 py-1 text-gray-300 font-semibold">name</th>
-              <th class="text-center px-4 py-1 text-gray-300 font-semibold">se</th>
-              <th class="text-center px-4 py-1 text-gray-300 font-semibold">le</th>
-              <th class="text-center px-4 py-1 text-gray-300 font-semibold">time</th>
-              <th class="text-center px-4 py-1 text-gray-300 font-semibold">size</th>
+              <th class="hidden md:table-cell text-center px-4 py-1 text-gray-300 font-semibold">se</th>
+              <th class="hidden md:table-cell text-center px-4 py-1 text-gray-300 font-semibold">le</th>
+              <th class="hidden md:table-cell text-center px-4 py-1 text-gray-300 font-semibold">time</th>
+              <th class="hidden md:table-cell text-center px-4 py-1 text-gray-300 font-semibold">size</th>
               <th class="text-center px-4 py-1 text-gray-300 font-semibold">uploader</th>
             </tr>
           </thead>
@@ -102,7 +102,7 @@
               class="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer text-xs"
               @click="viewTorrent(torrent)">
               <td class="px-2 py-3">
-                <div class="flex items-center justify-between w-full">
+                <div class="flex items-center justify-between ">
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
                     <a :href="`/sub/${torrent.subcategory_id}/0/`">
@@ -122,20 +122,20 @@
                   </span>
                 </div>
               </td>
-              <td class="text-center px-2 py-2">
+              <td class="text-center px-2 py-2 hidden md:table-cell">
                 <span class="bg-green-600 text-white px-1 text-xs rounded ">
                   {{ torrent.seeders }}
                 </span>
               </td>
-              <td class="text-center px-2 py-2">
+              <td class="text-center px-2 py-2 hidden md:table-cell">
                 <span class="bg-red-800 text-white px-1 text-xs rounded ">
                   {{ torrent.leechers }}
                 </span>
               </td>
-              <td class="text-center px-2 py-2 text-gray-400 ">
+              <td class="text-center px-2 py-2 text-gray-400 hidden md:table-cell">
                 {{ formatApprovedAt(torrent.approved_at) }}
               </td>
-              <td class="text-center px-2 py-2 text-gray-400 ">
+              <td class="text-center px-2 py-2 text-gray-400 hidden md:table-cell">
                 {{ torrent.size_formatted }}
               </td>
               <td class="text-center px-2 py-2">
