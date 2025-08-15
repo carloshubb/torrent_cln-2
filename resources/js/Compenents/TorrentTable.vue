@@ -4,27 +4,27 @@
 
     <!-- First row -->
     <div class="flex gap-2 bg-gray-300 p-2 rounded">
-      <button class="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">
-        <i class="fas fa-chart-line"></i>
+      <a class="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700" href = "/trending"> 
+        <i class="flaticon-trending"></i>
         All Trending Today
-      </button>
-      <button class="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">
-        <i class="fas fa-chart-line"></i>
+      </a>
+      <a class="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700" href = "/trending-week">
+        <i class="flaticon-trending"></i>
         All Trending This Week
-      </button>
+      </a>
     </div>
 
     <!-- Second row -->
     <div class="flex flex-wrap gap-2 bg-gray-300 p-2 rounded">
-      <button class="btn-icon"><i class="fas fa-film"></i> Trending Movies</button>
-      <button class="btn-icon"><i class="fas fa-tv"></i> Trending TV</button>
-      <button class="btn-icon"><i class="fas fa-gamepad"></i> Trending Games</button>
-      <button class="btn-icon"><i class="fab fa-windows"></i> Trending Apps</button>
-      <button class="btn-icon"><i class="fas fa-music"></i> Trending Music</button>
-      <button class="btn-icon"><i class="fas fa-video"></i> Trending Documentaries</button>
-      <button class="btn-icon"><i class="fas fa-mask"></i> Trending Anime</button>
-      <button class="btn-icon"><i class="fas fa-ellipsis-h"></i> Trending Other</button>
-      <button class="btn-icon"><i class="fas fa-exclamation-circle"></i> Trending XXX</button>
+      <a class="btn-icon" href = "/trending/d/movies/"><i class="flaticon-movies"></i> Trending Movies</a>
+      <a class="btn-icon" href = "/trending/d/tv/"><i class="flaticon-tv"></i> Trending TV</a>
+      <a class="btn-icon" href = "/trending/d/games/"><i class="flaticon-games"></i> Trending Games</a>
+      <a class="btn-icon" href = "/trending/d/apps/"><i class="flaticon-apps"></i> Trending Apps</a>
+      <a class="btn-icon" href = "/trending/d/music/"><i class="flaticon-music"></i> Trending Music</a>
+      <a class="btn-icon" href = "/trending/d/documentaries/"><i class="flaticon-documentary"></i> Trending Documentaries</a>
+      <a class="btn-icon" href = "/trending/d/anime/"><i class="flaticon-ninja-portrait"></i> Trending Anime</a>
+      <a class="btn-icon" href = "/trending/d/other/"><i class="flaticon-other"></i> Trending Other</a>
+      <a class="btn-icon" href = "/trending/d/xxx/"><i class="flaticon-xxx"></i> Trending XXX</a>
     </div>
 
   </div>
@@ -33,15 +33,15 @@
 
     <!-- Second row -->
     <div class="flex flex-wrap gap-2 bg-gray-300 p-2 rounded">
-      <button class="btn-icon"><i class="fas fa-film"></i> Top 100 Movies</button>
-      <button class="btn-icon"><i class="fas fa-tv"></i> Top 100 TV</button>
-      <button class="btn-icon"><i class="fas fa-gamepad"></i> Top 100 Games</button>
-      <button class="btn-icon"><i class="fab fa-windows"></i> Top 100 Apps</button>
-      <button class="btn-icon"><i class="fas fa-music"></i> Top 100 Music</button>
-      <button class="btn-icon"><i class="fas fa-video"></i> Top 100 Documentaries</button>
-      <button class="btn-icon"><i class="fas fa-mask"></i> Top 100 Anime</button>
-      <button class="btn-icon"><i class="fas fa-ellipsis-h"></i> Top 100 Other</button>
-      <button class="btn-icon"><i class="fas fa-exclamation-circle"></i> Top 100 XXX</button>
+      <a class="btn-icon" href = "/top-100-movies"><i class="flaticon-movies"></i> Top 100 Movies</a>
+      <a class="btn-icon" href = "/top-100-television"><i class="flaticon-tv"></i> Top 100 TV</a>
+      <a class="btn-icon" href = "/top-100-games"><i class="flaticon-games"></i> Top 100 Games</a>
+      <a class="btn-icon" href = "/top-100-applications"><i class="flaticon-apps"></i> Top 100 Apps</a>
+      <a class="btn-icon" href = "/top-100-music"><i class="flaticon-music"></i> Top 100 Music</a>
+      <a class="btn-icon" href = "/top-100-documentaries"><i class="flaticon-documentary"></i> Top 100 Documentaries</a>
+      <a class="btn-icon" href = "/top-100-anime"><i class="flaticon-ninja-portrait"></i> Top 100 Anime</a>
+      <a class="btn-icon" href = "/top-100-other"><i class="flaticon-other"></i> Top 100 Other</a>
+      <a class="btn-icon" href = "/top-100-xxx"><i class="flaticon-xxx"></i> Top 100 XXX</a>
     </div>
 
   </div>
@@ -101,7 +101,7 @@
             <tr v-for="(torrent, index) in torrents" :key="index"
               class="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer text-xs"
               @click="viewTorrent(torrent)">
-              <td class="px-2 py-3">
+              <td class="px-2 py-3" v-if="page_type != 'top' && page_type != 'trending'">
                 <div class="flex items-center justify-between ">
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
@@ -110,6 +110,28 @@
                           :class="`${torrent.subcategory.icon}`"></i></button>
                     </a>
                     <a :href="`/torrent/${torrent.id}/${torrent.slug}/`"
+                      class="text-gray-300 hover:text-orange-400 transition-colors ml-3">
+                      {{ torrent.name }}
+                    </a>
+                  </div>
+
+                  <!-- Right side: badge -->
+                  <span v-if="torrent.comments_count"
+                    class="bg-gray-500 text-black-900 rounded text-xs font-semibold px-2">
+                    {{ torrent.comments_count }}
+                  </span>
+                </div>
+              </td>
+
+              <td class="px-2 py-3" v-if="page_type == 'top' || page_type == 'trending'">
+                <div class="flex items-center justify-between ">
+                  <!-- Left side: icon + name -->
+                  <div class="flex items-center">
+                    <a :href="`/sub/${torrent.subcategory_id}/0/`">
+                      <button class="" v-if="torrent.subcategory"><i
+                          :class="`${torrent.subcategory.icon}`"></i></button>
+                    </a>
+                    <a :href="`${torrent.torrent_link}`"
                       class="text-gray-300 hover:text-orange-400 transition-colors ml-3">
                       {{ torrent.name }}
                     </a>

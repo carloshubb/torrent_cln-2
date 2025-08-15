@@ -88,11 +88,87 @@ class TorrentController extends Controller
         else if ($type === 'trending') {
             $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending Torrents last 24 hours')
                 ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'trending-week') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending Torrents last 7 Days')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'trending-d-movies') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending MOVIES Torrents last 24 hours')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'trending-d-tv') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending TV Torrents last 24 hours')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'trending-d-games') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending Games Torrents last 24 hours')
+                ->paginate(10000);
         } // Fetch most Category torrents based on type
+        else if ($type === 'trending-d-apps') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending Applications Torrents last 24 hours')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'trending-d-music') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending MUSIC Torrents last 24 hours')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'trending-d-doc') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending DOCMENTRAIES Torrents last 24 hours')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'trending-d-anime') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending ANIME Torrents last 24 hours')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'trending-d-other') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending OTHER Torrents last 24 hours')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'trending-d-xxx') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'Trending XXX Torrents last 24 hours')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
         else if ($type === 'top') {
             $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 Torrents')
                 ->paginate(10000);
-        } // Fetch most Category torrents based on type
+        }// Fetch most Category torrents based on type
+        else if ($type === 'top-100-movies') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 MOVIE Torrents')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'top-100-tv') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 TV Torrents')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'top-100-games') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 GAME Torrents')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'top-100-apps') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 APPS Torrents')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'top-100-music') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 MUSIC Torrents')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'top-100-doc') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 DOCUMENTARY Torrents')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'top-100-anime') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 ANIME Torrents')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'top-100-other') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 OTHER Torrents')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
+        else if ($type === 'top-100-xxx') {
+            $torrents['data'] = PopularTorrent::with('subcategory')->where('category_title', 'top 100 XXX Torrents')
+                ->paginate(10000);
+        }// Fetch most Category torrents based on type
         else if ($type === 'homeimage') {
             $torrents['data'] = HomeImageList::all();
         } // Fetch Search Torrent Data

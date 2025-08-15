@@ -22,7 +22,7 @@ class PopularTorrent extends Model
         'uploader',
     ];
 
-    public function subCategory()
+    public function subcategory()
     {
         return $this->belongsTo(SubCategory::class);
     }
