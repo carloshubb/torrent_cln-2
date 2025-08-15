@@ -13,7 +13,7 @@ export default defineConfig({
         tailwindcss(),
         
     ],
-    base: '/',
+    base: '/build/',
     server: {
         host: '127.0.0.1',
         // https: true,

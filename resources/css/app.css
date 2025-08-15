@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: 'Oswald Regular';
-  src: url('../fonts/Oswald-Regular.woff') format('woff');
+  src: url('/fonts/Oswald-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -25,5 +25,5 @@ body .title {
     text-transform: uppercase;
 }
 .bg {
-  background-image: url("../../images/main-bg.png");
+  background-image: url("images/main-bg.png");
 }
