@@ -73,7 +73,7 @@
     </div>
   </div>
 
-  <div class="px-2">
+  <div class="px-2 md:px-0">
     <!-- Popular Torrents Section -->
     <div class="featured-list bg-gray-800 rounded-lg overflow-hidden shadow-xl mt-6">
       <div class="featured-heading bg-gradient-to-r from-orange-400 to-red-500 px-4 py-3 flex items-center">

@@ -1,5 +1,5 @@
 <template>
-  <div class="rules-container">
+  <div class="rules-container px-2 md:px-0">
     <div 
       v-for="(section, sIndex) in rules" 
       :key="sIndex" 

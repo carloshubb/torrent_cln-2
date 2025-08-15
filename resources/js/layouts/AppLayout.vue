@@ -14,7 +14,7 @@
           <main class="md:col-span-9">
             <slot />
           </main>
-          
+
           <!-- Sidebar -->
           <Sidebar />
         </div>
@@ -26,9 +26,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-200 text-center p-4">
-      © 2025 MyApp. All rights reserved.
-    </footer>
+    <Footer />
   </div>
 </template>
 
