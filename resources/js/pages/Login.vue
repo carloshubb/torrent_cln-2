@@ -132,7 +132,8 @@ const handleLogin = async () => {
     if (!csrfToken) {
       throw new Error('CSRF token not found. Please refresh the page.');
     }
-
+    
+    
     const response = await fetch('/login', {
       method: 'POST',
       headers: {
@@ -141,7 +142,7 @@ const handleLogin = async () => {
         'Accept': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
       },
-      body: JSON.stringify(this.form),
+      body: JSON.stringify(form),
       credentials: 'include'
     });
 
