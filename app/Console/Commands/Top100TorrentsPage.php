@@ -45,8 +45,8 @@ class Top100TorrentsPage extends Command
             "https://1337x.to/top-100-xxx",
             "https://1337x.to/top-100-applications"
         ];
-        foreach ($urls as $url) {  
-            $torrents = [];          
+        foreach ($urls as $url) {
+            $torrents = [];
             $response = $httpClient->request('GET', $url);
             $html = $response->getContent();
             $crawler = new Crawler($html);
@@ -83,26 +83,44 @@ class Top100TorrentsPage extends Command
     {
         $timeStr = trim($timeStr);
         $currentYear = date("Y");
-        $currentMonth = date("m");
-        $currentDay = date("d");
 
-        // Case 1: Only time (e.g., "8:44am") → assume today
-        if (preg_match('/^\d{1,2}:\d{2}(am|pm)$/i', $timeStr)) {
-            $dateTime = DateTime::createFromFormat("Y-m-d g:ia", "$currentYear-$currentMonth-$currentDay $timeStr");
+        // Remove ordinal suffixes
+        $timeStr = preg_replace('/(\d+)(st|nd|rd|th)/i', '$1', $timeStr);
+
+        // Remove dots from months
+        $timeStr = str_replace('.', '', $timeStr);
+
+        // Fix year format like "'25" → "2025"
+        $timeStr = preg_replace_callback(
+            "/'(\d{2})/",
+            function ($m) {
+                return "20" . $m[1];
+            },
+            $timeStr
+        );
+
+        // If no year provided, append current year
+        if (!preg_match('/\b\d{4}\b/', $timeStr)) {
+            $timeStr .= " $currentYear";
         }
-        // Case 2: Time + Month + Day (e.g., "5pm Aug. 7th")
-        else {
-            // Remove "th", "st", "nd", "rd"
-            $timeStr = preg_replace('/(\d+)(st|nd|rd|th)/i', '$1', $timeStr);
-            // Ensure consistent month format
-            $timeStr = str_replace('.', '', $timeStr);
-            $dateTime = DateTime::createFromFormat("ga M j Y", "$timeStr $currentYear");
-            if (!$dateTime) {
-                $dateTime = DateTime::createFromFormat("g:ia M j Y", "$timeStr $currentYear");
+
+        $formats = [
+            "M j Y",          // Jul 17 2025
+            "g:ia M j Y",     // 9am Aug 1 2025
+            "ga M j Y",       // 7pm Aug 2 2025
+            "M j Y g:ia",     // Jul 17 2025 9:30am
+            "M j Y ga",       // Jul 17 2025 9am
+            "ga M j Y",       // 7pm Aug 2 2025
+        ];
+
+        foreach ($formats as $format) {
+            $dateTime = DateTime::createFromFormat($format, $timeStr);
+            if ($dateTime) {
+                return $dateTime->format("Y-m-d H:i:s");
             }
         }
 
-        return $dateTime ? $dateTime->format("Y-m-d H:i:s") : null;
+        return null; // Failed to parse
     }
 
     private function saveTorrent(array $torrents): int
@@ -166,6 +184,11 @@ class Top100TorrentsPage extends Command
         $date = $columns->filter('td.coll-date')->count() > 0 ? $columns->filter('td.coll-date')->text() : null;
         $torrent['date_uploaded'] = $this->convertTimeString($date);
         $torrent['size'] = $columns->filter('td.coll-4')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4')->text())[0]) : null;
+        $size_only = "";
+        if (preg_match('/([\d\.]+\s[GMK]B)/', $torrent['size'], $matches)) {
+            $size_only = $matches[1];
+        }
+        $torrent['size'] = $size_only;
         $uploader = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->text() : null;
         $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         if ($uploader_link) $torrent['uploader'] = $uploader_link;

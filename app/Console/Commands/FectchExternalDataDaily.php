@@ -45,7 +45,8 @@ class FectchExternalDataDaily extends Command
         #$catigories = Category::where('id', 9)->get();
         foreach ($catigories as $index => $category) {
             $page = 1;
-            while ($page < 2) {
+            while ($page < 151) {
+                $this->info("[" . date('Y-m-d H:i:s') . "]**$category->name Page $page Scrapping Start**");
                 $torrents = [];
                 $url = "https://1337x.to/cat/{$category->slug}/{$page}/";
                 $response = $httpClient->request('GET', $url);
@@ -65,10 +66,10 @@ class FectchExternalDataDaily extends Command
                     try {
                         $torrent = $this->extractTorrentData($row, $category);
                         if (!empty($torrent['name'])) {
-                            $torrents[] = $torrent;
-                        }
-                        $this->info("Scraped page {$torrent['name']}");
+                            $torrents[] = $torrent;                        }
+                        $this->info("[" . date('Y-m-d H:i:s') . "] Scraped page {$torrent['name']}");
                     } catch (\Exception $e) {
+                        $this->info("[" . date('Y-m-d H:i:s') . "]**Error parsing torrent row {$i}: " . $e->getMessage());
                         Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
                     }
                 });
@@ -78,29 +79,59 @@ class FectchExternalDataDaily extends Command
                 sleep(0.5);
             }
         }
-         // to get price and yield of the bonds, we need to scrape the bond page
-       
+        // to get price and yield of the bonds, we need to scrape the bond page
+
     }
     private function convertTimeString($timeStr)
     {
         $timeStr = trim($timeStr);
-        $currentYear = date("Y");
-        $currentMonth = date("m");
-        $currentDay = date("d");
 
-        // Case 1: Only time (e.g., "8:44am") → assume today
-        if (preg_match('/^\d{1,2}:\d{2}(am|pm)$/i', $timeStr)) {
-            $dateTime = DateTime::createFromFormat("Y-m-d g:ia", "$currentYear-$currentMonth-$currentDay $timeStr");
-        }
-        // Case 2: Time + Month + Day (e.g., "5pm Aug. 7th")
-        else {
-            // Remove "th", "st", "nd", "rd"
-            $timeStr = preg_replace('/(\d+)(st|nd|rd|th)/i', '$1', $timeStr);
-            // Ensure consistent month format
-            $timeStr = str_replace('.', '', $timeStr);
-            $dateTime = DateTime::createFromFormat("ga M j Y", "$timeStr $currentYear");
+        $currentYear  = date("Y");
+        $currentMonth = date("n");
+        $currentDay   = date("j");
+
+        // Remove suffixes (st, nd, rd, th) and dots after months
+        $timeStr = preg_replace('/(\d+)(st|nd|rd|th)/i', '$1', $timeStr);
+        $timeStr = str_replace('.', '', $timeStr);
+
+        $dateTime = null;
+
+        // 1️⃣ Only time: "6:36am" or "5am"
+        if (preg_match('/^\d{1,2}(:\d{2})?(am|pm)$/i', $timeStr)) {
+            $dateTime = DateTime::createFromFormat(
+                "Y-n-j g:ia",
+                "$currentYear-$currentMonth-$currentDay $timeStr"
+            );
             if (!$dateTime) {
-                $dateTime = DateTime::createFromFormat("g:ia M j Y", "$timeStr $currentYear");
+                $dateTime = DateTime::createFromFormat(
+                    "Y-n-j ga",
+                    "$currentYear-$currentMonth-$currentDay $timeStr"
+                );
+            }
+        }
+
+        // 2️⃣ Time + Month + Day: "5am Aug 14", "8:15am Aug 14"
+        elseif (preg_match('/^\d{1,2}(:\d{2})?(am|pm)\s+[A-Za-z]+\s+\d{1,2}$/i', $timeStr)) {
+            $dateTime = DateTime::createFromFormat(
+                "ga M j Y",
+                "$timeStr $currentYear"
+            );
+            if (!$dateTime) {
+                $dateTime = DateTime::createFromFormat(
+                    "g:ia M j Y",
+                    "$timeStr $currentYear"
+                );
+            }
+        }
+
+        // 3️⃣ Month + Day only: "Aug 14"
+        elseif (preg_match('/^[A-Za-z]+\s+\d{1,2}$/i', $timeStr)) {
+            $dateTime = DateTime::createFromFormat(
+                "M j Y",
+                "$timeStr $currentYear"
+            );
+            if ($dateTime) {
+                $dateTime->setTime(0, 0, 0); // default to midnight
             }
         }
 
@@ -121,7 +152,8 @@ class FectchExternalDataDaily extends Command
                 // Map the scraper data to the proper format using the model method
 
                 $mappedData = Torrent::mapFromScraper($torrentData);
-
+                $this->info("[" . date('Y-m-d H:i:s') . "] Save start {$mappedData['name']}");
+                
                 // Use name and category as unique identifier to avoid duplicates
                 $torrent = Torrent::updateOrCreate(
                     [
@@ -130,7 +162,7 @@ class FectchExternalDataDaily extends Command
                     ],
                     $mappedData
                 );
-
+                $this->info("[" . date('Y-m-d H:i:s') . "] Saved  {$mappedData['name']}");
                 $torrentId = $torrent->id;
                 //parse detail data and save
                 $detail_url = $this->buildDetailUrl($torrentData['torrent_link']);
@@ -142,6 +174,8 @@ class FectchExternalDataDaily extends Command
                 sleep(0.1);
                 $savedCount++;
             } catch (\Illuminate\Database\QueryException $e) {
+                $this->info("[" . date('Y-m-d H:i:s') . "] Database error saving torrent:  {$mappedData['name']}");
+
                 Log::error("Database error saving torrent: " . $e->getMessage(), [
                     'torrent_data' => $torrentData,
                     'sql_error' => $e->getMessage()
@@ -178,9 +212,8 @@ class FectchExternalDataDaily extends Command
         $size_only = "";
         if (preg_match('/([\d\.]+\s[GMK]B)/', $torrent['size'], $matches)) {
             $size_only = $matches[1];
-            
         }
-        $torrent['size'] = $size_only; 
+        $torrent['size'] = $size_only;
         $uploader = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->text() : null;
         $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
@@ -194,6 +227,8 @@ class FectchExternalDataDaily extends Command
 
     private function parseDetailPage($html)
     {
+
+        $this->info("[" . date('Y-m-d H:i:s') . "] Detail Page Scrapping started");
 
         $crawler = new Crawler($html);
         $data = [];
@@ -222,7 +257,7 @@ class FectchExternalDataDaily extends Command
                 Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
             }
         });
-            
+        
         $rows_magnet = $crawler->filter('a[href^="magnet:"]');
         $data['magnet_link'] = $rows_magnet->count() > 0 ? $rows_magnet->attr('href') : null;
         $infohash = $crawler->filter('div.infohash-box p span')->text();
@@ -299,6 +334,7 @@ class FectchExternalDataDaily extends Command
 
         // Uploader information
         $data['uploader_status'] = $this->extractUploaderStatus($crawler);
+        $this->info("[" . date('Y-m-d H:i:s') . "] Detail Page Scrapping Ended");
         return $data;
         return array_filter($data, function ($value) {
             return $value !== null && $value !== '';
@@ -614,6 +650,7 @@ class FectchExternalDataDaily extends Command
 
     private function saveTorrentDetails($torrent, $detailData)
     {
+        $this->info("[" . date('Y-m-d H:i:s') . "]". $detailData['name']." Detail Data Save Started");
         try {
             // Update main torrent record
             $updateData = array_intersect_key($detailData, array_flip([
@@ -668,7 +705,7 @@ class FectchExternalDataDaily extends Command
                 ['torrent_id' => $torrent->id], // match condition
                 $updateData                     // data to update or insert
             );
-
+            $this->info("[" . date('Y-m-d H:i:s') . "]". $detailData['name']." Detail Data Save Ended");
             // Optionally also update Torrent table with relevant details
             //$torrent->update($updateData);
 
@@ -682,6 +719,7 @@ class FectchExternalDataDaily extends Command
                 $this->saveMediaInfo($torrent->id, $detailData['media_info']);
             }
         } catch (\Exception $e) {
+            $this->info("[" . date('Y-m-d H:i:s') . "] Failed to save torrent details". $detailData['name']);
             Log::error("Failed to save torrent details", [
                 'torrent_id' => $torrent->id,
                 'error' => $e->getMessage()

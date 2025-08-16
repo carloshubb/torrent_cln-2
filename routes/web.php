@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TorrentController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return Inertia::render('Dashboard', [
@@ -220,6 +221,7 @@ Route::middleware('auth:sanctum')->get('/me', [LoginController::class, 'me']);
 Route::post('/logout', [LoginController::class, 'logout']);
 Route::get('/uploadtest', [TorrentController::class, 'uploadtorrent']);
 Route::post('/torrents', [TorrentController::class, 'store'])->name('torrents.store');
+Route::get('/user/{param1}/{param2?}', [UserController::class, 'index'])->name('torrents.user');
 
 Route::get('/home', function () {
     return Inertia::render('Home', [
