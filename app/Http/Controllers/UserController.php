@@ -16,7 +16,7 @@ class UserController extends Controller
                     ->orderByDesc('approved_at')
                     ->paginate(10, ['*'], 'page', $page);
         $data['info'] = null;
-        return Inertia::render('MovieLibrary', [
+        return Inertia::render('UserInfo', [
         'data' => $data
     ]);
     }

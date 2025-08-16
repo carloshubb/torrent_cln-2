@@ -24,6 +24,12 @@ class User extends Authenticatable
         'upload_count',
         'download_count',
         'ratio',
+        'rank',
+        'privacy',
+        'joindate',
+        'birthday',
+        'gender',
+        'country',        
         'total_uploaded',
         'total_downloaded',
     ];

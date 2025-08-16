@@ -93,23 +93,52 @@ class FetchTrendingPage extends Command
         $currentMonth = date("m");
         $currentDay = date("d");
 
-        // Case 1: Only time (e.g., "8:44am") → assume today
-        if (preg_match('/^\d{1,2}:\d{2}(am|pm)$/i', $timeStr)) {
-            $dateTime = DateTime::createFromFormat("Y-m-d g:ia", "$currentYear-$currentMonth-$currentDay $timeStr");
+        // Remove ordinal suffixes like "14th" → "14"
+        $timeStr = preg_replace('/(\d+)(st|nd|rd|th)/i', '$1', $timeStr);
+
+        // Remove dots from months
+        $timeStr = str_replace('.', '', $timeStr);
+
+        // Convert "'25" → "2025"
+        $timeStr = preg_replace_callback(
+            "/'(\d{2})/",
+            function ($m) {
+                return "20" . $m[1];
+            },
+            $timeStr
+        );
+
+        // Case 1: Only time (assume today)
+        if (preg_match('/^\d{1,2}(:\d{2})?(am|pm)$/i', $timeStr)) {
+            $dateTime = DateTime::createFromFormat(
+                "Y-m-d g:ia",
+                "$currentYear-$currentMonth-$currentDay $timeStr"
+            );
+            return $dateTime ? $dateTime->format("Y-m-d H:i:s") : null;
         }
-        // Case 2: Time + Month + Day (e.g., "5pm Aug. 7th")
-        else {
-            // Remove "th", "st", "nd", "rd"
-            $timeStr = preg_replace('/(\d+)(st|nd|rd|th)/i', '$1', $timeStr);
-            // Ensure consistent month format
-            $timeStr = str_replace('.', '', $timeStr);
-            $dateTime = DateTime::createFromFormat("ga M j Y", "$timeStr $currentYear");
-            if (!$dateTime) {
-                $dateTime = DateTime::createFromFormat("g:ia M j Y", "$timeStr $currentYear");
+
+        // If no year is given, append current year
+        if (!preg_match('/\b\d{4}\b/', $timeStr)) {
+            $timeStr .= " $currentYear";
+        }
+
+        // Possible formats (time first, date first)
+        $formats = [
+            "ga M j Y",      // 6pm Aug 14 2025
+            "g:ia M j Y",    // 6:30pm Aug 14 2025
+            "M j Y ga",      // Aug 14 2025 6pm
+            "M j Y g:ia",    // Aug 14 2025 6:30pm
+            "M j Y",         // Aug 14 2025 (no time)
+        ];
+
+        foreach ($formats as $format) {
+            $dateTime = DateTime::createFromFormat($format, $timeStr);
+            if ($dateTime) {
+                return $dateTime->format("Y-m-d H:i:s");
             }
         }
 
-        return $dateTime ? $dateTime->format("Y-m-d H:i:s") : null;
+        return null; // Failed to parse
     }
 
     private function saveTorrent(array $torrents): int
@@ -165,11 +194,16 @@ class FetchTrendingPage extends Command
         $date = $columns->filter('td.coll-date')->count() > 0 ? $columns->filter('td.coll-date')->text() : null;
         $torrent['date_uploaded'] = $this->convertTimeString($date);
         $torrent['size'] = $columns->filter('td.coll-4')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4')->text())[0]) : null;
+        $size_only = "";
+        if (preg_match('/([\d\.]+\s[GMK]B)/', $torrent['size'], $matches)) {
+            $size_only = $matches[1];
+        }
+        $torrent['size'] = $size_only;
         $uploader = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->text() : null;
         $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         $this->info($uploader);
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
-        else $torrent['uploader'] = $uploader;        
+        else $torrent['uploader'] = $uploader;
         $torrent['torrent_link'] = $columns->filter('td.coll-1.name a')->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(0)->attr('href') : null;
         $torrent['ddd'] = $columns->filter('td.coll-1.name span.active i')->attr('class');
         $torrent['subcategory_id'] =  null;

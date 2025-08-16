@@ -27,6 +27,13 @@ return new class extends Migration
             $table->bigInteger('total_downloaded')->default(0); // in bytes
             $table->timestamp('banned_until')->nullable();
             $table->text('ban_reason')->nullable();
+            $table->string('rank')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('privacy')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('country')->nullable();
+            $table->timestamp('birthday')->nullable();
+            $table->timestamp('joindate')->nullable();
             $table->rememberToken();
             $table->timestamps();
 

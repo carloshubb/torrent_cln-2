@@ -81,8 +81,6 @@ class FectchExternalHomeDataDaily extends Command
                     : null;
 
                 $image_list[] = $data;
-
-                
             } catch (\Exception $e) {
                 Log::warning("Error parsing torrent row 2 {$i}: " . $e->getMessage());
             }
@@ -93,24 +91,37 @@ class FectchExternalHomeDataDaily extends Command
     private function convertTimeString($timeStr)
     {
         $timeStr = trim($timeStr);
-        $currentYear = date("Y");
-        $currentMonth = date("m");
-        $currentDay = date("d");
 
-        // Case 1: Only time (e.g., "8:44am") → assume today
+        $currentYear  = date("Y");
+        $currentMonth = date("n");
+        $currentDay   = date("j");
+
+        // Remove suffixes (st, nd, rd, th) and dots after months
+        $timeStr = preg_replace('/(\d+)(st|nd|rd|th)/i', '$1', $timeStr);
+        $timeStr = str_replace('.', '', $timeStr);
+
+        $dateTime = null;
+
+        // Case 1: Only time (e.g., "7:36am")
         if (preg_match('/^\d{1,2}:\d{2}(am|pm)$/i', $timeStr)) {
-            $dateTime = DateTime::createFromFormat("Y-m-d g:ia", "$currentYear-$currentMonth-$currentDay $timeStr");
+            $dateTime = DateTime::createFromFormat(
+                "Y-n-j g:ia",
+                "$currentYear-$currentMonth-$currentDay $timeStr"
+            );
         }
-        // Case 2: Time + Month + Day (e.g., "5pm Aug. 7th")
-        else {
-            // Remove "th", "st", "nd", "rd"
-            $timeStr = preg_replace('/(\d+)(st|nd|rd|th)/i', '$1', $timeStr);
-            // Ensure consistent month format
-            $timeStr = str_replace('.', '', $timeStr);
-            $dateTime = DateTime::createFromFormat("ga M j Y", "$timeStr $currentYear");
-            if (!$dateTime) {
-                $dateTime = DateTime::createFromFormat("g:ia M j Y", "$timeStr $currentYear");
-            }
+        // Case 2: Only hour + am/pm + Month + Day (e.g., "2am Aug 13")
+        elseif (preg_match('/^\d{1,2}(am|pm)\s+[A-Za-z]+\s+\d{1,2}$/i', $timeStr)) {
+            $dateTime = DateTime::createFromFormat(
+                "ga M j Y",
+                "$timeStr $currentYear"
+            );
+        }
+        // Case 3: Hour:minute + am/pm + Month + Day (e.g., "11:49am Aug 12")
+        elseif (preg_match('/^\d{1,2}:\d{2}(am|pm)\s+[A-Za-z]+\s+\d{1,2}$/i', $timeStr)) {
+            $dateTime = DateTime::createFromFormat(
+                "g:ia M j Y",
+                "$timeStr $currentYear"
+            );
         }
 
         return $dateTime ? $dateTime->format("Y-m-d H:i:s") : null;
@@ -176,7 +187,12 @@ class FectchExternalHomeDataDaily extends Command
         $torrent['leeches'] = $columns->filter('td.coll-3.leeches')->count() > 0 ? $columns->filter('td.coll-3.leeches')->text() : null;
         $date = $columns->filter('td.coll-date')->count() > 0 ? $columns->filter('td.coll-date')->text() : null;
         $torrent['date_uploaded'] = $this->convertTimeString($date);
-        $torrent['size'] = $columns->filter('td.coll-4.size')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4.size')->text())[0]) : null;
+        $torrent['size'] = $columns->filter('td.coll-4')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4')->text())[0]) : null;
+        $size_only = "";
+        if (preg_match('/([\d\.]+\s[GMK]B)/', $torrent['size'], $matches)) {
+            $size_only = $matches[1];
+        }
+        $torrent['size'] = $size_only;
         $uploader = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->text() : null;
         $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
