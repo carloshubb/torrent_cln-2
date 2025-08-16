@@ -259,7 +259,7 @@ Route::get('/upload', function () {
     // If not logged in, redirect to login page
     if ($user === null) {
         // Option 1: Relative redirect (simplest, avoids APP_URL issues)
-        return redirect('http://127.0.0.1:8000/login');
+        return redirect('/login');
 
         // Option 2: Named route, make sure it exists
         // return redirect()->route('login');
