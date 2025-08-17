@@ -5,12 +5,14 @@
       <div class="flex-1 items-center py-1">
         <span v-if="isLoggedIn" class="title text-white hover:text-red-600" @click="logout">Logout</span>
         <a href="/login" v-if="!isLoggedIn" class="title text-red-600 hover:text-red-600">Login</a>
+        
       </div>
     </div>
   </div>
   <div class="bg-gray-800 backdrop-blur-sm border-b border-orange-500/50">
     <!-- Logo & Search Box -->
     <div class="justify-between md:flex md:w-7xl mx-auto items-center py-3 px-4 md:px-0 ">
+      
 
       <div class="logo text-4xl font-bold text-white mb-2 md:mb-0 md:inline-block md:mr-4">
         1331<span class="text-orange-500">X</span>
