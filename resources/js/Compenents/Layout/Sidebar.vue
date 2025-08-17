@@ -17,18 +17,7 @@
       </ul>
     </div>
 
-    <!-- Links -->
-    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-xl mt-4 mb-4">
-      <div class="bg-gradient-to-r from-orange-500 to-gray-500 px-4 py-3">
-        <h3 class="text-white font-bold">1331X LINKS</h3>
-      </div>
-      <div class="p-4 space-y-2">
-        <div v-for="(link, index) in externalLinks" :key="index"
-          class="text-orange-400 hover:text-orange-300 cursor-pointer transition-colors py-1" @click="openLink(link)">
-          » {{ link }}
-        </div>
-      </div>
-    </div>
+    
   </div>
 </template>
 
