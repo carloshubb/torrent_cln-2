@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Torrent;
 use App\Models\SubCategory;
+use App\Models\User;
 use Inertia\Inertia;
 class UserController extends Controller
 {
@@ -15,7 +16,7 @@ class UserController extends Controller
                     ->where('uploader',"/user/$user/")
                     ->orderByDesc('approved_at')
                     ->paginate(10, ['*'], 'page', $page);
-        $data['info'] = null;
+        $data['info'] = User::where('username',$user)->first();
         return Inertia::render('UserInfo', [
         'data' => $data
     ]);

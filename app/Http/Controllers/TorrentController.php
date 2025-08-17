@@ -191,12 +191,12 @@ class TorrentController extends Controller
 
     public function getDetailData($id, $slug)
     {
-
-        $torrent = Torrent::with('detail') // eager load related data
+       
+        $torrent = Torrent::with('detail') 
             ->where('id', $id)
             ->where('slug', $slug)
             ->firstOrFail();
-        //dd($torrent);
+       
         return response()->json($torrent);
     }
 
@@ -214,6 +214,8 @@ class TorrentController extends Controller
         });
         return response()->json($movies);
     }
+
+    
 
     public function store(Request $request)
     {

@@ -678,7 +678,7 @@ onMounted(() => {
     const page = props.params.split("@")[1] ? props.params.split("@")[1] : null;
     fetchSearchTorrentData(search, page)
   }
-
+  
 
 })
 </script>

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->String('category_title')->nullable(); // Number of views
             $table->String('name')->nullable(); // Number of views
             $table->integer('comments_count')->nullable(); // Number of comments_count
-            $table->integer('seeds')->default(0); // Number of seeds
-            $table->integer('leeches')->default(0); // Number of leeches
-            $table->String('size')->nullable(); // size
+            $table->integer('seeders')->default(0); // Number of seeds
+            $table->integer('leechers')->default(0); // Number of leeches
+            $table->String('size_formatted')->nullable(); // size
             $table->timestamp('approved_at')->nullable();
             $table->String('uploader')->nullable(); // uploader
             $table->timestamps();

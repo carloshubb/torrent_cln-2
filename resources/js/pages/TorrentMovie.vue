@@ -6,7 +6,8 @@ import AppLayout from './../layouts/AppLayout.vue'
 import TorrentPagination from '../Compenents/TorrentPagination.vue'
 // get props data
 const props = defineProps({
-    data: Array
+    data: Object,
+    
 });
 // some data in parent
 const torrents = reactive([])

@@ -41,7 +41,7 @@ return new class extends Migration
             $table->timestamp('detail_scraped_at')->nullable();
 
             $table->json('screenshots')->nullable();
-            $table->json('media_info')->nullable();
+            $table->String('media_info',255)->nullable();
 
             // Additional general torrent detail fields
             $table->string('title')->nullable();

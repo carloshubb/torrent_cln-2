@@ -15,9 +15,9 @@ class PopularTorrent extends Model
         'category_title',
         'name',
         'comments_count',
-        'seeds',
-        'leeches',
-        'size',
+        'seeders',
+        'leechers',
+        'size_formatted',
         'approved_at',
         'uploader',
     ];

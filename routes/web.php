@@ -197,6 +197,7 @@ Route::get('/top-100-music', function () {
 
 Route::get('/torrent/{param1}/{param2}', function ($param1, $param2) {
     // You can use $param1 and $param2 here
+    
     return Inertia::render('DetailTable', [
         'page' => 'detail',
         'title' => 'Download ' . $param2 . ' Torrent',
@@ -212,6 +213,7 @@ Route::get('/movielibrary/{param1}/', function ($param1) {
         'page' => $param1
     ]);
 });
+
 
 
 
@@ -261,7 +263,7 @@ Route::get('/upload', function () {
     // If not logged in, redirect to login page
     if ($user === null) {
         // Option 1: Relative redirect (simplest, avoids APP_URL issues)
-        return redirect('http://127.0.0.1:8000/login');
+        return redirect('/login');
 
         // Option 2: Named route, make sure it exists
         // return redirect()->route('login');

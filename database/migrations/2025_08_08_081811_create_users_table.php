@@ -28,7 +28,6 @@ return new class extends Migration
             $table->timestamp('banned_until')->nullable();
             $table->text('ban_reason')->nullable();
             $table->string('rank')->nullable();
-            $table->string('avatar')->nullable();
             $table->string('privacy')->nullable();
             $table->string('gender')->nullable();
             $table->string('country')->nullable();

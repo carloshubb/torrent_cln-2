@@ -104,7 +104,7 @@
             <tr v-for="(torrent, index) in torrents" :key="index"
               class="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer text-xs"
               @click="viewTorrent(torrent)">
-              <td class="px-2 py-3" v-if="page_type != 'top' && page_type != 'trending'">
+              <td class="px-2 py-3" v-if="page_type != 'top' && page_type != 'trending' && page_type != 'dashboard'">
                 <div class="flex items-center justify-between ">
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
@@ -126,7 +126,7 @@
                 </div>
               </td>
 
-              <td class="px-2 py-3" v-if="page_type == 'top' || page_type == 'trending'">
+              <td class="px-2 py-3" v-if="page_type == 'top' || page_type == 'trending' || page_type == 'dashboard'">
                 <div class="flex items-center justify-between ">
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
@@ -147,6 +147,8 @@
                   </span>
                 </div>
               </td>
+
+              
               <td class="text-center px-2 py-2 hidden md:table-cell">
                 <span class="bg-green-600 text-white px-1 text-xs rounded ">
                   {{ torrent.seeders }}
@@ -221,7 +223,7 @@ export default {
       .split('/')
       .filter(segment => segment); // remove empty entries    
     const torrent_type = pathSegments[1]; // "Anime"
-    console.log(props.torrents, currentPage, torrents);
+    console.log(props.torrents.page);
 
     const parseDateString = (str) => {
       const now = dayjs();
