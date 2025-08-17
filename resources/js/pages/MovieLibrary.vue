@@ -195,7 +195,7 @@
               Download:
             </div>
 
-            <button hidden @click="viewReleases"
+            <button  @click="viewReleases"
               class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-sm font-medium transition-colors">
               View Releases
             </button>

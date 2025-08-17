@@ -214,14 +214,15 @@ Route::get('/movielibrary/{param1}/', function ($param1) {
     ]);
 });
 
-
+Route::get('/movie/{param1}/{param2}/',[TorrentController::class,'movie']);
 
 
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/me', [LoginController::class, 'me']);
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::get('/logout', [LoginController::class, 'logout']);
 Route::get('/uploadtest', [TorrentController::class, 'uploadtorrent']);
+Route::get('/uploads', [TorrentController::class, 'uploads']);
 Route::post('/torrents', [TorrentController::class, 'store'])->name('torrents.store');
 Route::get('/user/{param1}/{param2?}', [UserController::class, 'index'])->name('torrents.user');
 

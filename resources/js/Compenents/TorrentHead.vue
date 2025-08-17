@@ -41,8 +41,7 @@
               <a :href="movie.link">
                 <div class="text-white text-center">
                   <img :src="movie.image_url" alt="" class="h-48 w-auto mx-auto mb-2 rounded"
-                    @error="handleImgError($event)" />
-                  <div class="text-xs font-bold mb-1">{{ movie.title }}</div>
+                  >                 
                   <div class="text-xs opacity-75">{{ movie.quality }}</div>
                 </div>
               </a>

@@ -5,3 +5,4 @@ Route::get('/torrents/type', [TorrentController::class, 'getByType']);
 Route::get('/torrents/categorydata', [TorrentController::class, 'getCategory']);
 Route::get('/torrent/{id}/{slug}', [TorrentController::class, 'getDetailData']);
 Route::get('/library/movies', [TorrentController::class, 'getMovieLibraryData']);
+Route::post('/torrents/delete', [TorrentController::class, 'delete'])->name('upload.delete');

@@ -27,7 +27,8 @@ export default {
     return axios.put(`${API_BASE_URL}/torrents/${id}`, data);
   },
 
+  // ✅ Delete torrent using POST with ID in body
   deleteTorrent(id) {
-    return axios.delete(`${API_BASE_URL}/torrents/${id}`);
+    return axios.post(`${API_BASE_URL}/torrents/delete`, { id });
   },
 };

@@ -13,6 +13,7 @@ class HomeImageList extends Model
         'title',
         'image_url',
         'link',
+        'quality',
         'order',
         'is_active',
     ];

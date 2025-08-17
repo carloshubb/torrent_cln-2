@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('title'); // Image title
             $table->string('image_url'); // Full image URL
             $table->string('link')->nullable(); // Optional link when clicked
+            $table->string('quality')->nullable(); // quality
             $table->integer('order')->default(0); // Display order
             $table->boolean('is_active')->default(true); // Show/hide
             $table->timestamps();

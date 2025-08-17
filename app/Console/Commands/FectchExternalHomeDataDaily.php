@@ -81,10 +81,11 @@ class FectchExternalHomeDataDaily extends Command
             try {
                 $data['image'] = $row->filter('img')->attr('src');
                 $data['title'] = $row->attr('title');
+                $data['quality'] = $row->filter('span')->text();
                 $data['link_url'] = $row->count() > 0
                     ? $row->attr('href')
                     : null;
-
+                
                 $image_list[] = $data;
             } catch (\Exception $e) {
                 Log::warning("Error parsing torrent row 2 {$i}: " . $e->getMessage());
@@ -283,6 +284,7 @@ class FectchExternalHomeDataDaily extends Command
                 HomeImageList::create([
                     'title' => $image['title'],
                     'image_url' => $image['image'],
+                    'quality' => $image['quality'],
                     'link' => $torrent_link ,
                     'order' => 1,
                     'is_active' => true,
