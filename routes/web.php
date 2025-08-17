@@ -10,7 +10,7 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return Inertia::render('Dashboard', [
         'page' => 'dashboard',
-        'title' => 'Download verified torrents: movies, music, games, software',
+        'title' => '1331x.com',
         'params' => ''
     ]);
 })->name('home');

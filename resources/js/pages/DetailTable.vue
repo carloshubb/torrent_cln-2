@@ -86,7 +86,7 @@
                 </div>
 
               </transition>
-              <a v-if="torrent.detail.media_info" :href="torrent.detail.media_info"
+              <a v-if="torrent.detail.media_info" :href="torrent.detail.media_info" target="_blank"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded flex items-center justify-center space-x-2 font-semibold">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
