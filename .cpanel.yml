@@ -1,7 +1,7 @@
 deployment:
   tasks:
     # 1. Set the deploy path (web root)
-    - export DEPLOYPATH=/home/xcom/public_html
+    - export DEPLOYPATH=/home/xcom/1331x
 
     # 2. Copy all files except git and cPanel configs
     - /bin/rsync -a --exclude='.git' --exclude='.cpanel.yml' ./ $DEPLOYPATH
