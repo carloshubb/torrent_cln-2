@@ -84,20 +84,20 @@
         },
         {
             "name": "arokettu/is-resource",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arokettu/is-resource.git",
-                "reference": "6a4966bf4608c69d20b7bf01670b49901a51eb9d"
+                "reference": "17d3e955140b23c53c4d47d779f1e443d492ffad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arokettu/is-resource/zipball/6a4966bf4608c69d20b7bf01670b49901a51eb9d",
-                "reference": "6a4966bf4608c69d20b7bf01670b49901a51eb9d",
+                "url": "https://api.github.com/repos/arokettu/is-resource/zipball/17d3e955140b23c53c4d47d779f1e443d492ffad",
+                "reference": "17d3e955140b23c53c4d47d779f1e443d492ffad",
                 "shasum": ""
             },
             "require": {
-                "php": ">= 5.3 < 8.5"
+                "php": ">=5.3 <8.6"
             },
             "type": "library",
             "autoload": {
@@ -141,7 +141,7 @@
                 "issues": "https://gitlab.com/sandfox/is-resource/-/issues",
                 "source": "https://gitlab.com/sandfox/is-resource"
             },
-            "time": "2024-08-27T04:34:45+00:00"
+            "time": "2025-08-15T16:09:36+00:00"
         },
         {
             "name": "brick/math",
@@ -3611,52 +3611,6 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.0"
             },
             "time": "2025-06-25T14:20:11+00:00"
-        },
-        {
-            "name": "sandfoxme/bencode",
-            "version": "3.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/arokettu/bencode-legacy.git",
-                "reference": "4b1cc348ddeba3c4afbc725b2f74e35893c29a51"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/arokettu/bencode-legacy/zipball/4b1cc348ddeba3c4afbc725b2f74e35893c29a51",
-                "reference": "4b1cc348ddeba3c4afbc725b2f74e35893c29a51",
-                "shasum": ""
-            },
-            "require": {
-                "arokettu/bencode": "^3.1"
-            },
-            "type": "metapackage",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Anton Smirnov",
-                    "email": "sandfox@sandfox.me",
-                    "homepage": "https://sandfox.me",
-                    "role": "developer"
-                }
-            ],
-            "description": "BitTorrent's Bencode encoder/decoder",
-            "homepage": "https://sandfox.dev/php/bencode.html",
-            "keywords": [
-                "bencode",
-                "bittorrent",
-                "serialize",
-                "torrent"
-            ],
-            "support": {
-                "docs": "https://bencode.readthedocs.io/",
-                "issues": "https://gitlab.com/sandfox/bencode/-/issues",
-                "source": "https://gitlab.com/sandfox/bencode"
-            },
-            "abandoned": "arokettu/bencode",
-            "time": "2022-12-14T00:38:49+00:00"
         },
         {
             "name": "symfony/clock",
@@ -7698,16 +7652,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.5.32",
+            "version": "11.5.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "101e132dcf9e74a1eb3a309b4f686114ae8f7f36"
+                "reference": "5965e9ff57546cb9137c0ff6aa78cb7442b05cf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/101e132dcf9e74a1eb3a309b4f686114ae8f7f36",
-                "reference": "101e132dcf9e74a1eb3a309b4f686114ae8f7f36",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/5965e9ff57546cb9137c0ff6aa78cb7442b05cf6",
+                "reference": "5965e9ff57546cb9137c0ff6aa78cb7442b05cf6",
                 "shasum": ""
             },
             "require": {
@@ -7779,7 +7733,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.32"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.33"
             },
             "funding": [
                 {
@@ -7803,7 +7757,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-12T07:32:49+00:00"
+            "time": "2025-08-16T05:19:02+00:00"
         },
         {
             "name": "sebastian/cli-parser",

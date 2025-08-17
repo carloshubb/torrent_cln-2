@@ -135,6 +135,31 @@
                 placeholder="Enter formatted description here..."></textarea>
             </div>
           </div>
+            <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Image</label>
+            <div 
+              class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-orange-400 transition-colors"
+              @dragover.prevent
+              @drop.prevent="handleDrop"
+            >
+              <div class="inline-flex items-center px-4 py-2 rounded-lg text-white cursor-pointer hover:opacity-90 transition-opacity bg-gradient-to-r from-blue-500 to-purple-600">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Choose File
+                <input 
+                  type="file" 
+                  ref="fileInput"
+                  class="hidden" 
+                  @change="handleFileUpload" 
+                  accept="image/*"
+                >
+              </div>
+              <p class="text-gray-500 text-sm mt-2">
+                {{ selectedFileName || 'Upload an image for your blog post' }}
+              </p>
+            </div>
+          </div>
 
          
 
@@ -329,6 +354,28 @@ export default {
         textarea.focus();
         textarea.setSelectionRange(start + formattedText.length, start + formattedText.length);
       });
+    },
+     handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.form.file = file;
+        this.selectedFileName = file.name;
+        console.log('File selected:', file.name);
+      }
+    },
+
+    handleDrop(event) {
+      const files = event.dataTransfer.files;
+      if (files.length > 0) {
+        const file = files[0];
+        if (file.type.startsWith('image/')) {
+          this.form.file = file;
+          this.selectedFileName = file.name;
+          console.log('File dropped:', file.name);
+        } else {
+          alert('Please select an image file');
+        }
+      }
     },
 
     // Reset form
