@@ -323,39 +323,37 @@ export default {
       const end = textarea.selectionEnd;
       const selectedText = this.form.description.substring(start, end);
 
-      let formattedText = '';
-      if (tool != 'Image')
+      let formattedText = '';     
         switch (tool) {
           case 'Bold':
             formattedText = `<b>${selectedText}</b>`;
             break;
           case 'Italic':
-            formattedText = `<i>${selectedText}</i>`;
+            formattedText = `<p style = 'font-style: italic'>${selectedText}</p>`;
             break;
           case 'Underline':
-            formattedText = `<u>${selectedText}</u>`;
+            formattedText = `<p style = 'text-decoration: underline'>${selectedText}</p>`;
             break;
           case 'Quote':
-            formattedText = `[quote] ${selectedText}[/quote]`;
+            formattedText = `<blockquote> ${selectedText}</blockquote>`;
             break;
           case 'Code':
-            formattedText = `[code]${selectedText}[code]`;
+            formattedText = `<code>${selectedText}</code>`;
             break;
           case 'List':
-            formattedText = `- ${selectedText}`;
+            formattedText = `<ul><li>${selectedText}</li></ul>`;
             break;
           case 'Link':
-            formattedText = `[${selectedText}](url)`;
+            formattedText = `<a href = '${selectedText}' ></a>`;
             break;
-          // case 'Image':
-          //   formattedText = `[${openImageDialog}](url)`;
-          //   break;
+          case 'Image':
+            formattedText = `<img src = ${selectedText} />`;
+            break;
           default:
             formattedText = selectedText;
         }
 
-      else
-        this.openImageDialog();
+    
 
       this.form.description =
         this.form.description.substring(0, start) +
