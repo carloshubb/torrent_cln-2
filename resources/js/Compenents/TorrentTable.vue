@@ -4,11 +4,13 @@
 
     <!-- First row -->
     <div class="flex gap-2 bg-gray-300 p-2 rounded">
-      <a class="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700" href = "/trending"> 
+      <a class="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700"
+        href="/trending">
         <i class="flaticon-trending"></i>
         All Trending Today
       </a>
-      <a class="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700" href = "/trending-week">
+      <a class="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700"
+        href="/trending-week">
         <i class="flaticon-trending"></i>
         All Trending This Week
       </a>
@@ -16,15 +18,16 @@
 
     <!-- Second row -->
     <div class="flex flex-wrap gap-2 bg-gray-300 p-2 rounded">
-      <a class="btn-icon" href = "/trending/d/movies/"><i class="flaticon-movies"></i> Trending Movies</a>
-      <a class="btn-icon" href = "/trending/d/tv/"><i class="flaticon-tv"></i> Trending TV</a>
-      <a class="btn-icon" href = "/trending/d/games/"><i class="flaticon-games"></i> Trending Games</a>
-      <a class="btn-icon" href = "/trending/d/apps/"><i class="flaticon-apps"></i> Trending Apps</a>
-      <a class="btn-icon" href = "/trending/d/music/"><i class="flaticon-music"></i> Trending Music</a>
-      <a class="btn-icon" href = "/trending/d/documentaries/"><i class="flaticon-documentary"></i> Trending Documentaries</a>
-      <a class="btn-icon" href = "/trending/d/anime/"><i class="flaticon-ninja-portrait"></i> Trending Anime</a>
-      <a class="btn-icon" href = "/trending/d/other/"><i class="flaticon-other"></i> Trending Other</a>
-      <a class="btn-icon" href = "/trending/d/xxx/"><i class="flaticon-xxx"></i> Trending XXX</a>
+      <a class="btn-icon" href="/trending/d/movies/"><i class="flaticon-movies"></i> Trending Movies</a>
+      <a class="btn-icon" href="/trending/d/tv/"><i class="flaticon-tv"></i> Trending TV</a>
+      <a class="btn-icon" href="/trending/d/games/"><i class="flaticon-games"></i> Trending Games</a>
+      <a class="btn-icon" href="/trending/d/apps/"><i class="flaticon-apps"></i> Trending Apps</a>
+      <a class="btn-icon" href="/trending/d/music/"><i class="flaticon-music"></i> Trending Music</a>
+      <a class="btn-icon" href="/trending/d/documentaries/"><i class="flaticon-documentary"></i> Trending
+        Documentaries</a>
+      <a class="btn-icon" href="/trending/d/anime/"><i class="flaticon-ninja-portrait"></i> Trending Anime</a>
+      <a class="btn-icon" href="/trending/d/other/"><i class="flaticon-other"></i> Trending Other</a>
+      <a class="btn-icon" href="/trending/d/xxx/"><i class="flaticon-xxx"></i> Trending XXX</a>
     </div>
 
   </div>
@@ -33,15 +36,15 @@
 
     <!-- Second row -->
     <div class="flex flex-wrap gap-2 bg-gray-300 p-2 rounded">
-      <a class="btn-icon" href = "/top-100-movies"><i class="flaticon-movies"></i> Top 100 Movies</a>
-      <a class="btn-icon" href = "/top-100-television"><i class="flaticon-tv"></i> Top 100 TV</a>
-      <a class="btn-icon" href = "/top-100-games"><i class="flaticon-games"></i> Top 100 Games</a>
-      <a class="btn-icon" href = "/top-100-applications"><i class="flaticon-apps"></i> Top 100 Apps</a>
-      <a class="btn-icon" href = "/top-100-music"><i class="flaticon-music"></i> Top 100 Music</a>
-      <a class="btn-icon" href = "/top-100-documentaries"><i class="flaticon-documentary"></i> Top 100 Documentaries</a>
-      <a class="btn-icon" href = "/top-100-anime"><i class="flaticon-ninja-portrait"></i> Top 100 Anime</a>
-      <a class="btn-icon" href = "/top-100-other"><i class="flaticon-other"></i> Top 100 Other</a>
-      <a class="btn-icon" href = "/top-100-xxx"><i class="flaticon-xxx"></i> Top 100 XXX</a>
+      <a class="btn-icon" href="/top-100-movies"><i class="flaticon-movies"></i> Top 100 Movies</a>
+      <a class="btn-icon" href="/top-100-television"><i class="flaticon-tv"></i> Top 100 TV</a>
+      <a class="btn-icon" href="/top-100-games"><i class="flaticon-games"></i> Top 100 Games</a>
+      <a class="btn-icon" href="/top-100-applications"><i class="flaticon-apps"></i> Top 100 Apps</a>
+      <a class="btn-icon" href="/top-100-music"><i class="flaticon-music"></i> Top 100 Music</a>
+      <a class="btn-icon" href="/top-100-documentaries"><i class="flaticon-documentary"></i> Top 100 Documentaries</a>
+      <a class="btn-icon" href="/top-100-anime"><i class="flaticon-ninja-portrait"></i> Top 100 Anime</a>
+      <a class="btn-icon" href="/top-100-other"><i class="flaticon-other"></i> Top 100 Other</a>
+      <a class="btn-icon" href="/top-100-xxx"><i class="flaticon-xxx"></i> Top 100 XXX</a>
     </div>
 
   </div>
@@ -101,7 +104,7 @@
             <tr v-for="(torrent, index) in torrents" :key="index"
               class="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer text-xs"
               @click="viewTorrent(torrent)">
-              <td class="px-2 py-3" v-if="page_type != 'top' && page_type != 'trending'">
+              <td class="px-2 py-3" v-if="page_type != 'top' && page_type != 'trending' && page_type != 'dashboard'">
                 <div class="flex items-center justify-between ">
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
@@ -123,7 +126,7 @@
                 </div>
               </td>
 
-              <td class="px-2 py-3" v-if="page_type == 'top' || page_type == 'trending'">
+              <td class="px-2 py-3" v-if="page_type == 'top' || page_type == 'trending' || page_type == 'dashboard'">
                 <div class="flex items-center justify-between ">
                   <!-- Left side: icon + name -->
                   <div class="flex items-center">
@@ -144,6 +147,8 @@
                   </span>
                 </div>
               </td>
+
+              
               <td class="text-center px-2 py-2 hidden md:table-cell">
                 <span class="bg-green-600 text-white px-1 text-xs rounded ">
                   {{ torrent.seeders }}
@@ -218,17 +223,46 @@ export default {
       .split('/')
       .filter(segment => segment); // remove empty entries    
     const torrent_type = pathSegments[1]; // "Anime"
-    console.log(props.torrents, currentPage, torrents);
+    console.log(props.torrents.page);
+
+    const parseDateString = (str) => {
+      const now = dayjs();
+
+      // Remove ordinal suffixes
+      str = str.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
+
+      // Remove apostrophe year and fix
+      str = str.replace(/'(\d{2})/, '20$1');
+
+      // Remove dots from months
+      str = str.replace(/\./g, '');
+
+      // If only time is provided, use today
+      if (/^\d{1,2}(:\d{2})?(am|pm)$/i.test(str)) {
+        return dayjs(`${now.format("YYYY-MM-DD")} ${str}`, ["YYYY-MM-DD h:mma", "YYYY-MM-DD ha"]);
+      }
+
+      // Try multiple formats
+      const formats = [
+        "ha MMM D YYYY",
+        "h:mma MMM D YYYY",
+        "MMM D YYYY ha",
+        "MMM D YYYY h:mma",
+        "MMM D YYYY" // no time
+      ];
+
+      return dayjs(str, formats);
+    };
 
     const formatApprovedAt = (dateString) => {
-      const date = dayjs(dateString)
-      const now = dayjs()
+      const date = parseDateString(dateString);
+      const now = dayjs();
       if (date.isSame(now, 'day')) {
-        return date.format('h:mma')
+        return date.format('h:mma');
       } else {
-        return date.format('ha MMM. Do')
+        return date.format('ha MMM. D');
       }
-    }
+    };
 
     const viewTorrent = (torrent) => {
       console.log('Viewing torrent:', torrent.name)
@@ -391,5 +425,4 @@ export default {
   line-height: 1;
   font-size: 22px;
 }
-
 </style>

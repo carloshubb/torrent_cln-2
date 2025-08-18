@@ -3,14 +3,16 @@
   <div class="hidden md:flex min-h-[40px] bg-[#000] border-b-5 border-[#822a0b]">
     <div class="w-7xl mx-auto text-right">
       <div class="flex-1 items-center py-1">
-        <span v-if="isLoggedIn" class="title text-white hover:text-red-600" @click="logout">Logout</span>
         <a href="/login" v-if="!isLoggedIn" class="title text-red-600 hover:text-red-600">Login</a>
+        <a v-if="isLoggedIn" class="title text-white hover:text-red-600" href="/uploads">Uploads</a>
+        <a v-if="isLoggedIn" class="title text-white hover:text-red-600  ml-3" href="/logout">Logout</a>
       </div>
     </div>
   </div>
   <div class="bg-gray-800 backdrop-blur-sm border-b border-orange-500/50">
     <!-- Logo & Search Box -->
     <div class="justify-between md:flex md:w-7xl mx-auto items-center py-3 px-4 md:px-0 ">
+      
 
       <div class="logo text-4xl font-bold text-white mb-2 md:mb-0 md:inline-block md:mr-4">
         1331<span class="text-orange-500">X</span>
@@ -49,10 +51,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
+import { usePage } from '@inertiajs/vue3'
 const isMenuOpen = ref(false);
 const searchQuery = ref(""); // <-- define searchQuery
-const isLoggedIn = ref(false);
+const page = usePage()
+const isLoggedIn = ref(!!page.props.auth.user);
+
+
+
+
 // Methods
 const handleSearch = () => {
   if (searchQuery.value.trim()) {

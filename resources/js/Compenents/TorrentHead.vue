@@ -29,55 +29,39 @@
     </div>
 
     <!-- Movie Posters -->
-    <div class="relative w-full overflow-hidden"  v-if="page == 'dashboard'">
-    <!-- Slide container -->
-    <div
-      class="flex transition-transform duration-500"
-      :style="{ transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` }"
-    >
-      <div
-        v-for="(movie, index) in moviePosters"
-        :key="index"
-        class="flex-shrink-0"
-        :style="{ width: `${100 / visibleCount}%` }"
-      >
-        <div
-          class="bg-gray-800 aspect-[3/5] rounded-lg overflow-hidden hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 hover:scale-105"
-        >
-          <div class="w-full h-full bg-gradient-to-br from-orange-700 to-red-800 flex items-center justify-center">
-            <a :href="movie.link">
-            <div class="text-white text-center">
-              <img
-                :src="movie.image_url"
-                alt=""
-                class="h-48 w-auto mx-auto mb-2 rounded"
-                @error="handleImgError($event)"
-              />
-              <div class="text-xs font-bold mb-1">{{ movie.title }}</div>
-              <div class="text-xs opacity-75">{{ movie.quality }}</div>
+    <div class="relative w-full overflow-hidden" v-if="page == 'dashboard'">
+      <!-- Slide container -->
+      <div class="flex transition-transform duration-500"
+        :style="{ transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` }">
+        <div v-for="(movie, index) in moviePosters" :key="index" class="flex-shrink-0"
+          :style="{ width: `${100 / visibleCount}%` }">
+          <div
+            class="bg-gray-800 aspect-[3/5] rounded-lg overflow-hidden hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 hover:scale-105">
+            <div class="w-full h-full bg-gradient-to-br from-orange-700 to-red-800 flex items-center justify-center">
+              <a :href="movie.link">
+                <div class="text-white text-center">
+                  <img :src="movie.image_url" alt="" class="h-48 w-auto mx-auto mb-2 rounded"
+                  >                 
+                  <div class="text-xs opacity-75">{{ movie.quality }}</div>
+                </div>
+              </a>
             </div>
-            </a>
           </div>
         </div>
       </div>
+
+      <!-- Prev Button -->
+      <button @click="prevSlide"
+        class="absolute top-1/2 left-0 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-r">
+        ‹
+      </button>
+
+      <!-- Next Button -->
+      <button @click="nextSlide"
+        class="absolute top-1/2 right-0 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-l">
+        ›
+      </button>
     </div>
-
-    <!-- Prev Button -->
-    <button
-      @click="prevSlide"
-      class="absolute top-1/2 left-0 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-r"
-    >
-      ‹
-    </button>
-
-    <!-- Next Button -->
-    <button
-      @click="nextSlide"
-      class="absolute top-1/2 right-0 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-l"
-    >
-      ›
-    </button>
-  </div>
 
   </div>
 </template>
@@ -94,8 +78,8 @@ export default {
     page: {
       type: String
     },
-    images :{
-      type : Object
+    images: {
+      type: Object
     }
   },
   setup(props) {
@@ -104,7 +88,7 @@ export default {
     const page = props.page;
 
     const moviePosters = ref([])
-    moviePosters.value = props.images[0].data.data? props.images[0].data.data : [];
+    moviePosters.value = props.images[0].data.data ? props.images[0].data.data : [];
 
     const openLink = (link) => {
       console.log('Opening link:', link)
@@ -164,7 +148,7 @@ export default {
         visibleCount.value = 6;
       }
     }
-        
+
 
     return {
       navTabs,

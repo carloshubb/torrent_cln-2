@@ -86,7 +86,7 @@
                 </div>
 
               </transition>
-              <button @click="playStream"
+              <a v-if="torrent.detail.media_info" :href="torrent.detail.media_info" target="_blank"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded flex items-center justify-center space-x-2 font-semibold">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -94,7 +94,7 @@
                   </path>
                 </svg>
                 <span>PLAY NOW (STREAM)</span>
-              </button>
+              </a>
             </div>
           </div>
 
@@ -192,6 +192,8 @@ onMounted(() => {
   const page = usePage();
   const torrentId = page.props.torrent_id; // 
   const torrentSlug = page.props.torrent_slug; // 
+  console.log(torrentId,torrentSlug);
+  
   fetchTorrentDetails(torrentId, torrentSlug);
 });
 

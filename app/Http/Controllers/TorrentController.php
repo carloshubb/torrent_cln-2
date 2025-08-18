@@ -14,6 +14,7 @@ use App\Models\SubCategory;
 use App\Models\TorrentDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 class TorrentController extends Controller
 {
     //
@@ -191,12 +192,12 @@ class TorrentController extends Controller
 
     public function getDetailData($id, $slug)
     {
-
-        $torrent = Torrent::with('detail') // eager load related data
+       
+        $torrent = Torrent::with('detail') 
             ->where('id', $id)
             ->where('slug', $slug)
             ->firstOrFail();
-        //dd($torrent);
+       
         return response()->json($torrent);
     }
 
@@ -214,6 +215,8 @@ class TorrentController extends Controller
         });
         return response()->json($movies);
     }
+
+    
 
     public function store(Request $request)
     {
@@ -291,5 +294,49 @@ class TorrentController extends Controller
     public function getCategory(Request $request){
         $category['data'] = Category::with('subcategory')->get();
         return response()->json($category);
+    }
+
+    public function uploads(){
+        if(!Auth::user()) redirect('/');
+        $username = Auth::user()->username;        
+        $uploads = Torrent::with(['subcategory','detail'])->where('uploader', "/user/$username/")->latest()->get();        
+        return Inertia::render('TorrentUploads', [
+            'uploads' => $uploads
+        ]);
+    }
+    public function movie($id,$title){
+        $keyword = explode("-",$title)[0];     
+        $torrents = Torrent::with(['subcategory','detail'])
+                            ->where('name','LIKE',"%$keyword%")
+                            ->latest()
+                            ->get();        
+        return Inertia::render('TorrentMovie', [
+            'torrents' => $torrents
+        ]);
+    }
+
+    public function delete(Request $request)
+    {
+        //dd(456789);    
+       
+        $request->validate([
+            'id' => 'required|integer|exists:torrents,id',
+        ]);
+      
+        $torrent = Torrent::find($request->id);
+         
+       
+        if ($torrent) {
+            $torrent->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Torrent deleted successfully'
+               
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Torrent not found',
+        ], 404);
     }
 }

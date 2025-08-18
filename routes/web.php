@@ -5,11 +5,12 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TorrentController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return Inertia::render('Dashboard', [
         'page' => 'dashboard',
-        'title' => 'Download verified torrents: movies, music, games, software',
+        'title' => '1331x.com',
         'params' => ''
     ]);
 })->name('home');
@@ -196,6 +197,7 @@ Route::get('/top-100-music', function () {
 
 Route::get('/torrent/{param1}/{param2}', function ($param1, $param2) {
     // You can use $param1 and $param2 here
+    
     return Inertia::render('DetailTable', [
         'page' => 'detail',
         'title' => 'Download ' . $param2 . ' Torrent',
@@ -212,14 +214,17 @@ Route::get('/movielibrary/{param1}/', function ($param1) {
     ]);
 });
 
+Route::get('/movie/{param1}/{param2}/',[TorrentController::class,'movie']);
 
 
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/me', [LoginController::class, 'me']);
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::get('/logout', [LoginController::class, 'logout']);
 Route::get('/uploadtest', [TorrentController::class, 'uploadtorrent']);
+Route::get('/uploads', [TorrentController::class, 'uploads']);
 Route::post('/torrents', [TorrentController::class, 'store'])->name('torrents.store');
+Route::get('/user/{param1}/{param2?}', [UserController::class, 'index'])->name('torrents.user');
 
 Route::get('/home', function () {
     return Inertia::render('Home', [
@@ -259,7 +264,7 @@ Route::get('/upload', function () {
     // If not logged in, redirect to login page
     if ($user === null) {
         // Option 1: Relative redirect (simplest, avoids APP_URL issues)
-        return redirect('http://127.0.0.1:8000/login');
+        return redirect('/login');
 
         // Option 2: Named route, make sure it exists
         // return redirect()->route('login');

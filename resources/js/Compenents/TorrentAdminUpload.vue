@@ -1,85 +1,7 @@
 <template>
   <div class="pt-5 bg-gradient-to-r from-gray-350 to-gray-500">
     <div class="max-w-4xl mx-auto">
-      <!-- Account Upgrade Section -->
-      <div class="bg-white rounded-lg shadow-sm border mb-6">
-        <div class="bg-gradient-to-r from-gray-700 to-orange-500 text-white p-4 rounded-t-lg">
-          <h2 class="text-xl font-semibold">Account Upgrade</h2>
-        </div>
-        <div class="p-6">
-          <p class="text-gray-700 leading-relaxed">
-            Once you upload 100+ torrents with good quality description you can request your account upgraded to
-            verified Uploader.
-          </p>
-        </div>
-      </div>
-
-      <!-- Upload Torrent Section -->
-      <div class="bg-white rounded-lg shadow-sm border">
-        <div class="bg-gradient-to-r from-gray-700 to-orange-500 text-white p-4 rounded-t-lg">
-          <h2 class="text-xl font-semibold">Want to upload a torrent? No problem! Please use the announce URLs:</h2>
-        </div>
-        <div class="p-6 space-y-3">
-          <!-- Announce URLs List -->
-          <div v-for="url in announceUrls" :key="url.id" class="group">
-            <div
-              class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-              <a :href="url.link" class="text-orange-600 hover:text-orange-700 font-medium underline break-all flex-1"
-                target="_blank" rel="noopener noreferrer">
-                {{ url.link }}
-              </a>
-              <button @click="copyToClipboard(url.link)"
-                class="ml-4 px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-sm rounded transition-colors"
-                :class="{ 'bg-green-500 hover:bg-green-600': copiedUrl === url.id }">
-                {{ copiedUrl === url.id ? 'Copied!' : 'Copy' }}
-              </button>
-            </div>
-          </div>
-
-          <!-- Additional Information -->
-          <div class="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
-            <div class="flex items-start">
-              <div class="flex-shrink-0">
-                <svg class="w-5 h-5 text-blue-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clip-rule="evenodd"></path>
-                </svg>
-              </div>
-              <div class="ml-3">
-                <h3 class="text-sm font-medium text-blue-800">Important Information</h3>
-                <p class="mt-1 text-sm text-blue-700">
-                  Please use one of the announce URLs above when creating your torrent file. Make sure to include a
-                  detailed description for better quality.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Upload Guidelines -->
-          <div class="mt-6 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
-            <div class="flex items-start">
-              <div class="flex-shrink-0">
-                <svg class="w-5 h-5 text-yellow-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                    clip-rule="evenodd"></path>
-                </svg>
-              </div>
-              <div class="ml-3">
-                <h3 class="text-sm font-medium text-yellow-800">Upload Guidelines</h3>
-                <ul class="mt-1 text-sm text-yellow-700 list-disc list-inside space-y-1">
-                  <li>Ensure your torrent has a good quality description</li>
-                  <li>Include relevant tags and categories</li>
-                  <li>Use appropriate file naming conventions</li>
-                  <li>Upload 100+ quality torrents to become a verified uploader</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+           
       <!-- Success Toast -->
       <div v-if="showToast"
         class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300"
@@ -213,28 +135,33 @@
                 placeholder="Enter formatted description here..."></textarea>
             </div>
           </div>
-
-          <!-- CAPTCHA -->
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Captcha</label>
-            <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0">
-                <div class="bg-gray-600 px-4 py-8 rounded border-2 border-gray-400 relative overflow-hidden">
-                  <canvas ref="captchaCanvas" width="120" height="40" class="bg-gray-200 rounded"></canvas>
-                  <button type="button" @click="refreshCaptcha"
-                    class="absolute top-1 right-1 text-white hover:text-gray-300 text-xs" title="Refresh Captcha">
-                    ⟲
-                  </button>
-                </div>
+            <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Image</label>
+            <div 
+              class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-orange-400 transition-colors"
+              @dragover.prevent
+              @drop.prevent="handleDrop"
+            >
+              <div class="inline-flex items-center px-4 py-2 rounded-lg text-white cursor-pointer hover:opacity-90 transition-opacity bg-gradient-to-r from-blue-500 to-purple-600">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Choose File
+                <input 
+                  type="file" 
+                  ref="fileInput"
+                  class="hidden" 
+                  @change="handleFileUpload" 
+                  accept="image/*"
+                >
               </div>
-              <div class="flex-1">
-                <input type="text" v-model="form.captcha"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                  placeholder="Enter captcha code" maxlength="6" required>
-                <p class="text-xs text-gray-500 mt-1">Enter the characters shown in the image above</p>
-              </div>
+              <p class="text-gray-500 text-sm mt-2">
+                {{ selectedFileName || 'Upload an image for your blog post' }}
+              </p>
             </div>
           </div>
+
+         
 
           <!-- Submit Button -->
           <div class="flex justify-end pt-6 border-t border-gray-200">
@@ -270,7 +197,6 @@ export default {
     return {
       isSubmitting: false,
       selectedFilePath: '',
-      captchaCode: '',
       showToast: false,
       copiedUrl: null,
       categories,
@@ -289,7 +215,6 @@ export default {
         tags: '',
         description: '',
         torrentFile: null,
-        captcha: ''
       }
     }
   },
@@ -332,12 +257,7 @@ export default {
           return;
         }
 
-        // Validate CAPTCHA
-        if (this.form.captcha.toUpperCase() !== this.captchaCode) {
-          alert('Invalid CAPTCHA code. Please try again.');
-          this.refreshCaptcha();
-          return;
-        }
+        
 
         // Prepare FormData for file upload
         const formData = new FormData();
@@ -435,6 +355,28 @@ export default {
         textarea.setSelectionRange(start + formattedText.length, start + formattedText.length);
       });
     },
+     handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.form.file = file;
+        this.selectedFileName = file.name;
+        console.log('File selected:', file.name);
+      }
+    },
+
+    handleDrop(event) {
+      const files = event.dataTransfer.files;
+      if (files.length > 0) {
+        const file = files[0];
+        if (file.type.startsWith('image/')) {
+          this.form.file = file;
+          this.selectedFileName = file.name;
+          console.log('File dropped:', file.name);
+        } else {
+          alert('Please select an image file');
+        }
+      }
+    },
 
     // Reset form
     resetForm() {
@@ -448,86 +390,12 @@ export default {
         tags: '',
         description: '',
         torrentFile: null,
-        captcha: ''
       };
       this.selectedFilePath = '';
       this.$refs.fileInput.value = '';
-      this.refreshCaptcha();
+     
     },
 
-    // Generate CAPTCHA
-    generateCaptcha() {
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      this.captchaCode = '';
-      for (let i = 0; i < 6; i++) {
-        this.captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      this.drawCaptcha();
-    },
-
-    // Draw CAPTCHA on canvas
-    drawCaptcha() {
-      this.$nextTick(() => {
-        const canvas = this.$refs.captchaCanvas;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        const width = canvas.width;
-        const height = canvas.height;
-
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = '#f3f4f6';
-        ctx.fillRect(0, 0, width, height);
-
-        // Add noise lines
-        for (let i = 0; i < 6; i++) {
-          ctx.strokeStyle = `hsl(${Math.random() * 360}, 50%, 70%)`;
-          ctx.lineWidth = Math.random() * 2 + 1;
-          ctx.beginPath();
-          ctx.moveTo(Math.random() * width, Math.random() * height);
-          ctx.lineTo(Math.random() * width, Math.random() * height);
-          ctx.stroke();
-        }
-
-        // Draw CAPTCHA text
-        ctx.font = 'bold 16px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        for (let i = 0; i < this.captchaCode.length; i++) {
-          const char = this.captchaCode[i];
-          const x = (width / this.captchaCode.length) * i + (width / this.captchaCode.length) / 2;
-          const y = height / 2 + (Math.random() - 0.5) * 8;
-
-          ctx.fillStyle = `hsl(${Math.random() * 360}, 60%, 40%)`;
-          ctx.save();
-          ctx.translate(x, y);
-          ctx.rotate((Math.random() - 0.5) * 0.5);
-          ctx.fillText(char, 0, 0);
-          ctx.restore();
-        }
-
-        // Add noise dots
-        for (let i = 0; i < 20; i++) {
-          ctx.fillStyle = `hsl(${Math.random() * 360}, 50%, 60%)`;
-          ctx.beginPath();
-          ctx.arc(
-            Math.random() * width,
-            Math.random() * height,
-            Math.random() * 2 + 1,
-            0,
-            Math.PI * 2
-          );
-          ctx.fill();
-        }
-      });
-    },
-
-    // Refresh CAPTCHA
-    refreshCaptcha() {
-      this.generateCaptcha();
-      this.form.captcha = '';
-    },
     handleCategoryChange() {
       console.log(this.categories,this.form.category);
       
@@ -541,7 +409,7 @@ export default {
   },
 
   mounted() {
-    this.generateCaptcha();
+   
   }
 }
 </script>

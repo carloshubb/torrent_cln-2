@@ -36,13 +36,14 @@ class FetchMovieLibrary extends Command
 
         $movies = [];
         $page = 1;
-        while ($page < 3) {
-            $movies = [];
+        while (true) {
+            $movies = [];           
             $url = "https://1337x.to/movie-library/{$page}/";
             $response = $httpClient->request('GET', $url);
             $html = $response->getContent();
             $crawler = new Crawler($html);
             $rows = $crawler->filter('ul.clearfix li');
+            if(count($rows) == 0) break;
             $rows->each(function (Crawler $row, $i) use (&$movies) {
                 try {
                     $movie = [];
@@ -76,6 +77,7 @@ class FetchMovieLibrary extends Command
             $page++;
             sleep(0.5);
         }
+        
     }
 
     private function saveMovies(array $movies): int
