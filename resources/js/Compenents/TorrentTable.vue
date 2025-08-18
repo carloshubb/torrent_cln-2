@@ -255,6 +255,8 @@ export default {
     };
 
     const formatApprovedAt = (dateString) => {
+      dateString = dateString.split('.')[0]; // Remove timezone if present
+      
       const date = parseDateString(dateString);
       const now = dayjs();
       if (date.isSame(now, 'day')) {
