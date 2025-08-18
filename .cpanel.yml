@@ -1,28 +1,4 @@
 deployment:
   tasks:
-    # 1. Set the deploy path (web root)
-    - export DEPLOYPATH=/home/xcom/1331x
-
-    # 2. Copy all files except git and cPanel configs
-    - /bin/rsync -a --exclude='.git' --exclude='.cpanel.yml' ./ $DEPLOYPATH
-
-    # 3. Move into the deployed directory
-    - cd $DEPLOYPATH
-
-    # 4. Install Composer dependencies (no dev, optimized)
-    - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
-
-    # 5. Ensure Laravel has correct permissions
-    - chmod -R 775 storage bootstrap/cache
-
-    # 6. Clear caches and re-optimize
-    - php artisan config:clear
-    - php artisan cache:clear
-    - php artisan route:clear
-    - php artisan view:clear
-    - php artisan config:cache
-    - php artisan route:cache
-    - php artisan view:cache
-
-    # 7. (Optional) Run migrations automatically
-    # - php artisan migrate --force
+    - export DEPLOYPATH=/home/xcom/1331x/
+    - /bin/cp -R images $DEPLOYPATH
