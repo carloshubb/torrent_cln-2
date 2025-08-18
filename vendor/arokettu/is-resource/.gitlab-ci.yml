@@ -1,0 +1,66 @@
+stages:
+  - test
+  - report
+
+#cache:
+#  key: composer-cache
+#  paths:
+#    - .composer-cache/
+
+.test:
+  before_script:
+    # display PHP version
+    - php -v
+    # install system packages
+    - apt-get update && apt-get install -y --force-yes git unzip libpng-dev libgmp-dev
+    # install extensions
+    - '[ ! -f /usr/include/gmp.h ] && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h'
+    - docker-php-ext-install gd gmp
+    # install composer
+    - php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer.sig');"
+    - php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');"
+    - php -r '$expected = file_get_contents("/tmp/composer.sig"); $actual = hash_file("sha384", "/tmp/composer-setup.php"); exit(intval(!!strcmp($expected, $actual)));'
+    - php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    - chmod +x /usr/local/bin/composer
+    - rm /tmp/composer-setup.php /tmp/composer.sig
+    # cache dependencies
+    - composer config -g cache-dir "$(pwd)/.composer-cache"
+  script:
+    - composer update
+    - tests/tests.sh
+
+# lowest tested version
+test-7.1:
+  extends: .test
+  stage: test
+  image: php:7.1
+
+test-7.2:
+  extends: .test
+  stage: test
+  image: php:7.2
+
+test-7.3:
+  extends: .test
+  stage: test
+  image: php:7.3
+
+test-7.4:
+  extends: .test
+  stage: test
+  image: php:7.4
+
+test-8.0:
+  extends: .test
+  stage: test
+  image: php:8.0
+
+test-8.1:
+  extends: .test
+  stage: test
+  image: php:8.1
+
+test-8.2:
+  extends: .test
+  stage: test
+  image: php:8.2

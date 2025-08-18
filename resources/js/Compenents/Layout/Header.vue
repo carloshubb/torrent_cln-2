@@ -17,8 +17,11 @@
       <div class="logo text-4xl font-bold text-white mb-2 md:mb-0 md:inline-block md:mr-4">
         1331<span class="text-orange-500">X</span>
       </div>
-      <input type="text" placeholder="Search for torrents..." v-model="searchQuery" @keyup.enter="handleSearch"
-        class="block w-full md:w-64 md:inline-block focus:outline-none bg-gray-800 border border-gray-600 text-white px-4 py-2 rounded focus:border-orange-500" />
+      <div class="relative block w-full md:w-96 ">
+        <input type="text" placeholder="Search for torrents..." v-model="searchQuery" @keyup.enter="handleSearch"
+          class="block w-full focus:outline-none bg-gray-800 border border-gray-600 text-white px-4 py-2 rounded focus:border-orange-500" />
+        <i class="flaticon-search absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-500"></i>
+      </div>
     </div>
 
     <!-- Navbar -->
@@ -48,7 +51,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 import { usePage } from '@inertiajs/vue3'
 const isMenuOpen = ref(false);
 const searchQuery = ref(""); // <-- define searchQuery
@@ -61,10 +64,30 @@ const isLoggedIn = ref(!!page.props.auth.user);
 // Methods
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
-    console.log('Searching for:', searchQuery.value)
     window.location.href = "/search/" + searchQuery.value + "/1/";
   }
 }
+
+onMounted(() => {
+  const page = usePage();
+  isLoggedIn.value = !!page.props.auth.user;
+
+});
+
+const logout = async () => {
+  try {
+    const response = await fetch('/logout', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        'Content-Type': 'application/json'
+      }
+    });
+    window.location.href = "/";
+  } catch (error) {
+    console.error('Logout failed:', error);
+  }
+};
 const navTabs = [{ title: 'HOME', slug: "/" },
 { title: 'UPLOAD', slug: "/upload" },
 { title: 'RULES', slug: "/rules" },
