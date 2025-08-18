@@ -1,7 +1,7 @@
 <template>
   <div class="pt-5 bg-gradient-to-r from-gray-350 to-gray-500">
     <div class="max-w-4xl mx-auto">
-           
+
       <!-- Success Toast -->
       <div v-if="showToast"
         class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300"
@@ -136,7 +136,29 @@
             </div>
           </div>
 
-         
+
+          <!-- Image URL Modal -->
+          <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            @click="hideImageModal">
+            <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4" @click.stop>
+              <h3 class="text-lg font-semibold mb-4">1331x.to says</h3>
+              <p class="mb-4">Enter the image URL:</p>
+              <input v-model="imageUrl" type="text"
+                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-4"
+                placeholder="Enter image URL..." @keyup.enter="confirmImageUrl" ref="imageUrlInput" />
+              <div class="flex justify-end gap-3">
+                <button @click="hideImageModal"
+                  class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
+                  Cancel
+                </button>
+                <button @click="confirmImageUrl" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+
+
 
           <!-- Submit Button -->
           <div class="flex justify-end pt-6 border-t border-gray-200">
@@ -153,6 +175,11 @@
 
 <script>
 import { reactive, onMounted, ref } from 'vue'
+const showModal = ref(false)
+const imageUrl = ref('')
+const descriptionTextarea = ref(null)
+const imageUrlInput = ref(null)
+
 export default {
 
   name: 'BlogPostForm',
@@ -200,7 +227,7 @@ export default {
     },
     // Open Image dialog
     openImageDialog() {
-      this.$refs.fileInput.click();
+    showModal.value = true
     },
 
     // Handle file selection
@@ -227,7 +254,7 @@ export default {
     async submitPost() {
       this.isSubmitting = true;
       console.log(this.form);
-      
+
       try {
         // Validate required fields
         if (!this.form.title || !this.form.content || !this.form.language ||
@@ -236,7 +263,7 @@ export default {
           return;
         }
 
-        
+
 
         // Prepare FormData for file upload
         const formData = new FormData();
@@ -297,35 +324,38 @@ export default {
       const selectedText = this.form.description.substring(start, end);
 
       let formattedText = '';
+      if (tool != 'Image')
+        switch (tool) {
+          case 'Bold':
+            formattedText = `<b>${selectedText}</b>`;
+            break;
+          case 'Italic':
+            formattedText = `<i>${selectedText}</i>`;
+            break;
+          case 'Underline':
+            formattedText = `<u>${selectedText}</u>`;
+            break;
+          case 'Quote':
+            formattedText = `[quote] ${selectedText}[/quote]`;
+            break;
+          case 'Code':
+            formattedText = `[code]${selectedText}[code]`;
+            break;
+          case 'List':
+            formattedText = `- ${selectedText}`;
+            break;
+          case 'Link':
+            formattedText = `[${selectedText}](url)`;
+            break;
+          // case 'Image':
+          //   formattedText = `[${openImageDialog}](url)`;
+          //   break;
+          default:
+            formattedText = selectedText;
+        }
 
-      switch (tool) {
-        case 'Bold':
-          formattedText = `**${selectedText}**`;
-          break;
-        case 'Italic':
-          formattedText = `*${selectedText}*`;
-          break;
-        case 'Underline':
-          formattedText = `<u>${selectedText}</u>`;
-          break;
-        case 'Quote':
-          formattedText = `> ${selectedText}`;
-          break;
-        case 'Code':
-          formattedText = `\`${selectedText}\``;
-          break;
-        case 'List':
-          formattedText = `- ${selectedText}`;
-          break;
-        case 'Link':
-          formattedText = `[${selectedText}](url)`;
-          break;
-        case 'Image':
-          formattedText = `[${openImageDialog}](url)`;
-          break;
-        default:
-          formattedText = selectedText;
-      }
+      else
+        this.openImageDialog();
 
       this.form.description =
         this.form.description.substring(0, start) +
@@ -345,7 +375,7 @@ export default {
         content: '',
         language: '',
         category: '',
-        sub_categories : '',
+        sub_categories: '',
         type: '',
         tags: '',
         description: '',
@@ -353,23 +383,23 @@ export default {
       };
       this.selectedFilePath = '';
       this.$refs.fileInput.value = '';
-     
+
     },
 
     handleCategoryChange() {
-      console.log(this.categories,this.form.category);
-      
+      console.log(this.categories, this.form.category);
+
       const selected = this.categories.find(cat => cat.id === parseInt(this.form.category));
       this.sub_categories = selected ? selected.subcategory : [];
       console.log(selected);
-      
+
       this.form.subcategory = ""; // reset subcategory
     }
 
   },
 
   mounted() {
-   
+
   }
 }
 </script>
