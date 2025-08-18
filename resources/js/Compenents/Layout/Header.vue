@@ -68,11 +68,11 @@ const handleSearch = () => {
   }
 }
 
-onMounted(() => {
-  const page = usePage();
-  isLoggedIn.value = !!page.props.auth.user;
+// onMounted(() => {
+//   const page = usePage();
+//   isLoggedIn.value = !!page.props.auth.user;
 
-});
+// });
 
 const logout = async () => {
   try {
