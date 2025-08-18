@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 import { usePage } from '@inertiajs/vue3'
 const isMenuOpen = ref(false);
 const searchQuery = ref(""); // <-- define searchQuery
@@ -68,11 +68,11 @@ const handleSearch = () => {
   }
 }
 
-// onMounted(() => {
-//   const page = usePage();
-//   isLoggedIn.value = !!page.props.auth.user;
+onMounted(() => {
+  const page = usePage();
+  isLoggedIn.value = !!page.props.auth.user;
 
-// });
+});
 
 const logout = async () => {
   try {
