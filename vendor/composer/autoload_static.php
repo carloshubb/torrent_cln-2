@@ -4536,7 +4536,6 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'PHPUnit\\Runner\\CodeCoverage' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/CodeCoverage.php',
         'PHPUnit\\Runner\\DeprecationCollector\\Collector' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/DeprecationCollector/Collector.php',
         'PHPUnit\\Runner\\DeprecationCollector\\Facade' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/DeprecationCollector/Facade.php',
-        'PHPUnit\\Runner\\DeprecationCollector\\InIsolationCollector' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/DeprecationCollector/InIsolationCollector.php',
         'PHPUnit\\Runner\\DeprecationCollector\\Subscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/DeprecationCollector/Subscriber/Subscriber.php',
         'PHPUnit\\Runner\\DeprecationCollector\\TestPreparedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/DeprecationCollector/Subscriber/TestPreparedSubscriber.php',
         'PHPUnit\\Runner\\DeprecationCollector\\TestTriggeredDeprecationSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Runner/DeprecationCollector/Subscriber/TestTriggeredDeprecationSubscriber.php',
