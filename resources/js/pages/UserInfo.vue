@@ -62,6 +62,7 @@ const parseDateString = (str) => {
 };
 
 const formatApprovedAt = (dateString) => {
+  if (!dateString) return "last year"; // handle null or undefined
   const date = parseDateString(dateString);
   if (!date) {
     return "Invalid date"; // gracefully handle garbage like 1337.com
