@@ -137,29 +137,6 @@
           </div>
 
 
-          <!-- Image URL Modal -->
-          <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            @click="hideImageModal">
-            <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4" @click.stop>
-              <h3 class="text-lg font-semibold mb-4">1331x.to says</h3>
-              <p class="mb-4">Enter the image URL:</p>
-              <input v-model="imageUrl" type="text"
-                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-4"
-                placeholder="Enter image URL..." @keyup.enter="confirmImageUrl" ref="imageUrlInput" />
-              <div class="flex justify-end gap-3">
-                <button @click="hideImageModal"
-                  class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
-                  Cancel
-                </button>
-                <button @click="confirmImageUrl" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                  OK
-                </button>
-              </div>
-            </div>
-          </div>
-
-
-
           <!-- Submit Button -->
           <div class="flex justify-end pt-6 border-t border-gray-200">
             <button type="submit" :disabled="isSubmitting"
@@ -175,10 +152,6 @@
 
 <script>
 import { reactive, onMounted, ref } from 'vue'
-const showModal = ref(false)
-const imageUrl = ref('')
-const descriptionTextarea = ref(null)
-const imageUrlInput = ref(null)
 
 export default {
 
@@ -207,7 +180,7 @@ export default {
         { id: 1, link: 'http://tracker.example.com:8080/announce' },
         { id: 2, link: 'http://tracker2.example.com:6969/announce' }
       ],
-      formatTools: ['Bold', 'Italic', 'Underline', 'Quote', 'Code', 'List', 'Link', 'Full Screen', 'Image'],
+      formatTools: ['Bold', 'Italic', 'Underline', 'Quote', 'Code', 'List', 'Link', 'Full Screen', 'Image', 'YouTube'],
       form: {
         title: '',
         content: '',
@@ -225,10 +198,7 @@ export default {
     openFileDialog() {
       this.$refs.fileInput.click();
     },
-    // Open Image dialog
-    openImageDialog() {
-    showModal.value = true
-    },
+
 
     // Handle file selection
     handleFileSelect(event) {
@@ -323,37 +293,40 @@ export default {
       const end = textarea.selectionEnd;
       const selectedText = this.form.description.substring(start, end);
 
-      let formattedText = '';     
-        switch (tool) {
-          case 'Bold':
-            formattedText = `<b>${selectedText}</b>`;
-            break;
-          case 'Italic':
-            formattedText = `<p style = 'font-style: italic'>${selectedText}</p>`;
-            break;
-          case 'Underline':
-            formattedText = `<p style = 'text-decoration: underline'>${selectedText}</p>`;
-            break;
-          case 'Quote':
-            formattedText = `<blockquote> ${selectedText}</blockquote>`;
-            break;
-          case 'Code':
-            formattedText = `<code>${selectedText}</code>`;
-            break;
-          case 'List':
-            formattedText = `<ul><li>${selectedText}</li></ul>`;
-            break;
-          case 'Link':
-            formattedText = `<a href = '${selectedText}' ></a>`;
-            break;
-          case 'Image':
-            formattedText = `<img src = ${selectedText} />`;
-            break;
-          default:
-            formattedText = selectedText;
-        }
+      let formattedText = '';
+      switch (tool) {
+        case 'Bold':
+          formattedText = `<b>${selectedText}</b>`;
+          break;
+        case 'Italic':
+          formattedText = `<p style = 'font-style: italic'>${selectedText}</p>`;
+          break;
+        case 'Underline':
+          formattedText = `<p style = 'text-decoration: underline'>${selectedText}</p>`;
+          break;
+        case 'Quote':
+          formattedText = `<blockquote> ${selectedText}</blockquote>`;
+          break;
+        case 'Code':
+          formattedText = `<code>${selectedText}</code>`;
+          break;
+        case 'List':
+          formattedText = `<ul><li>${selectedText}</li></ul>`;
+          break;
+        case 'Link':
+          formattedText = `<a href = '${selectedText}' ></a>`;
+          break;
+        case 'Image':
+          formattedText = `<img src = ${selectedText} />`;
+          break;
+        case 'YouTube':
+          formattedText = `<video src = ${selectedText} />`;
+          break;
+        default:
+          formattedText = selectedText;
+      }
 
-    
+
 
       this.form.description =
         this.form.description.substring(0, start) +
