@@ -112,6 +112,8 @@ class FetchMovieLibrary extends Command
                     'exception' => $e->getTraceAsString()
                 ]);
             }
+            $savedCount++;
+            $this->info("save movies :  $savedCount");
         }
 
         return $savedCount;
