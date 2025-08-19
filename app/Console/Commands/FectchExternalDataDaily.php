@@ -43,11 +43,11 @@ class FectchExternalDataDaily extends Command
         $httpClient = HttpClient::create();
         $page = 1;
         $torrents = [];
-        $catigories = Category::where('parent_id', null)->get();
-        #$catigories = Category::where('id', 9)->get();
+        #$catigories = Category::where('parent_id', null)->get();
+        $catigories = Category::where('id', 6)->get();
         foreach ($catigories as $index => $category) {
             $page = 1;
-            while ($page < 20 ) {
+            while ($page < 151 ) {
                 $torrents = [];
                 $url = "https://1337x.to/cat/{$category->slug}/{$page}/";
                 $response = $httpClient->request('GET', $url);
@@ -65,6 +65,7 @@ class FectchExternalDataDaily extends Command
                 $rows->each(function (Crawler $row, $i) use (&$torrents, $category) {
                     try {
                         $torrent = $this->extractTorrentData($row, $category);
+
                         if (!empty($torrent['name'])) {
                             $torrents[] = $torrent;
                         }
@@ -73,7 +74,7 @@ class FectchExternalDataDaily extends Command
                     }
                 });
 
-                $this->saveTorrent($torrents);
+                $this->saveTorrent($torrents,$page);
                 $page++;
                 sleep(0.5);
             }
@@ -137,7 +138,7 @@ class FectchExternalDataDaily extends Command
         return $dateTime ? $dateTime->format("Y-m-d H:i:s") : null;
     }
 
-    private function saveTorrent(array $torrents): int
+    private function saveTorrent(array $torrents,$page): int
     {
         $savedCount = 0;
 
@@ -167,7 +168,7 @@ class FectchExternalDataDaily extends Command
                 $response = $httpClient->request('GET', $detail_url);
                 $html = $response->getContent();
                 $detailData = $this->parseDetailPage($html);
-                $this->info(date("Y-m-d H:i:s")." $savedCount =>Added or Saved Common Torrent");
+                $this->info(date("Y-m-d H:i:s")." page number is $page  $savedCount =>Added or Saved Common Torrent");
                 $this->saveTorrentDetails($torrent, $detailData);
                 sleep(0.1);
                 
@@ -213,7 +214,7 @@ class FectchExternalDataDaily extends Command
         $uploader = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->text() : null;
         $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
-        else $torrent['uploader'] = $uploader;
+        else $torrent['uploader'] = $uploader;        
         if ($uploader_link) $this->userInfoPage($uploader_link);
         $torrent['category_id'] = $category->id;
         $torrent['category_name'] = $category->name;
@@ -754,7 +755,7 @@ class FectchExternalDataDaily extends Command
                 ['torrent_id' => $torrent->id], // match condition
                 $updateData                     // data to update or insert
             );
-            
+            //dd($torrentdetail);
             // Optionally also update Torrent table with relevant details
             //$torrent->update($updateData);
 
