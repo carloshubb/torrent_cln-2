@@ -231,7 +231,7 @@ async function deleteUploadTorrent(id) {
                 </div>
             </div>
         </div>
-
+    
          <!-- Modal -->
     <div 
       v-if="showEditModal" 
@@ -268,7 +268,7 @@ async function deleteUploadTorrent(id) {
               @click="closeEditModal" 
               class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700"
             >
-              Cancel
+              .Cancel.
             </button>
             <button 
               type="submit"
