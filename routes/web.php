@@ -288,16 +288,20 @@ Route::get('/run-scheduler/{key}', function ($key) {
          exec('php ' . base_path('artisan') . ' app:fetch-external-home-data-daily > /dev/null 2>&1 &');
             }
     else if ($key == 'cat') {
-        Artisan::call('app:fetch-external-data-daily'); // Replace with your actual command
+        exec('php ' . base_path('artisan') . ' app:fetch-external-data-daily > /dev/null 2>&1 &');
+        
     }
     else if ($key == 'lib') {
-        Artisan::call('app:fetch-movie-library'); // Replace with your actual command
+         exec('php ' . base_path('artisan') . ' app:fetch-movie-library> /dev/null 2>&1 &');
+        
     }
     else if ($key == 'trend') {
-        Artisan::call('app:fetch-trending-page'); // Replace with your actual command
+         exec('php ' . base_path('artisan') . ' app:fetch-trending-page> /dev/null 2>&1 &');
+       
     }
     else if ($key == 'top') {
-        Artisan::call('app:top100-torrents-page'); // Replace with your actual command
+         exec('php ' . base_path('artisan') . ' app:fetch-torrents-page> /dev/null 2>&1 &');
+        
     }
    
     return 'Command executed!';
