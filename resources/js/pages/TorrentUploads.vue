@@ -147,6 +147,8 @@ async function deleteUploadTorrent(id) {
                                 </th>
                                 <th class="hidden md:table-cell text-center px-4 py-1 text-gray-300 font-semibold">remove
                                 </th>
+                                <th class="hidden md:table-cell text-center px-4 py-1 text-gray-300 font-semibold">edit
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -229,7 +231,7 @@ async function deleteUploadTorrent(id) {
                 </div>
             </div>
         </div>
-
+    
          <!-- Modal -->
     <div 
       v-if="showEditModal" 
@@ -266,7 +268,7 @@ async function deleteUploadTorrent(id) {
               @click="closeEditModal" 
               class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700"
             >
-              Cancel
+              .Cancel.
             </button>
             <button 
               type="submit"

@@ -71,7 +71,7 @@ import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 
 const visibleCount = ref(6); // number of slides visible
 const currentIndex = ref(0);
-let slideInterval = null; // ///to store setInterval reference
+let slideInterval = null; // to store setInterval reference
 export default {
   name: 'TorrentSite',
   props: {
