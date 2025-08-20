@@ -43,11 +43,11 @@ class FectchExternalDataDaily extends Command
         $httpClient = HttpClient::create();
         $page = 1;
         $torrents = [];
-        #$catigories = Category::where('parent_id', null)->get();
-        $catigories = Category::where('id', 6)->get();
+        $catigories = Category::where('parent_id', null)->get();
+        #$catigories = Category::where('id', 9)->get();
         foreach ($catigories as $index => $category) {
             $page = 1;
-            while ($page < 151 ) {
+            while ($page < 151) {
                 $torrents = [];
                 $url = "https://1337x.to/cat/{$category->slug}/{$page}/";
                 $response = $httpClient->request('GET', $url);
@@ -62,19 +62,24 @@ class FectchExternalDataDaily extends Command
                     break; // no more data
                 }
 
-                $rows->each(function (Crawler $row, $i) use (&$torrents, $category) {
+                foreach ($rows as $i => $row) {
                     try {
-                        $torrent = $this->extractTorrentData($row, $category);
-
+                        $torrent = $this->extractTorrentData(new Crawler($row), $category);
+                        if ($torrent === false) {
+                            break; // exit the loop completely
+                        }
                         if (!empty($torrent['name'])) {
                             $torrents[] = $torrent;
                         }
                     } catch (\Exception $e) {
                         Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
                     }
-                });
-
-                $this->saveTorrent($torrents,$page);
+                }
+                $this->info(date("Y-m-d H:i:s ") .$category->name. " page number is $page  " . count($torrents) . " => New Torrents found in " . $category->name);
+                $this->saveTorrent($torrents, $page);
+                if(count($torrents) < 1){
+                    break; // no more data
+                }
                 $page++;
                 sleep(0.5);
             }
@@ -96,7 +101,7 @@ class FectchExternalDataDaily extends Command
 
         $dateTime = null;
 
-        // 1️⃣ Only time: "6:36am" or "5am"
+        // 1️⃣ Only time: "6:36am", "5am", "12:30am"
         if (preg_match('/^\d{1,2}(:\d{2})?(am|pm)$/i', $timeStr)) {
             $dateTime = DateTime::createFromFormat(
                 "Y-n-j g:ia",
@@ -110,7 +115,7 @@ class FectchExternalDataDaily extends Command
             }
         }
 
-        // 2️⃣ Time + Month + Day: "5am Aug 14", "8:15am Aug 14"
+        // 2️⃣ Time + Month + Day: "5am Aug 14", "8:15am Aug 14", "11pm Aug 19"
         elseif (preg_match('/^\d{1,2}(:\d{2})?(am|pm)\s+[A-Za-z]+\s+\d{1,2}$/i', $timeStr)) {
             $dateTime = DateTime::createFromFormat(
                 "ga M j Y",
@@ -135,10 +140,23 @@ class FectchExternalDataDaily extends Command
             }
         }
 
+        // 4️⃣ Month + Day + 2-digit Year: "Jul 12 '25"
+        elseif (preg_match('/^[A-Za-z]+\s+\d{1,2}\s+\'(\d{2})$/i', $timeStr, $matches)) {
+            $year = 2000 + (int)$matches[1]; // Convert '25 to 2025
+            $cleanTimeStr = preg_replace('/\s+\'\d{2}$/', '', $timeStr); // Remove year part
+            $dateTime = DateTime::createFromFormat(
+                "M j Y",
+                "$cleanTimeStr $year"
+            );
+            if ($dateTime) {
+                $dateTime->setTime(0, 0, 0); // default to midnight
+            }
+        }
+
         return $dateTime ? $dateTime->format("Y-m-d H:i:s") : null;
     }
 
-    private function saveTorrent(array $torrents,$page): int
+    private function saveTorrent(array $torrents, $page): int
     {
         $savedCount = 0;
 
@@ -168,10 +186,9 @@ class FectchExternalDataDaily extends Command
                 $response = $httpClient->request('GET', $detail_url);
                 $html = $response->getContent();
                 $detailData = $this->parseDetailPage($html);
-                $this->info(date("Y-m-d H:i:s")." page number is $page  $savedCount =>Added or Saved Common Torrent");
+                $this->info(date("Y-m-d H:i:s") . " page number is $page  $savedCount =>Added or Saved Common Torrent");
                 $this->saveTorrentDetails($torrent, $detailData);
                 sleep(0.1);
-                
             } catch (\Illuminate\Database\QueryException $e) {
 
                 Log::error("saveTorrent =>   Database error saving torrent: " . $e->getMessage(), [
@@ -190,6 +207,17 @@ class FectchExternalDataDaily extends Command
 
     private function extractTorrentData(Crawler $columns, $category)
     {
+        $date = $columns->filter('td.coll-date')->count() > 0 ? $columns->filter('td.coll-date')->text() : null;
+        $torrent['date_uploaded'] = $this->convertTimeString($date);
+        if ($torrent['date_uploaded'] == null) {
+            return false;
+        }
+        $now = new \DateTime('today'); // midnight today
+        $uploaded = new \DateTime($torrent['date_uploaded']);
+        $uploaded->setTime(0, 0, 0);   // strip time
+        if ($uploaded < $now) {
+            return false;
+        }
         $suburl = $columns->filter('td.coll-1.name a')->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(0)->attr('href') : null;
         if ($suburl) {
             $tmp_list = explode("/", $suburl)[2];
@@ -203,8 +231,6 @@ class FectchExternalDataDaily extends Command
         $torrent['name'] = $columns->filter('td.coll-1.name a')->eq(1)->count() > 0 ? $columns->filter('td.coll-1.name a')->eq(1)->text() : null;
         $torrent['seeds'] = $columns->filter('td.coll-2')->count() > 0 ? $columns->filter('td.coll-2')->text() : null;
         $torrent['leeches'] = $columns->filter('td.coll-3')->count() > 0 ? $columns->filter('td.coll-3')->text() : null;
-        $date = $columns->filter('td.coll-date')->count() > 0 ? $columns->filter('td.coll-date')->text() : null;
-        $torrent['date_uploaded'] = $this->convertTimeString($date);
         $torrent['size'] = $columns->filter('td.coll-4')->count() > 0 ? trim(explode("\n", $columns->filter('td.coll-4')->text())[0]) : null;
         $size_only = "";
         if (preg_match('/([\d\.]+\s[GMK]B)/', $torrent['size'], $matches)) {
@@ -214,7 +240,7 @@ class FectchExternalDataDaily extends Command
         $uploader = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->text() : null;
         $uploader_link = $columns->filter('td.coll-5 a')->count() > 0 ? $columns->filter('td.coll-5 a')->attr('href') : null;
         if ($uploader_link) $torrent['uploader'] = $uploader_link;
-        else $torrent['uploader'] = $uploader;        
+        else $torrent['uploader'] = $uploader;
         if ($uploader_link) $this->userInfoPage($uploader_link);
         $torrent['category_id'] = $category->id;
         $torrent['category_name'] = $category->name;
@@ -261,8 +287,8 @@ class FectchExternalDataDaily extends Command
             } catch (\Exception $e) {
                 Log::warning("Error parsing torrent row {$i}: " . $e->getMessage());
             }
-        });        
-        $user->rank = $data['userrank'] ? $data['userrank'] : null;      
+        });
+        $user->rank = $data['userrank'] ? $data['userrank'] : null;
         $user->privacy = $data['privacy'] ? $data['privacy'] : null;
         $user->gender = $data['gender'] ? $data['gender'] : null;
         $user->country = $data['country'] ? $data['country'] : null;
@@ -272,8 +298,8 @@ class FectchExternalDataDaily extends Command
             $user->birthday = $birthday;
         }
         $user->joindate = $data['joindate'] ? $this->normalizeJoinDate($data['joindate']) : null;
-        $user->password = Hash::make('123456');        
-        $user->email = "$username@example.com";       
+        $user->password = Hash::make('123456');
+        $user->email = "$username@example.com";
         $user->save();
     }
     private function parseDetailPage($html)
@@ -700,7 +726,7 @@ class FectchExternalDataDaily extends Command
 
     private function saveTorrentDetails($torrent, $detailData)
     {
-       
+
         try {
             // Update main torrent record
             $updateData = array_intersect_key($detailData, array_flip([
@@ -770,7 +796,7 @@ class FectchExternalDataDaily extends Command
             // }
         } catch (\Exception $e) {
             Log::error("saveTorrentDetails=> Failed to save torrent details", [
-                
+
                 'error' => $e->getMessage()
             ]);
             throw $e;
@@ -793,7 +819,7 @@ class FectchExternalDataDaily extends Command
             }
         } catch (\Exception $e) {
             Log::error("Failed to save screenshots", [
-                
+
                 'error' => $e->getMessage()
             ]);
         }
