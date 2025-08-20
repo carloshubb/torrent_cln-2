@@ -231,54 +231,7 @@ async function deleteUploadTorrent(id) {
                 </div>
             </div>
         </div>
-    
-         <!-- Modal -->
-    <div 
-      v-if="showEditModal" 
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-    >
-      <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">
-          Edit Item
-        </h2>
-        
-        <form @submit.prevent="confirmEdit">
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Name</label>
-            <input 
-              v-model="form.name"
-              type="text" 
-              class="w-full px-3 py-2 border  text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
-          </div>
-          
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Description</label>
-            <textarea 
-              v-model="form.description"
-              class="w-full px-3 py-2 text-black border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              rows="3"
-            ></textarea>
-          </div>
-          
-          <div class="flex justify-end space-x-3">
-            <button 
-              type="button"
-              @click="closeEditModal" 
-              class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700"
-            >
-              .Cancel.
-            </button>
-            <button 
-              type="submit"
-              class="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              Save
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+
+      
     </AppLayout>
 </template>

@@ -281,3 +281,13 @@ Route::get('/login', function () {
 Route::get('/icon', function () {
     return Inertia::render('Icon');
 });
+Route::get('/test', function () {
+    return Inertia::render('Test');
+});
+Route::get('/edit', function () {
+    return Inertia::render('Edit');
+});
+Route::get('/option', function () {
+    return Inertia::render('Option');
+});
+

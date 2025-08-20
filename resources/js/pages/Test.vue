@@ -1,25 +1,17 @@
 <template>
   <div class="max-w-4xl mx-auto p-6 bg-gray-100 min-h-screen">
     <div class="bg-white rounded-lg shadow-lg p-6">
-      <h1 class="text-2xl font-bold mb-6 text-gray-800">Upload Torrent</h1>
+      <h1 class="text-2xl font-bold mb-6 text-gray-800">Edit Torrent</h1>
 
       <div class="space-y-6">
-        <!-- Torrent File Section -->
+         <!-- Title -->
         <div>
-          <h3 class="text-lg font-semibold mb-3 text-gray-700">Torrent File</h3>
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-            <input type="file" accept=".torrent" class="hidden" id="torrent-file" />
-            <label for="torrent-file" class="cursor-pointer">
-              <div class="text-gray-500">
-                <p>Click to upload torrent file or drag and drop</p>
-                <p class="text-sm mt-2">This is the file that people will download.</p>
-              </div>
-            </label>
-          </div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+          <input v-model="form.title" type="text" placeholder="enter torrent title here"
+            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
         </div>
 
-
-
+       
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Category -->
           <div>
@@ -99,7 +91,7 @@
         <div class="flex justify-end">
           <button @click="submitTorrent"
             class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-            Upload Torrent
+            Save Torrent
           </button>
         </div>
       </div>
@@ -109,7 +101,7 @@
     <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click="hideImageModal">
       <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4" @click.stop>
-        <h3 class="text-lg font-semibold mb-4">1337x.to says</h3>
+        <h3 class="text-lg font-semibold mb-4">1331x.to says</h3>
         <p class="mb-4">Enter the image URL:</p>
         <input v-model="imageUrl" type="text"
           class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-4"
