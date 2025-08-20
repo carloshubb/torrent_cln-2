@@ -61,6 +61,7 @@ class FectchExternalHomeDataDaily extends Command
                     $torrents[] = $torrent;
                 });
                 //
+                 Log::info("torrent count: " . $i);
                 if (!empty($torrent['name'])) {
 
                     $torrents[] = $torrent;
@@ -70,6 +71,7 @@ class FectchExternalHomeDataDaily extends Command
             }
         });
         //dd($torrents);
+       
         $this->saveTorrent($torrents);
         sleep(0.5);
         // to get price and yield of the bonds, we need to scrape the bond page

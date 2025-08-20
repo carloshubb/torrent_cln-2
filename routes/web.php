@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TorrentController;
 use App\Http\Controllers\UserController;
-
+use Illuminate\Support\Facades\Artisan;
 Route::get('/', function () {
     return Inertia::render('Dashboard', [
         'page' => 'dashboard',
@@ -281,6 +281,33 @@ Route::get('/login', function () {
 Route::get('/icon', function () {
     return Inertia::render('Icon');
 });
+
+Route::get('/run-scheduler/{key}', function ($key) {
+    //dd($key);
+    if ($key == 'home') {
+         exec('php ' . base_path('artisan') . ' app:fetch-external-home-data-daily > /dev/null 2>&1 &');
+            }
+    else if ($key == 'cat') {
+        Artisan::call('app:fetch-external-data-daily'); // Replace with your actual command
+    }
+    else if ($key == 'lib') {
+        Artisan::call('app:fetch-movie-library'); // Replace with your actual command
+    }
+    else if ($key == 'trend') {
+        Artisan::call('app:fetch-trending-page'); // Replace with your actual command
+    }
+    else if ($key == 'top') {
+        Artisan::call('app:top100-torrents-page'); // Replace with your actual command
+    }
+   
+    return 'Command executed!';
+});
+
+//fallback route (must be at the very end)
+Route::fallback(function () {
+    return redirect('/'); // redirect to home
+});
+
 Route::get('/test', function () {
     return Inertia::render('Test');
 });
