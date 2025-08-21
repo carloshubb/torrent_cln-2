@@ -35,7 +35,7 @@ async function fetchMostPopularTorrents() {
 async function fetchPopularMovieTorrents() {
   try {
     const response = await torrentService.get('/torrents/type?type=popularmovie');
-    // For demo, assuming all torrents in one group with title "All Torrents"
+    // //For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
       icon: 'flaticon-movies',
