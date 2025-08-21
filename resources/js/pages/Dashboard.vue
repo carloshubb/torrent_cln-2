@@ -5,17 +5,6 @@ import TorrentHead from '../Compenents/TorrentHead.vue'
 import { reactive, onMounted, ref } from 'vue'
 import torrentService from '@/api/torrentService.js'
 import { Head } from '@inertiajs/vue3'
-import { useHead } from "@vueuse/head";
-
-useHead({
-  title: "Welcome to 1331x.com",
-  meta: [
-    {
-      name: "description",
-      content: "This is the SEO meta description for my Vue 3 page."
-    }
-  ]
-});
 
 // get props data
 const props = defineProps({
@@ -46,7 +35,7 @@ async function fetchMostPopularTorrents() {
 async function fetchPopularMovieTorrents() {
   try {
     const response = await torrentService.get('/torrents/type?type=popularmovie');
-    // //For demo, assuming all torrents in one group with title "All Torrents"
+    // For demo, assuming all torrents in one group with title "All Torrents"
     //dashboard_data.splice(0) // clear previous data
     dashboard_data.push({
       icon: 'flaticon-movies',
@@ -694,8 +683,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <Head/>
-  <h1> </h1>
+  <Head :title=$page.props.title />
   <AppLayout>
     <TorrentHead v-if="dashboard_images.length > 0" :images="dashboard_images" :page="props.page" />
     <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page"   :icon="row.icon"
