@@ -6,7 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title inertia></title>
-    
+    <link rel="canonical" href="https://www.1331x.com">
+    <title> Free Movies TV Series Music Games Software Anime torrent 1331x.com 1337x</title>
+
+
     <meta name="description" content="Default description about my Laravel + Vue app.">
 
     @vite('resources/js/app.js')
