@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title inertia></title>
+    <title inertia>Laravel + Vue App</title>
+    <meta name="description" content="Default description about my Laravel + Vue app.">
 
     @vite('resources/js/app.js')
     @inertiaHead
