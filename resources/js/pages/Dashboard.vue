@@ -11,7 +11,7 @@ const props = defineProps({
   page: String,
   params: String,
 });
-// some data in parent
+//// some data in parent
 const dashboard_data = reactive([])
 const dashboard_images = reactive([])
 // Fetch function to get torrent data and update dashboard_data
