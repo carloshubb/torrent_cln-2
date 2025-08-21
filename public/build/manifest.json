@@ -24,7 +24,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-Cj-gCzBa.js",
+    "file": "assets/app-CyN-t6ST.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -58,7 +58,7 @@
     ]
   },
   "resources/js/pages/About.vue": {
-    "file": "assets/About-JFXo48ju.js",
+    "file": "assets/About-PMSxv44S.js",
     "name": "About",
     "src": "resources/js/pages/About.vue",
     "isDynamicEntry": true,
@@ -76,7 +76,7 @@
     ]
   },
   "resources/js/pages/Contact.vue": {
-    "file": "assets/Contact-NA_hh7Vl.js",
+    "file": "assets/Contact-D02-tz3M.js",
     "name": "Contact",
     "src": "resources/js/pages/Contact.vue",
     "isDynamicEntry": true,
@@ -94,7 +94,7 @@
     ]
   },
   "resources/js/pages/DetailTable.vue": {
-    "file": "assets/DetailTable-CH5Eglxo.js",
+    "file": "assets/DetailTable-Do27PVii.js",
     "name": "DetailTable",
     "src": "resources/js/pages/DetailTable.vue",
     "isDynamicEntry": true,
@@ -113,7 +113,7 @@
     ]
   },
   "resources/js/pages/Detailpage.vue": {
-    "file": "assets/Detailpage-BCSPteNy.js",
+    "file": "assets/Detailpage-BHDhyrOF.js",
     "name": "Detailpage",
     "src": "resources/js/pages/Detailpage.vue",
     "isDynamicEntry": true,
@@ -132,7 +132,7 @@
     ]
   },
   "resources/js/pages/Edit.vue": {
-    "file": "assets/Edit-BbfPI4Cw.js",
+    "file": "assets/Edit-CCLSa5Hc.js",
     "name": "Edit",
     "src": "resources/js/pages/Edit.vue",
     "isDynamicEntry": true,
@@ -150,7 +150,7 @@
     ]
   },
   "resources/js/pages/Home.vue": {
-    "file": "assets/Home-C5M7y1sr.js",
+    "file": "assets/Home-CBGI2GpY.js",
     "name": "Home",
     "src": "resources/js/pages/Home.vue",
     "isDynamicEntry": true,
@@ -168,7 +168,7 @@
     ]
   },
   "resources/js/pages/Icon.vue": {
-    "file": "assets/Icon-CbRho0bd.js",
+    "file": "assets/Icon-Bw1F1vlN.js",
     "name": "Icon",
     "src": "resources/js/pages/Icon.vue",
     "isDynamicEntry": true,
@@ -187,7 +187,7 @@
     ]
   },
   "resources/js/pages/Login.vue": {
-    "file": "assets/Login-C0m6lDdD.js",
+    "file": "assets/Login-CxIUICEK.js",
     "name": "Login",
     "src": "resources/js/pages/Login.vue",
     "isDynamicEntry": true,
@@ -205,7 +205,7 @@
     ]
   },
   "resources/js/pages/MovieLibrary.vue": {
-    "file": "assets/MovieLibrary-WJ1Vu3bz.js",
+    "file": "assets/MovieLibrary-CNHPBGU1.js",
     "name": "MovieLibrary",
     "src": "resources/js/pages/MovieLibrary.vue",
     "isDynamicEntry": true,
@@ -224,7 +224,7 @@
     ]
   },
   "resources/js/pages/Option.vue": {
-    "file": "assets/Option-DL6V_-Jl.js",
+    "file": "assets/Option-CLAaig1l.js",
     "name": "Option",
     "src": "resources/js/pages/Option.vue",
     "isDynamicEntry": true,
@@ -242,7 +242,7 @@
     ]
   },
   "resources/js/pages/ProductCard.vue": {
-    "file": "assets/ProductCard-BrxKOFuc.js",
+    "file": "assets/ProductCard-DIEbvFlX.js",
     "name": "ProductCard",
     "src": "resources/js/pages/ProductCard.vue",
     "isDynamicEntry": true,
@@ -261,7 +261,7 @@
     ]
   },
   "resources/js/pages/Rules.vue": {
-    "file": "assets/Rules-BM8IvzC9.js",
+    "file": "assets/Rules-2LEWesuU.js",
     "name": "Rules",
     "src": "resources/js/pages/Rules.vue",
     "isDynamicEntry": true,
@@ -280,7 +280,7 @@
     ]
   },
   "resources/js/pages/Test.vue": {
-    "file": "assets/Test-COM8YHK5.js",
+    "file": "assets/Test-DIBUAg4T.js",
     "name": "Test",
     "src": "resources/js/pages/Test.vue",
     "isDynamicEntry": true,
@@ -299,7 +299,7 @@
     ]
   },
   "resources/js/pages/TorrentMovie.vue": {
-    "file": "assets/TorrentMovie-CeBxBNX7.js",
+    "file": "assets/TorrentMovie-B9OE5E5N.js",
     "name": "TorrentMovie",
     "src": "resources/js/pages/TorrentMovie.vue",
     "isDynamicEntry": true,
@@ -317,7 +317,7 @@
     ]
   },
   "resources/js/pages/TorrentUploads.vue": {
-    "file": "assets/TorrentUploads-BZAqWlGG.js",
+    "file": "assets/TorrentUploads-OVzqLMyr.js",
     "name": "TorrentUploads",
     "src": "resources/js/pages/TorrentUploads.vue",
     "isDynamicEntry": true,
@@ -335,7 +335,7 @@
     ]
   },
   "resources/js/pages/UserInfo.vue": {
-    "file": "assets/UserInfo-BJEYfndk.js",
+    "file": "assets/UserInfo-cD8LpKzk.js",
     "name": "UserInfo",
     "src": "resources/js/pages/UserInfo.vue",
     "isDynamicEntry": true,

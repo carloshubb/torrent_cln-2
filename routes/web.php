@@ -284,7 +284,6 @@ Route::get('/icon', function () {
 
 Route::get('/run-scheduler/{key}', function ($key) {
     //dd($key);
-    Log::info('!@@@@@*******************************************'.$key);
     if ($key == 'home') {
          exec('php ' . base_path('artisan') . ' app:fetch-external-home-data-daily > /dev/null 2>&1 &');
             }
