@@ -12,7 +12,7 @@ useHead({
   meta: [
     {
       name: "description",
-      content: "This is the SEO meta description for  1331x Home page."
+      content: "This is the  1331x Home page."
     }
   ]
 });
