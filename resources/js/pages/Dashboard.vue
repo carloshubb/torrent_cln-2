@@ -5,17 +5,6 @@ import TorrentHead from '../Compenents/TorrentHead.vue'
 import { reactive, onMounted, ref } from 'vue'
 import torrentService from '@/api/torrentService.js'
 import { Head } from '@inertiajs/vue3'
-import { useHead } from "@vueuse/head";
-
-useHead({
-  title: "1331x.com",
-  meta: [
-    {
-      name: "description",
-      content: "This is the  1331x Home page."
-    }
-  ]
-});
 
 // get props data
 const props = defineProps({
@@ -695,7 +684,6 @@ onMounted(() => {
 </script>
 <template>
   <Head :title=$page.props.title />
-  <h1>  </h1>
   <AppLayout>
     <TorrentHead v-if="dashboard_images.length > 0" :images="dashboard_images" :page="props.page" />
     <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page"   :icon="row.icon"
