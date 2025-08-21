@@ -13,8 +13,7 @@
     @inertiaHead
 </head>
 <body class="font-sans antialiased">
-    <h1>   </h1>
-    @inertia
+      @inertia
 </body>
  <!-- Histats.com  START  (aync)-->
 <script type="text/javascript">
