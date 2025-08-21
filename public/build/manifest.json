@@ -24,7 +24,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-BCHOlrZ1.js",
+    "file": "assets/app-D8jFVYS7.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -47,7 +47,7 @@
       "resources/js/pages/UserInfo.vue"
     ],
     "css": [
-      "assets/app-D5CVGoCV.css",
+      "assets/app-CoNwChCf.css",
       "assets/app-B8iB7H5c.css"
     ],
     "assets": [
@@ -58,7 +58,7 @@
     ]
   },
   "resources/js/pages/About.vue": {
-    "file": "assets/About-Mxev0Ojd.js",
+    "file": "assets/About-C5iaJLIX.js",
     "name": "About",
     "src": "resources/js/pages/About.vue",
     "isDynamicEntry": true,
@@ -76,7 +76,7 @@
     ]
   },
   "resources/js/pages/Contact.vue": {
-    "file": "assets/Contact-xz7lpB1i.js",
+    "file": "assets/Contact-Cdtrdlfm.js",
     "name": "Contact",
     "src": "resources/js/pages/Contact.vue",
     "isDynamicEntry": true,
@@ -94,7 +94,7 @@
     ]
   },
   "resources/js/pages/DetailTable.vue": {
-    "file": "assets/DetailTable-Dhw2t38V.js",
+    "file": "assets/DetailTable-Chfnm10L.js",
     "name": "DetailTable",
     "src": "resources/js/pages/DetailTable.vue",
     "isDynamicEntry": true,
@@ -113,7 +113,7 @@
     ]
   },
   "resources/js/pages/Detailpage.vue": {
-    "file": "assets/Detailpage-DYZ3j7ab.js",
+    "file": "assets/Detailpage-DpLSjjj4.js",
     "name": "Detailpage",
     "src": "resources/js/pages/Detailpage.vue",
     "isDynamicEntry": true,
@@ -132,7 +132,7 @@
     ]
   },
   "resources/js/pages/Edit.vue": {
-    "file": "assets/Edit-MIkiWwWc.js",
+    "file": "assets/Edit-Cag0OwJc.js",
     "name": "Edit",
     "src": "resources/js/pages/Edit.vue",
     "isDynamicEntry": true,
@@ -150,7 +150,7 @@
     ]
   },
   "resources/js/pages/Home.vue": {
-    "file": "assets/Home-MDy68-sg.js",
+    "file": "assets/Home-uCQ2kfu9.js",
     "name": "Home",
     "src": "resources/js/pages/Home.vue",
     "isDynamicEntry": true,
@@ -168,7 +168,7 @@
     ]
   },
   "resources/js/pages/Icon.vue": {
-    "file": "assets/Icon-BY_GnK9-.js",
+    "file": "assets/Icon-DM_dMih8.js",
     "name": "Icon",
     "src": "resources/js/pages/Icon.vue",
     "isDynamicEntry": true,
@@ -187,7 +187,7 @@
     ]
   },
   "resources/js/pages/Login.vue": {
-    "file": "assets/Login-BiKFhByN.js",
+    "file": "assets/Login-D0eSCCsk.js",
     "name": "Login",
     "src": "resources/js/pages/Login.vue",
     "isDynamicEntry": true,
@@ -205,7 +205,7 @@
     ]
   },
   "resources/js/pages/MovieLibrary.vue": {
-    "file": "assets/MovieLibrary-DgpSirPj.js",
+    "file": "assets/MovieLibrary-Dykoqt8B.js",
     "name": "MovieLibrary",
     "src": "resources/js/pages/MovieLibrary.vue",
     "isDynamicEntry": true,
@@ -224,7 +224,7 @@
     ]
   },
   "resources/js/pages/Option.vue": {
-    "file": "assets/Option-DzqmXpi0.js",
+    "file": "assets/Option-ISyl48YD.js",
     "name": "Option",
     "src": "resources/js/pages/Option.vue",
     "isDynamicEntry": true,
@@ -242,7 +242,7 @@
     ]
   },
   "resources/js/pages/ProductCard.vue": {
-    "file": "assets/ProductCard-WZVepkKi.js",
+    "file": "assets/ProductCard-BghnEi0F.js",
     "name": "ProductCard",
     "src": "resources/js/pages/ProductCard.vue",
     "isDynamicEntry": true,
@@ -261,7 +261,7 @@
     ]
   },
   "resources/js/pages/Rules.vue": {
-    "file": "assets/Rules-FLT-p4Oc.js",
+    "file": "assets/Rules-Cf0u9HzL.js",
     "name": "Rules",
     "src": "resources/js/pages/Rules.vue",
     "isDynamicEntry": true,
@@ -280,7 +280,7 @@
     ]
   },
   "resources/js/pages/Test.vue": {
-    "file": "assets/Test-CV6OlCNf.js",
+    "file": "assets/Test-Dq0trxmb.js",
     "name": "Test",
     "src": "resources/js/pages/Test.vue",
     "isDynamicEntry": true,
@@ -299,7 +299,7 @@
     ]
   },
   "resources/js/pages/TorrentMovie.vue": {
-    "file": "assets/TorrentMovie-CtnkJvhl.js",
+    "file": "assets/TorrentMovie-B3exzeE9.js",
     "name": "TorrentMovie",
     "src": "resources/js/pages/TorrentMovie.vue",
     "isDynamicEntry": true,
@@ -317,7 +317,7 @@
     ]
   },
   "resources/js/pages/TorrentUploads.vue": {
-    "file": "assets/TorrentUploads-D135mqq6.js",
+    "file": "assets/TorrentUploads-Cg0WMCnH.js",
     "name": "TorrentUploads",
     "src": "resources/js/pages/TorrentUploads.vue",
     "isDynamicEntry": true,
@@ -335,7 +335,7 @@
     ]
   },
   "resources/js/pages/UserInfo.vue": {
-    "file": "assets/UserInfo-BHKNP60y.js",
+    "file": "assets/UserInfo-B-qgM425.js",
     "name": "UserInfo",
     "src": "resources/js/pages/UserInfo.vue",
     "isDynamicEntry": true,
