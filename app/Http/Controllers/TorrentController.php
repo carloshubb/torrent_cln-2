@@ -196,7 +196,7 @@ class TorrentController extends Controller
         $torrent = Torrent::with('detail') 
             ->where('id', $id)
             ->where('slug', $slug)
-            ->firstOrFail();
+            ->first();
        
         return response()->json($torrent);
     }
