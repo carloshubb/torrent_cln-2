@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title inertia><h1> torrent site </h1></title>
+    <title inertia></title>
     
     <meta name="description" content="Default description about my Laravel + Vue app.">
 
@@ -13,6 +13,7 @@
     @inertiaHead
 </head>
 <body class="font-sans antialiased">
+    <h1>   </h1>
     @inertia
 </body>
  <!-- Histats.com  START  (aync)-->
