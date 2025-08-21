@@ -1,7 +1,9 @@
 <template>
   <!-- Top Bar -->
   <div class="hidden md:flex min-h-[40px] bg-[#000] border-b-5 border-[#822a0b]">
+    <h1 class="text-gray-900">welcome to our site</h1>
     <div class="w-7xl mx-auto text-right">
+      
       <div class="flex-1 items-center py-1">
         <a href="/login" v-if="!isLoggedIn" class="title text-red-600 hover:text-red-600">Login</a>
         <a v-if="isLoggedIn" class="title text-white hover:text-red-600 ml-3 mr-3" href="/option">Edit</a>
