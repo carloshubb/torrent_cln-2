@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen  bg-gradient-to-r from-gray-300 to-gray-700 text-white">
+     
     <!-- Header -->
     <Header />
     <!-- Main Layout -->
