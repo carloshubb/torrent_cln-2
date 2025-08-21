@@ -1,5 +1,6 @@
 <template>
   <header class="bg-gray-800 border-b border-gray-700">
+    <h1>welcome</h1>
     <!-- Top Bar -->
     <div class="min-h-[40px] bg-[#000] border-b-5 border-[#822a0b] items-center ">
     <div class="mx-auto w-full grid-cols-1 gap-10 container text-right ">
