@@ -114,35 +114,38 @@ if (performance.navigation.type === performance.navigation.TYPE_BACK_FORWARD) {
 
   <Head title="Your Torrents Uploads" />
   <AppLayout>
-    <div class="max-w-4xl mx-auto p-6 bg-gray-100 text-black  min-h-screen">
+    <div class="max-w-full bg-gray-800 rounded-lg overflow-hidden shadow-xl mt-6 ">
       <!-- option -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+      <div class="flex gap-2 border-gray-700">
+      <div  class="border border-gray-300 rounded p-2 flex-1">
+        <label class="block text-sm font-medium text-gray-200 mb-2 mt-3">Category</label>
         <select v-model="form.category" @change="fetchcategory"
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring-2  focus:ring-blue-500 focus:border-blue-500">
+          class="p-2 border border-gray-300 bg-gray-700 rounded-md focus:ring-2  focus:ring-blue-500 focus:border-blue-500">
 
-          <option v-for="item in category" :key="item" :value="item.id">
+          <option v-for="item in category" :key="item" :value="item.id"
+          class="bg-gray-700">
             {{ item.name }}
           </option>
 
         </select>
 
       </div>
-      <div class="mt-3">
-        <label class="block text-sm font-medium text-gray-700 mb-2">SubCategory</label>
+      <div   class="border border-gray-300 rounded p-2 flex-1">
+        <label class="block text-sm font-medium text-gray-200 mb-2">SubCategory</label>
         <select v-model="form.subcategory" @change="torrentTable"
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          class=" p-2 border border-gray-300 bg-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
 
-          <option v-for="item in subcategory" :key="item" :value="item.id">
+          <option v-for="item in subcategory" :key="item" :value="item.id"  class="bg-gray-700">
             {{ item.name }}
           </option>
 
         </select>
 
       </div>
-      <div class="overflow-x-auto mt-3">
+      </div>
+      <div class="overflow-x-auto mt-8">
         <table class="min-w-full boder-black">
-          <thead class="bg-gray-600">
+          <thead class="bg-gradient-to-r from-orange-400 to-red-500 ">
             <tr>
               <th class="text-left px-4 py-1 text-gray-300 font-semibold">name</th>
               <th class="hidden md:table-cell text-center px-4 py-1 text-gray-300 font-semibold">se</th>

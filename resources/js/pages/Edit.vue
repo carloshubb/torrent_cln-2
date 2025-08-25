@@ -145,21 +145,21 @@ async function saveTorrent() {
 
     <Head title="Your Torrents Uploads" />
     <AppLayout>
-        <div class="max-w-4xl mx-auto p-6  min-h-screen">
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h1 class="text-2xl font-bold mb-6 text-gray-800">Edit Torrent</h1>
+        <div class="max-w-4xl mx-auto p-6   min-h-screen">
+            <div class="bg-gray-800 rounded-lg text-white shadow-lg p-6">
+                <h1 class="text-2xl font-bold mb-6 text-white">Edit Torrent</h1>
 
-                <div class="space-y-6 text-black">
+                <div class="space-y-6 ">
                     <!-- Title -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">name</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">name</label>
                         <input v-model="torrent.name" type="text" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
 
                     <!-- seeders -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">seeders</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">seeders</label>
                         <input v-model="torrent.seeders" type="number" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
@@ -167,23 +167,23 @@ async function saveTorrent() {
 
                     <!--leechers -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">leechers</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">leechers</label>
                         <input v-model="torrent.leechers" type="number" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
                     <!-- Title -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">uploader</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">uploader</label>
                         <input v-model="torrent.detail.uploader" type="text" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
 
                     <!-- Torrent Description -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Torrent Description</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Torrent Description</label>
 
                         <!-- Toolbar -->
-                        <div class="border border-gray-300 rounded-t-md bg-gray-50 p-2 flex flex-wrap gap-1">
+                        <div class="border border-gray-300 rounded-t-md bg-gray-500 p-2 flex flex-wrap gap-1">
                             <button type="button" @click="insertTag('[b]', '[/b]')"
                                 class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-200 font-bold"
                                 title="Bold">
