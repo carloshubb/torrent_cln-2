@@ -3,12 +3,27 @@ import { usePage, Link } from '@inertiajs/vue3'
 import AppLayout from './../layouts/AppLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { ref, reactive, nextTick } from 'vue'
-
+import 'toastr/build/toastr.min.css'
+import toastr from 'toastr'
 // Refs
 const showModal = ref(false)
 const imageUrl = ref('')
 const descriptionTextarea = ref(null)
 const imageUrlInput = ref(null)
+const { props } = usePage()
+const torrent = ref(props.torrent)
+
+
+// Optional: configure toastr defaults
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: 'toast-top-right',
+    timeOut: 3000
+}
+function showError() {
+    toastr.error('Something went wrong.', 'Error')
+}
 
 // Form data
 const form = reactive({
@@ -18,6 +33,9 @@ const form = reactive({
     tags: '',
     description: ''
 })
+
+
+//console.log(torrent.value);
 
 // Insert tag function
 const insertTag = (openTag, closeTag = '') => {
@@ -91,6 +109,36 @@ const submitTorrent = () => {
     // Add your submission logic here
     alert('Torrent upload functionality would be implemented here!')
 }
+// save torrent
+async function saveTorrent() {
+    // console.log(torrent.value);
+
+    const response = await fetch('/savetorrent', {
+        method: 'POST',
+        body: JSON.stringify({ torrent: torrent.value }),
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    });
+    toastr.success('Data saved successfully!', 'Success')
+    let prevPath = null;
+
+    if (document.referrer) {
+        try {
+            const refUrl = new URL(document.referrer);
+            prevPath = refUrl.pathname + refUrl.search + refUrl.hash;
+            // e.g. "/option/1/2?foo=bar#section"
+        } catch (e) {
+            console.warn("Invalid referrer:", e);
+        }
+    }
+
+    console.log("Previous path:", prevPath);
+    window.location.href = prevPath;
+    //window.history.go(-1);
+
+}
 </script>
 
 <template>
@@ -104,35 +152,30 @@ const submitTorrent = () => {
                 <div class="space-y-6 text-black">
                     <!-- Title -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                        <input v-model="form.title" type="text" placeholder="enter torrent title here"
+                        <label class="block text-sm font-medium text-gray-700 mb-2">name</label>
+                        <input v-model="torrent.name" type="text" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
 
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Category -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                            <select v-model="form.category"
-                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <option>Choose One</option>
-                                <option>Action</option>
-                                <option>Comedy</option>
-                                <option>Drama</option>
-                                <option>Horror</option>
-                            </select>
-                            <p class="text-sm text-gray-500 mt-1">Please select which category best fits your torrent.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Tags -->
+                    <!-- seeders -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
-                        <input v-model="form.tags" type="text" placeholder="enter torrent tags here"
+                        <label class="block text-sm font-medium text-gray-700 mb-2">seeders</label>
+                        <input v-model="torrent.seeders" type="number" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-                        <p class="text-sm text-gray-500 mt-1">Tags examples: thriller,action,comedy (you can add 2 to 8 tags, don't forget to separate them with ",")</p>
+                    </div>
+
+
+                    <!--leechers -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">leechers</label>
+                        <input v-model="torrent.leechers" type="number" placeholder="enter torrent title here"
+                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                    </div>
+                    <!-- Title -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">uploader</label>
+                        <input v-model="torrent.detail.uploader" type="text" placeholder="enter torrent title here"
+                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
 
                     <!-- Torrent Description -->
@@ -184,14 +227,15 @@ const submitTorrent = () => {
                         </div>
 
                         <!-- Textarea -->
-                        <textarea ref="descriptionTextarea" v-model="form.description"
+                        <textarea ref="descriptionTextarea" v-model="torrent.detail.full_description"
                             class="w-full h-64 p-3 border border-gray-300 border-t-0 rounded-b-md resize-vertical focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Enter your torrent description here..."></textarea>
                     </div>
 
                     <!-- Submit Button -->
                     <div class="flex justify-end">
-                        <button @click="submitTorrent"
+
+                        <button @click="saveTorrent"
                             class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                             Save Torrent
                         </button>
@@ -199,12 +243,13 @@ const submitTorrent = () => {
                 </div>
             </div>
 
+
             <!-- Image URL Modal -->
             <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
                 @click="hideImageModal">
                 <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4" @click.stop>
-                    <h3 class="text-lg font-semibold mb-4">1331x.to says</h3>
-                    <p class="mb-4">Enter the image URL:</p>
+                    <h3 class="text-lg text-black font-semibold mb-4">1331x.to says</h3>
+                    <p class="mb-4 text-black">Enter the image URL:</p>
                     <input v-model="imageUrl" type="text"
                         class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-4"
                         placeholder="Enter image URL..." @keyup.enter="confirmImageUrl" ref="imageUrlInput" />
@@ -217,6 +262,7 @@ const submitTorrent = () => {
                             class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                             OK
                         </button>
+
                     </div>
                 </div>
             </div>

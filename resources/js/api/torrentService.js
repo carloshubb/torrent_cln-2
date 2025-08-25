@@ -17,6 +17,7 @@ export default {
   getTorrent(id) {
     return axios.get(`${API_BASE_URL}/torrents/${id}`);
   },
+  
 
   createTorrent(data) {
     return axios.post(`${API_BASE_URL}/torrents`, data);

@@ -2,8 +2,7 @@
   <div class="max-w-full  mx-auto bg-gray-100 border border-gray-300 shadow-md">
     <!-- Header -->
     <div class=" bg-gray-300 px-5 ">
-      <h1 class="text-red-700 font-bold pt-4">Contact 1331x</h1>
-      <h2 class="text-gray-300 ">welcome</h2>
+      <h2 class="text-red-700 font-bold pt-4">Contact 1331x</h2>
     </div>
 
     <form class=" p-6 space-y-4 text-black">

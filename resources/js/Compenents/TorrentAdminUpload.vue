@@ -358,11 +358,11 @@ export default {
     },
 
     handleCategoryChange() {
-      console.log(this.categories, this.form.category);
+      //console.log(this.categories, this.form.category);
 
       const selected = this.categories.find(cat => cat.id === parseInt(this.form.category));
       this.sub_categories = selected ? selected.subcategory : [];
-      console.log(selected);
+     // console.log(selected);
 
       this.form.subcategory = ""; // reset subcategory
     }

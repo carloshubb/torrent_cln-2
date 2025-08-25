@@ -1631,7 +1631,13 @@ trait ValidatesAttributes
             return false;
         }
 
-        return json_validate($value);
+        if (function_exists('json_validate')) {
+            return json_validate($value);
+        }
+
+        json_decode($value);
+
+        return json_last_error() === JSON_ERROR_NONE;
     }
 
     /**

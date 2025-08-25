@@ -225,6 +225,7 @@ Route::get('/uploadtest', [TorrentController::class, 'uploadtorrent']);
 Route::get('/uploads', [TorrentController::class, 'uploads']);
 Route::post('/torrents', [TorrentController::class, 'store'])->name('torrents.store');
 Route::get('/user/{param1}/{param2?}', [UserController::class, 'index'])->name('torrents.user');
+Route::post('/savetorrent', [TorrentController::class, 'savetorrent'])->name('torrents.savetorrent');
 
 Route::get('/home', function () {
     return Inertia::render('Home', [
@@ -308,17 +309,13 @@ Route::get('/run-scheduler/{key}', function ($key) {
 });
 
 //fallback route (must be at the very end)
-Route::fallback(function () {
-    return redirect('/'); // redirect to home
-});
+// Route::fallback(function () {
+//     return redirect('/'); // redirect to home
+// });
 
 Route::get('/test', function () {
     return Inertia::render('Test');
 });
-Route::get('/edit', function () {
-    return Inertia::render('Edit');
-});
-Route::get('/option', function () {
-    return Inertia::render('Option');
-});
+Route::get('/edit/{id}',[TorrentController::class,'edit']);
+Route::get('/option/{cat}/{page}',[TorrentController::class, 'option']);
 

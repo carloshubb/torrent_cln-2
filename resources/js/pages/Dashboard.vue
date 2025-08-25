@@ -6,6 +6,18 @@ import { reactive, onMounted, ref } from 'vue'
 import torrentService from '@/api/torrentService.js'
 import { Head } from '@inertiajs/vue3'
 
+import { useHead } from "@vueuse/head";
+
+useHead({
+  title: "Welcome to HomePage",
+  meta: [
+    {
+      name: "description",
+      content: "This is the SEO meta description for my Vue 3 page."
+    }
+  ]
+});
+
 // get props data
 const props = defineProps({
   page: String,
@@ -683,10 +695,12 @@ onMounted(() => {
 })
 </script>
 <template>
-  <title>welcome</title>
   <Head :title=$page.props.title />
+    <h1> </h1>
   <AppLayout>
+    <h2>  </h2>
     <TorrentHead v-if="dashboard_images.length > 0" :images="dashboard_images" :page="props.page" />
+      
     <TorrentTable v-for="(row, index) in dashboard_data" :key="index" :torrents="row.data" :page="row.page"   :icon="row.icon"
       :head_title="row.title" />
   </AppLayout>

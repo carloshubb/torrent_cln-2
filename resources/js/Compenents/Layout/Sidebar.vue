@@ -3,7 +3,7 @@
     <!-- Browse Torrents -->
     <div class="bg-gray-800 rounded-lg overflow-hidden shadow-xl">
       <div class="bg-gradient-to-r from-orange-500 to-gray-500 px-4 py-3">
-        <h1 class="text-white font-bold">BROWSE TORRENTS</h1>
+        <h3 class="text-white font-bold">BROWSE TORRENTS</h3>
       </div>
       <ul class="list-box">
         <li v-for="(category, index) in browseCategories" :key="index"

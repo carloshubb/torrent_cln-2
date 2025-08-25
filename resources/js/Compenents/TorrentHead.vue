@@ -2,12 +2,12 @@
   <div class="px-2 md:px-0">
     <!-- Status Message -->
     <div class="bg-gray-200 mt-5 p-4 mb-6 rounded" v-if="page == 'dashboard'">
-      <h1 class="text-red-600 font-semibold mb-2">Discover High-Quality Streaming with 1331x.cc: Your Ultimate Media Hub
-      </h1>
-      <h2 class="text-gray-700 text-sm mb-2">
+      <h3 class="text-red-600 font-semibold mb-2">Discover High-Quality Streaming with 1331x.cc: Your Ultimate Media Hub
+      </h3>
+      <p class="text-gray-700 text-sm mb-2">
         Welcome to <span class="font-mono text-orange-600">1331x.c</span>, your go-to destination for seamless streaming
         and online media enjoyment.
-      </h2>
+      </p>
       <p class="text-gray-700 text-sm mb-2">Whether you’re a casual viewer or a passionate movie buff, we provide a
         platform that prioritizes quality, speed, and reliability.
       </p>

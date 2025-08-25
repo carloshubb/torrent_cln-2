@@ -1,1 +1,0 @@
-import{_ as a}from"./app-DX8Qg3i4.js";import{g as o,j as p,k as r,A as s}from"./vendor-iYT8hLxN.js";/* empty css            */const t={class:"product-card"},d=a({__name:"ProductCard",props:["product"],setup:a=>(d,c)=>(p(),o("div",t,[r("h3",null,s(a.product.name),1),r("p",null,"Category: "+s(a.product.category),1)]))},[["__scopeId","data-v-f06f8c6a"]]);export{d as default};

@@ -196,10 +196,51 @@ class TorrentController extends Controller
         $torrent = Torrent::with('detail') 
             ->where('id', $id)
             ->where('slug', $slug)
-            ->first();
+            ->firstOrFail();
        
         return response()->json($torrent);
     }
+
+
+    public function option($cat=1,$page=1)
+    {   
+        
+        $category= Category::with('subcategory')->get();
+        $sel_category = SubCategory::where('id',$cat)->first()->category_id;
+        $subcategories = SubCategory::where('category_id',$sel_category)->get();
+        $torrents= Torrent::where('category_id',$cat)->orderBy('approved_at','desc')->paginate(10, ['*'], 'page', $page);
+       // $torrent_detail = TorrentDetail::
+        return Inertia::render('Option', [
+            'category' => $category,
+            'torrents' => $torrents,
+            'subcategories' => $subcategories,
+            'sel_category' => $sel_category,
+            'sel_subcategory' => $cat,
+           // 'torrent_detail' => $torrent_detail,
+           
+           
+        ]);
+    }
+    
+    public function getOptionCategory(Request $request)
+    {   
+        $category = $request->query('category');
+        $torrents = Category::with('subcategory')->where('id',$category)->first();
+       // $torrents= Torrent::where('category_id',$category)->orderBy('approved_at','desc')->get();
+     return response()->json($torrents);
+        
+    }
+     public function getOptionTorrent(Request $request)
+    {   
+        $category = $request->query('category');
+        $page = $request->query('page');
+       
+      // $torrents = Category::with('subcategory')->where('id',$category)->first();
+       $torrents= Torrent::with('subcategory')->where('category_id',$category)->orderBy('approved_at','desc')->paginate(10, ['*'], 'page', $page);
+     return response()->json($torrents);
+        
+    }
+
 
     public function getMovieLibraryData(Request $request)
     {
@@ -290,9 +331,38 @@ class TorrentController extends Controller
         ]);
         
     }
+    public function savetorrent(Request $request)
+    { 
+        $torrent = $request->input('torrent');
+        $updatetorrent = Torrent::where('id',$torrent['id'])->first();
+        $updatetorrent->name = $torrent['name'];
+        $slug = Str::slug($torrent['name']);
+        $updatetorrent->slug = $slug;   
+       
+        $updatetorrent->seeders = $torrent['seeders'];
+        $updatetorrent->leechers = $torrent['leechers'];
+        $parts = explode('/', $updatetorrent->uploader); // ["", "user", "Lulloz", ""]
+        $parts[2] = $torrent['detail']['uploader'];      // replace "Lulloz"
+        $updatetorrent->uploader = implode('/', $parts);
+       // $updatetorrent->uploader?.split('/')[2] = $torrent['detail']['uploader'];
+        
+        $torrent_detail = TorrentDetail::where('id',$torrent['detail']['id'])->first();
+        //dd($torrent['detail']['full_description']);
+        $torrent_detail->full_description = $torrent['detail']['full_description'];
+        $torrent_detail->uploader = $torrent['detail']['uploader'];
+       
+
+
+
+        $updatetorrent->save();
+        $torrent_detail->save();
+        //dd( $updatetorrent);
+        
+    }
 
     public function getCategory(Request $request){
         $category['data'] = Category::with('subcategory')->get();
+        // dd("----------->",$category['data']);
         return response()->json($category);
     }
 
@@ -338,5 +408,16 @@ class TorrentController extends Controller
             'success' => false,
             'message' => 'Torrent not found',
         ], 404);
+    }
+
+    public function edit($id= null){
+        if($id != null)
+        $torrent = Torrent::with('detail')->where('id',$id)->first();
+      
+        else $torrent = null; 
+         
+        return Inertia::render('Edit', [
+            'torrent' => $torrent
+        ]);
     }
 }
