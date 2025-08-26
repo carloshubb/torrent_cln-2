@@ -98,6 +98,7 @@
               <th class="hidden md:table-cell text-center px-4 py-1 text-gray-300 font-semibold">time</th>
               <th class="hidden md:table-cell text-center px-4 py-1 text-gray-300 font-semibold">size</th>
               <th class="text-center px-4 py-1 text-gray-300 font-semibold">uploader</th>
+              <th v-if="isLoggedIn" class="text-center px-4 py-1 text-gray-300 font-semibold">edit</th>
             </tr>
           </thead>
           <tbody>
@@ -148,7 +149,7 @@
                 </div>
               </td>
 
-              
+
               <td class="text-center px-2 py-2 hidden md:table-cell">
                 <span class="bg-green-600 text-white px-1 text-xs rounded ">
                   {{ torrent.seeders }}
@@ -172,6 +173,14 @@
                   </span>
                 </a>
               </td>
+              <td v-if="isLoggedIn && (page_type == 'top' || page_type == 'trending' || page_type == 'dashboard')" class="text-center px-2 py-2 text-gray-400 hidden md:table-cell"
+                @click="editTorrent(torrent,0)">
+                <button>✏️</button>
+              </td>
+              <td v-if="isLoggedIn && (page_type == 'cat')" class="text-center px-2 py-2 text-gray-400 hidden md:table-cell"
+                @click="editTorrent(torrent,1)">
+                <button>✏️</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -190,17 +199,25 @@ import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import TorrentPagination from '../Compenents/TorrentPagination.vue'
+import { usePage } from '@inertiajs/vue3'
+
+
 dayjs.extend(relativeTime)
 
 export default {
   name: 'TorrentSite',
   props: {
+    auth: {
+      type: Object,
+      required: false,
+      default: () => ({})
+    },
     icon: {
       type: String,
-      default: 'flaticon-top' // Default icon if not provided
+      default: 'flaticon-top'
     },
     torrents: {
-      type: Object, // Expecting { data: Array, lastPage: Number } or similar
+      type: Object,
       required: true
     },
     head_title: {
@@ -214,49 +231,57 @@ export default {
   },
 
   setup(props) {
-    const currentPage = ref(props.torrents.data.current_page || 1)
-    const lastPage = ref(props.torrents.data.last_page || 1) // default to 7 if not passed
-    const torrents = ref(props.torrents.data.data)
-    const page_type = ref(props.page)
-    const subcategories = props.torrents.subcategories ? ref(props.torrents.subcategories) : null
-    const pathSegments = window.location.pathname
-      .split('/')
-      .filter(segment => segment); // remove empty entries    
-    const torrent_type = pathSegments[1]; // "Anime"
-    console.log(props.torrents.page);
+    const { props: pageProps } = usePage();   // ✅ inertia page context
+   // console.log("prop",props);
+    
+    const isLoggedIn = ref(!!pageProps.auth?.user);
+
+    const currentPage = ref(props.torrents.data.current_page || 1);
+    const lastPage = ref(props.torrents.data.last_page || 1);
+    const torrents = ref(props.torrents.data.data);
+    const page_type = ref(props.page);
+    const subcategories = props.torrents.subcategories ? ref(props.torrents.subcategories) : null;
+    const pathSegments = window.location.pathname.split('/').filter(segment => segment);
+    const torrent_type = pathSegments[1];
+    const parts = []
 
     const parseDateString = (str) => {
       const now = dayjs();
-
-      // Remove ordinal suffixes
       str = str.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
-
-      // Remove apostrophe year and fix
       str = str.replace(/'(\d{2})/, '20$1');
-
-      // Remove dots from months
       str = str.replace(/\./g, '');
-
-      // If only time is provided, use today
       if (/^\d{1,2}(:\d{2})?(am|pm)$/i.test(str)) {
         return dayjs(`${now.format("YYYY-MM-DD")} ${str}`, ["YYYY-MM-DD h:mma", "YYYY-MM-DD ha"]);
       }
-
-      // Try multiple formats
       const formats = [
         "ha MMM D YYYY",
         "h:mma MMM D YYYY",
         "MMM D YYYY ha",
         "MMM D YYYY h:mma",
-        "MMM D YYYY" // no time
+        "MMM D YYYY"
       ];
-
       return dayjs(str, formats);
     };
 
+    const editTorrent = (id,flag) => {
+      if (flag ==1){
+      id = id.id;   
+      //console.log("id",id);
+      
+      window.location.href = `/edit/${id}`;
+     }
+     else {
+       id = id.torrent_link.split('/')?id.torrent_link.split('/')[2]:null;
+     
+        window.location.href = `/edit/${id}`;
+       
+     }
+
+    };
+
     const formatApprovedAt = (dateString) => {
-      if(dateString) dateString = dateString.split('.')[0]; // Remove timezone if present
-      else return 'last year'; // Handle case where dateString is null or undefined
+      if (dateString) dateString = dateString.split('.')[0];
+      else return 'last year';
       const date = parseDateString(dateString);
       const now = dayjs();
       if (date.isSame(now, 'day')) {
@@ -267,22 +292,18 @@ export default {
     };
 
     const viewTorrent = (torrent) => {
-      console.log('Viewing torrent:', torrent.name)
-      // Navigate or show detail logic here
-    }
+      console.log('Viewing torrent:', torrent.name);
+    };
 
     const onPageChange = (page) => {
       if (page >= 1 && page <= lastPage.value) {
-        currentPage.value = page
+        currentPage.value = page;
       }
-    }
+    };
+
     const goToSubcategory = (subcategory) => {
       window.location.href = `/sub/${subcategory.id}/0/`;
-    }
-    onMounted(() => {
-      //console.log(torrent_type);
-
-    })
+    };
 
     return {
       currentPage,
@@ -291,19 +312,23 @@ export default {
       page_type,
       formatApprovedAt,
       viewTorrent,
+      editTorrent,
       onPageChange,
       torrent_type,
       subcategories,
       goToSubcategory,
       icon: props.icon,
-      head_title: props.head_title
-    }
+      head_title: props.head_title,
+      isLoggedIn,  
+    };
   },
 
   components: {
     TorrentPagination
   }
 }
+
+
 </script>
 
 <style scoped>

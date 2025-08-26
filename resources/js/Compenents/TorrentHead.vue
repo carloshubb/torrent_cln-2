@@ -91,7 +91,7 @@ export default {
     moviePosters.value = props.images[0].data.data ? props.images[0].data.data : [];
 
     const openLink = (link) => {
-      console.log('Opening link:', link)
+     // console.log('Opening link:', link)
       // Implement external link logic
       // Open in new tab or navigate
     }
@@ -127,7 +127,7 @@ export default {
     }
 
     onMounted(() => {
-      console.log('TorrentSite component mounted')
+      //console.log('TorrentSite component mounted')
       startAutoSlide();
       // Initialize component, fetch data, etc.
       updateVisibleCount()
@@ -141,7 +141,7 @@ export default {
     });
 
     function updateVisibleCount() {
-      console.log(visibleCount.value);
+      //console.log(visibleCount.value);
       if (window.innerWidth < 640) { // Tailwind's `sm` breakpoint
         visibleCount.value = 3;
       } else {

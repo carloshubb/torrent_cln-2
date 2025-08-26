@@ -15,11 +15,10 @@ const torrents = ref(props.torrents.data)
 const sel_category = ref(props.sel_category)
 const sel_subcategory = ref(props.sel_subcategory)
 const subcategory = ref(props.subcategories)
-//console.log('---------',torrents);
 
 const currentPage = props.torrents.current_page
 const lastPage = props.torrents.last_page// default to 7 if not passe
-
+//console.log("----->",props.torrents.data)
 // Form data'
 const form = reactive({
   language: 'English',
@@ -89,14 +88,14 @@ const fetchcategory = async () => {
   }
 }
 const onPageChange = (page) => {
-  console.log(page);
+ // console.log(page);
   
   if (page >= 1 && page <= lastPage.value) {
     currentPage.value = page
   }
 }
 const torrentTable = async () => {
-  console.log(`/option/${form.subcategory}/1`);  
+  //console.log(`/option/${form.subcategory}/1`);  
   window.location.href = `/option/${form.subcategory}/1`;
 }
 const detailTorrent = async (id) => {

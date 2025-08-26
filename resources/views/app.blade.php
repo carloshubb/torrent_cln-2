@@ -42,6 +42,8 @@
 <body class="font-sans antialiased">
       @inertia
 </body>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+
    <!-- Histats.com  START  (aync)-->
 <script type="text/javascript">var _Hasync= _Hasync|| [];
 _Hasync.push(['Histats.start', '1,4969467,4,0,0,0,00010000']);

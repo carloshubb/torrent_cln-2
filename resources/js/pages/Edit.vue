@@ -5,6 +5,7 @@ import { Head } from '@inertiajs/vue3'
 import { ref, reactive, nextTick } from 'vue'
 import 'toastr/build/toastr.min.css'
 import toastr from 'toastr'
+
 // Refs
 const showModal = ref(false)
 const imageUrl = ref('')
@@ -13,6 +14,7 @@ const imageUrlInput = ref(null)
 const { props } = usePage()
 const torrent = ref(props.torrent)
 
+console.log('torrent----->', torrent.value);
 
 // Optional: configure toastr defaults
 toastr.options = {
@@ -103,15 +105,9 @@ const insertYouTube = () => {
     }
 }
 
-// Submit torrent
-const submitTorrent = () => {
-    console.log('Torrent data:', form)
-    // Add your submission logic here
-    alert('Torrent upload functionality would be implemented here!')
-}
 // save torrent
 async function saveTorrent() {
-    // console.log(torrent.value);
+    //console.log("--------->",torrent.value);
 
     const response = await fetch('/savetorrent', {
         method: 'POST',
@@ -134,7 +130,7 @@ async function saveTorrent() {
         }
     }
 
-    console.log("Previous path:", prevPath);
+    // console.log("Previous path:", prevPath);
     window.location.href = prevPath;
     //window.history.go(-1);
 
@@ -150,6 +146,14 @@ async function saveTorrent() {
                 <h1 class="text-2xl font-bold mb-6 text-white">Edit Torrent</h1>
 
                 <div class="space-y-6 ">
+                    
+                    <!--Html Title -->
+                    <!-- <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">HTML Title</label>
+                        <textarea v-model="torrent.name" placeholder="Enter HTML code here (e.g. <h1>My Title</h1>)"
+                            rows="4"
+                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div> -->
                     <!-- Title -->
                     <div>
                         <label class="block text-sm font-medium text-gray-300 mb-2">name</label>
@@ -171,12 +175,20 @@ async function saveTorrent() {
                         <input v-model="torrent.leechers" type="number" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
-                    <!-- Title -->
+                    <!-- uploader -->
                     <div>
                         <label class="block text-sm font-medium text-gray-300 mb-2">uploader</label>
                         <input v-model="torrent.detail.uploader" type="text" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
+                    <!-- downloads -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">downloads</label>
+                        <input v-model="torrent.detail.download_count" type="text"
+                            placeholder="enter torrent title here"
+                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                    </div>
+
 
                     <!-- Torrent Description -->
                     <div>

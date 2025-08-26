@@ -334,35 +334,43 @@ class TorrentController extends Controller
     public function savetorrent(Request $request)
     { 
         $torrent = $request->input('torrent');
-        $updatetorrent = Torrent::where('id',$torrent['id'])->first();
-        $updatetorrent->name = $torrent['name'];
-        $slug = Str::slug($torrent['name']);
-        $updatetorrent->slug = $slug;   
+        $update_torrent = Torrent::where('id',$torrent['id'])->first();
+        $update_torrent->name = $torrent['name'];
+        $update_torrent->seeders = $torrent['seeders'];
+        $update_torrent->leechers = $torrent['leechers'];
+        $parts = explode('/', $update_torrent->uploader); 
+        $parts[2] = $torrent['detail']['uploader'];      
+        $update_torrent->uploader = implode('/', $parts);
        
-        $updatetorrent->seeders = $torrent['seeders'];
-        $updatetorrent->leechers = $torrent['leechers'];
-        $parts = explode('/', $updatetorrent->uploader); // ["", "user", "Lulloz", ""]
-        $parts[2] = $torrent['detail']['uploader'];      // replace "Lulloz"
-        $updatetorrent->uploader = implode('/', $parts);
-       // $updatetorrent->uploader?.split('/')[2] = $torrent['detail']['uploader'];
-        
         $torrent_detail = TorrentDetail::where('id',$torrent['detail']['id'])->first();
-        //dd($torrent['detail']['full_description']);
         $torrent_detail->full_description = $torrent['detail']['full_description'];
         $torrent_detail->uploader = $torrent['detail']['uploader'];
-       
+        $torrent_detail->download_count = $torrent['detail']['download_count'];
+        //dd($torrent_detail->download_count);
+
+        $update_torrent_popular = PopularTorrent::where('torrent_link', 'LIKE', "%{$torrent['id']}%")->first();
+        if ($update_torrent_popular != null){
+        $parts = explode('/', $update_torrent_popular->uploader); // ["", "user", "Lulloz", ""]
+        $parts[2] = $torrent['detail']['uploader'];      // replace "Lulloz"
+        $update_torrent_popular->uploader = implode('/', $parts);
+        $update_torrent_popular->seeders = $torrent['seeders'];
+        $update_torrent_popular->leechers = $torrent['leechers'];
+        $update_torrent_popular->name = $torrent['name'];
+        //dd($update_torrent_popular);
+        $update_torrent_popular->save();
+        }
 
 
 
-        $updatetorrent->save();
+        $update_torrent->save();
         $torrent_detail->save();
-        //dd( $updatetorrent);
+        
+        //dd( $update_torrent);
         
     }
 
     public function getCategory(Request $request){
-        $category['data'] = Category::with('subcategory')->get();
-        // dd("----------->",$category['data']);
+        $category['data'] = Category::with('subcategory')->get();        
         return response()->json($category);
     }
 
