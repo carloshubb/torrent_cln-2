@@ -13,8 +13,21 @@ const descriptionTextarea = ref(null)
 const imageUrlInput = ref(null)
 const { props } = usePage()
 const torrent = ref(props.torrent)
+console.log("sssss",torrent.value);
 
-console.log('torrent----->', torrent.value);
+const title = ref("<h1>Spiral: From The Book Of Saw</h1>");
+const keywords = ref("<strong>UHD</strong>, <em>HDR10</em>, Dolby Atmos");
+const category = ref('<a href="/category/movies">Movies</a>');
+const tags = ref('<a href="/tag/uhd">UHD</a>, <a href="/tag/hdr10">HDR10</a>');
+
+const saveData = () => {
+    console.log("Saving Data...");
+    console.log("Title:", title.value);
+    console.log("Keywords:", keywords.value);
+    console.log("Category:", category.value);
+    console.log("Tags:", tags.value);
+    alert("Data saved (check console).");
+};
 
 // Optional: configure toastr defaults
 toastr.options = {
@@ -135,6 +148,62 @@ async function saveTorrent() {
     //window.history.go(-1);
 
 }
+
+import Editor from "@tinymce/tinymce-vue";
+
+const content = ref("<p>Hello TinyMCE</p>");
+const editor_config = {
+    plugins: [
+        "code", "image", "link", "media",
+    ],
+    height: 500,
+    menubar: false,
+    uploadcare_public_key: 'c1b96fb4f7b667a81986',
+    toolbar: 'bold italic underline strikethrough | link image | code | youtubeButton',
+    setup: (editor) => {
+        // Add custom YouTube button with modal
+        editor.ui.registry.addButton("youtubeButton", {
+            text: "YouTube",
+            onAction: () => {
+                editor.windowManager.open({
+                    title: "Insert YouTube Video",
+                    body: {
+                        type: "panel",
+                        items: [
+                            {
+                                type: "input",
+                                name: "url",
+                                label: "YouTube URL",
+                                placeholder: "https://www.youtube.com/watch?v=xxxxxx",
+                            },
+                        ],
+                    },
+                    buttons: [
+                        {
+                            type: "cancel",
+                            text: "Close",
+                        },
+                        {
+                            type: "submit",
+                            text: "Insert",
+                            primary: true,
+                        },
+                    ],
+                    onSubmit: (api) => {
+                        const data = api.getData();
+                        const url = data.url.trim();
+                        if (url) {
+                            const embedUrl = url.replace("watch?v=", "embed/");
+                            const embedCode = `<iframe width="560" height="315" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+                            editor.insertContent(embedCode);
+                        }
+                        api.close();
+                    },
+                });
+            },
+        });
+    },
+}
 </script>
 
 <template>
@@ -147,6 +216,39 @@ async function saveTorrent() {
 
                 <div class="space-y-6 ">
                     
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label class="font-semibold block mb-1">Title with HTML</label>
+                            <textarea v-model="torrent.name" rows="2" class="w-full border p-2 rounded"></textarea>
+                            <p class="mt-2">Preview:</p>
+                            <div class="border p-2 bg-gray-500" v-html="torrent.name"></div>
+                        </div>
+
+                        <!-- Keywords -->
+                        <div class="mt-9">
+                            <label class="font-semibold block mb-1">Keywords with HTML</label>
+                            <textarea v-model="keywords" rows="2" class="w-full border p-2 rounded"></textarea>
+                            <p class="mt-2">Preview:</p>
+                            <div class="border p-2 bg-gray-500" v-html="keywords"></div>
+                        </div>
+
+                        <!-- Category -->
+                        <!-- <div class="mt-9">
+                            <label class="font-semibold block mb-1">Category with HTML</label>
+                            <textarea v-model="torrent.detail.category" rows="2" class="w-full border p-2 rounded"></textarea>
+                            <p class="mt-2">Preview:</p>
+                            <div class="border p-2 bg-gray-500" v-html="torrent.detail.category"></div>
+                        </div> -->
+
+                        <!-- Tags -->
+                        <div class="mt-9">
+                            <label class="font-semibold block mb-1">Tags with HTML</label>
+                            <textarea v-model="torrent.tags" rows="2" class="w-full border p-2 rounded"></textarea>
+                            <p class="mt-2">Preview:</p>
+                            <div class="border p-2 bg-gray-500" v-html="torrent.tags"></div>
+                        </div>
+
+                   
                     <!--Html Title -->
                     <!-- <div>
                         <label class="block text-sm font-medium text-gray-300 mb-2">HTML Title</label>
@@ -160,7 +262,7 @@ async function saveTorrent() {
                         <input v-model="torrent.name" type="text" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
-
+                    <div class="flex items-center justify-between">
                     <!-- seeders -->
                     <div>
                         <label class="block text-sm font-medium text-gray-300 mb-2">seeders</label>
@@ -168,19 +270,22 @@ async function saveTorrent() {
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
 
-
+                   
                     <!--leechers -->
-                    <div>
+                    <div >
                         <label class="block text-sm font-medium text-gray-300 mb-2">leechers</label>
                         <input v-model="torrent.leechers" type="number" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
+                    </div>
+                    <div class="flex items-center justify-between">
                     <!-- uploader -->
                     <div>
                         <label class="block text-sm font-medium text-gray-300 mb-2">uploader</label>
                         <input v-model="torrent.detail.uploader" type="text" placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
+                    
                     <!-- downloads -->
                     <div>
                         <label class="block text-sm font-medium text-gray-300 mb-2">downloads</label>
@@ -188,14 +293,15 @@ async function saveTorrent() {
                             placeholder="enter torrent title here"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
+                    </div>
 
 
                     <!-- Torrent Description -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Torrent Description</label>
+                        <!-- <label class="block text-sm font-medium text-gray-300 mb-2">Torrent Description</label> -->
 
                         <!-- Toolbar -->
-                        <div class="border border-gray-300 rounded-t-md bg-gray-500 p-2 flex flex-wrap gap-1">
+                        <!-- <div class="border border-gray-300 rounded-t-md bg-gray-500 p-2 flex flex-wrap gap-1">
                             <button type="button" @click="insertTag('[b]', '[/b]')"
                                 class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-200 font-bold"
                                 title="Bold">
@@ -236,12 +342,16 @@ async function saveTorrent() {
                                 class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-200" title="YouTube">
                                 YouTube
                             </button>
-                        </div>
+                        </div> -->
 
                         <!-- Textarea -->
-                        <textarea ref="descriptionTextarea" v-model="torrent.detail.full_description"
+                        <!-- <textarea ref="descriptionTextarea" v-model="torrent.detail.full_description"
                             class="w-full h-64 p-3 border border-gray-300 border-t-0 rounded-b-md resize-vertical focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter your torrent description here..."></textarea>
+                            placeholder="Enter your torrent description here..."></textarea> -->
+                    </div>
+                    <div >
+                    <Editor api-key="sw2al0fwxaqnam8j32qxgnyqpbhesllbc21vjnggat83u3f7" v-model="torrent.detail.full_description"
+                        :init="editor_config" />
                     </div>
 
                     <!-- Submit Button -->
