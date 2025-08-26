@@ -348,7 +348,7 @@ class TorrentController extends Controller
         $torrent_detail->uploader = $torrent['detail']['uploader'];
         $torrent_detail->download_count = $torrent['detail']['download_count'];
         // $torrent_detail->category = $torrent['detail']['category'];
-        dd($torrent_detail);
+       // dd($torrent_detail);
 
         $update_torrent_popular = PopularTorrent::where('torrent_link', 'LIKE', "%{$torrent['id']}%")->first();
         if ($update_torrent_popular != null){
