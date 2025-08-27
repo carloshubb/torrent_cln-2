@@ -114,8 +114,7 @@
                           :class="`${torrent.subcategory.icon}`"></i></button>
                     </a>
                     <a :href="`/torrent/${torrent.id}/${torrent.slug}/`"
-                      class="text-gray-300 hover:text-orange-400 transition-colors ml-3">
-                      {{ torrent.name }}
+                      class="text-gray-300 hover:text-orange-400 transition-colors ml-3" v-html="torrent.name">
                     </a>
                   </div>
 
@@ -136,8 +135,8 @@
                           :class="`${torrent.subcategory.icon}`"></i></button>
                     </a>
                     <a :href="`${torrent.torrent_link}`"
-                      class="text-gray-300 hover:text-orange-400 transition-colors ml-3">
-                      {{ torrent.name }}
+                      class="text-gray-300 hover:text-orange-400 transition-colors ml-3" v-html="torrent.name">
+                      
                     </a>
                   </div>
 
