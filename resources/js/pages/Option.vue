@@ -161,8 +161,8 @@ if (performance.navigation.type === performance.navigation.TYPE_BACK_FORWARD) {
               <td class="px-2 py-3">
                 <div class="flex items-center justify-between ">
                   <!-- Left side: icon + name -->
-                  <div class="flex items-center">
-                    {{ torrent.name }}
+                  <div class="flex items-center" v-html="torrent.name">
+                    
                   </div>
                 </div>
               </td>

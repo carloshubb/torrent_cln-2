@@ -13,7 +13,7 @@ const descriptionTextarea = ref(null)
 const imageUrlInput = ref(null)
 const { props } = usePage()
 const torrent = ref(props.torrent)
-console.log("sssss",torrent.value);
+console.log("sssss", torrent.value);
 
 const title = ref("<h1>Spiral: From The Book Of Saw</h1>");
 const keywords = ref("<strong>UHD</strong>, <em>HDR10</em>, Dolby Atmos");
@@ -215,84 +215,75 @@ const editor_config = {
                 <h1 class="text-2xl font-bold mb-6 text-white">Edit Torrent</h1>
 
                 <div class="space-y-6 ">
-                    
-                        <!-- Title -->
-                        <div class="mb-4">
-                            <label class="font-semibold block mb-1">Title with HTML</label>
-                            <textarea v-model="torrent.name" rows="2" class="w-full border p-2 rounded"></textarea>
-                            <p class="mt-2">Preview:</p>
-                            <div class="border p-2 bg-gray-500" v-html="torrent.name"></div>
+
+                    <!-- Title -->
+                    <div class="mb-4">
+                        <label class="font-semibold block mb-1">Title with HTML</label>
+                        <textarea v-model="torrent.name" rows="2" class="w-full border p-2 rounded"></textarea>
+
+                        <label class="block text-sm font-medium text-gray-300 mb-2">title</label>
+                        <div v-html="torrent.name" type="text" placeholder="enter torrent title here"
+                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
-                        <!-- Keywords -->
-                        <div class="mt-9">
-                            <label class="font-semibold block mb-1">Keywords with HTML</label>
-                            <textarea v-model="keywords" rows="2" class="w-full border p-2 rounded"></textarea>
-                            <p class="mt-2">Preview:</p>
-                            <div class="border p-2 bg-gray-500" v-html="keywords"></div>
-                        </div>
+                    </div>
 
-                        <!-- Category -->
-                        <!-- <div class="mt-9">
+                    <!-- Keywords -->
+                    <div class="mt-9">
+                        <label class="font-semibold block mb-1">Keywords with HTML</label>
+                        <textarea v-model="keywords" rows="2" class="w-full border p-2 rounded"></textarea>
+                        <p class="mt-2">Preview:</p>
+                        <div class="border p-2 bg-gray-500" v-html="keywords"></div>
+                    </div>
+
+                    <!-- Category -->
+                    <!-- <div class="mt-9">
                             <label class="font-semibold block mb-1">Category with HTML</label>
                             <textarea v-model="torrent.detail.category" rows="2" class="w-full border p-2 rounded"></textarea>
                             <p class="mt-2">Preview:</p>
                             <div class="border p-2 bg-gray-500" v-html="torrent.detail.category"></div>
                         </div> -->
 
-                        <!-- Tags -->
-                        <div class="mt-9">
-                            <label class="font-semibold block mb-1">Tags with HTML</label>
-                            <textarea v-model="torrent.tags" rows="2" class="w-full border p-2 rounded"></textarea>
-                            <p class="mt-2">Preview:</p>
-                            <div class="border p-2 bg-gray-500" v-html="torrent.tags"></div>
+                    <!-- Tags -->
+                    <div class="mt-9">
+                        <label class="font-semibold block mb-1">Tags with HTML</label>
+                        <textarea v-model="torrent.tags" rows="2" class="w-full border p-2 rounded"></textarea>
+                        <p class="mt-2">Preview:</p>
+                        <div class="border p-2 bg-gray-500" v-html="torrent.tags"></div>
+                    </div>
+
+
+                    <div class="flex items-center justify-between">
+                        <!-- seeders -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">seeders</label>
+                            <input v-model="torrent.seeders" type="number" placeholder="enter torrent title here"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                         </div>
 
-                   
-                    <!--Html Title -->
-                    <!-- <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">HTML Title</label>
-                        <textarea v-model="torrent.name" placeholder="Enter HTML code here (e.g. <h1>My Title</h1>)"
-                            rows="4"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
-                    </div> -->
-                    <!-- Title -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">name</label>
-                        <input v-model="torrent.name" type="text" placeholder="enter torrent title here"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-                    </div>
-                    <div class="flex items-center justify-between">
-                    <!-- seeders -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">seeders</label>
-                        <input v-model="torrent.seeders" type="number" placeholder="enter torrent title here"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-                    </div>
 
-                   
-                    <!--leechers -->
-                    <div >
-                        <label class="block text-sm font-medium text-gray-300 mb-2">leechers</label>
-                        <input v-model="torrent.leechers" type="number" placeholder="enter torrent title here"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-                    </div>
+                        <!--leechers -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">leechers</label>
+                            <input v-model="torrent.leechers" type="number" placeholder="enter torrent title here"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
                     </div>
                     <div class="flex items-center justify-between">
-                    <!-- uploader -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">uploader</label>
-                        <input v-model="torrent.detail.uploader" type="text" placeholder="enter torrent title here"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-                    </div>
-                    
-                    <!-- downloads -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">downloads</label>
-                        <input v-model="torrent.detail.download_count" type="text"
-                            placeholder="enter torrent title here"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-                    </div>
+                        <!-- uploader -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">uploader</label>
+                            <input v-model="torrent.detail.uploader" type="text" placeholder="enter torrent title here"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <!-- downloads -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">downloads</label>
+                            <input v-model="torrent.detail.download_count" type="text"
+                                placeholder="enter torrent title here"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
                     </div>
 
 
@@ -349,9 +340,9 @@ const editor_config = {
                             class="w-full h-64 p-3 border border-gray-300 border-t-0 rounded-b-md resize-vertical focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Enter your torrent description here..."></textarea> -->
                     </div>
-                    <div >
-                    <Editor api-key="sw2al0fwxaqnam8j32qxgnyqpbhesllbc21vjnggat83u3f7" v-model="torrent.detail.full_description"
-                        :init="editor_config" />
+                    <div>
+                        <Editor api-key="sw2al0fwxaqnam8j32qxgnyqpbhesllbc21vjnggat83u3f7"
+                            v-model="torrent.detail.full_description" :init="editor_config" />
                     </div>
 
                     <!-- Submit Button -->
